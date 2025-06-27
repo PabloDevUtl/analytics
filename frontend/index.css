@@ -1,0 +1,391 @@
+/* 1. Montserrat desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+/* 2. Reinicio global */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* 3. Navbar */
+.transition-navbar {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1000;
+}
+.navbar .nav-link {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.05rem;
+  color: white !important;
+  position: relative;
+  overflow: hidden;
+}
+.navbar .navbar-nav .nav-link {
+  margin: 0 1.2rem;
+}
+.transition-navbar .nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  background-color: #ef8802;
+  transition: width 0.3s ease;
+}
+.transition-navbar .nav-link:hover {
+  color: #ef8802 !important;
+}
+
+.transition-navbar .nav-link:hover::after {
+  width: 100%;
+}
+.transition-navbar.bg-white .nav-link {
+  color: #333 !important;
+}
+.transition-navbar.bg-white .nav-link:hover {
+  color: #ef8802 !important;
+}
+
+
+/* 4. Hero Inicio */
+#inicio {
+  --bg-image: url('./assets/fondoRedes.png');
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  padding-top: 56px;
+  text-align: left;
+}
+#inicio::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-image);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  filter: blur(2px);
+  transform: scale(1.03);
+  z-index: -2;
+  transition: background-image 0.7s cubic-bezier(.77,0,.18,1);
+}
+#inicio::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 75vh;
+  margin: 0 0 0 2rem;
+  padding: 0 1rem;
+  color: white;
+  text-align: left;
+}
+.hero-title {
+  font-size: 2.8rem;
+  font-weight: 550;
+  letter-spacing: 0.05rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+.btn-hero {
+  color: white;
+  background: transparent;
+  border: 2px solid white;
+  padding: 1.3rem 2.8rem;
+  font-weight: 700;
+  border-radius: 0%;
+  transition: background 0.3s, color 0.3s;
+}
+.btn-hero:hover {
+  background: white;
+  color: #ef8802;
+}
+
+/* 5. Dots */
+.carousel-hero-controls {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+.carousel-arrow {
+  display: none !important;
+}
+.carousel-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  transition: background 0.2s;
+  cursor: pointer;
+}
+.dot.active {
+  background: #ef8802;
+}
+
+/* 6. Animaciones slide-in */
+.slide-in-top    { transform: translateY(-50px); opacity: 0; animation: slideInTop 0.8s ease-out forwards; }
+.slide-in-bottom { transform: translateY(50px);  opacity: 0; animation: slideInBottom 0.8s ease-out forwards; }
+.slide-in-left   { transform: translateX(-100px); opacity: 0; animation: slideInLeft 0.8s ease-out forwards; }
+.slide-in-right  { transform: translateX(100px);  opacity: 0; animation: slideInRight 0.8s ease-out forwards; }
+
+@keyframes slideInTop    { to { transform: translateY(0); opacity: 1; } }
+@keyframes slideInBottom { to { transform: translateY(0); opacity: 1; } }
+@keyframes slideInLeft   { to { transform: translateX(0); opacity: 1; } }
+@keyframes slideInRight  { to { transform: translateX(0); opacity: 1; } }
+
+.delay-hero { animation-delay: 0.3s; }
+.delay-1     { animation-delay: 0.6s; }
+.delay-2     { animation-delay: 0.9s; }
+.delay-3     { animation-delay: 1.2s; }
+.delay-4     { animation-delay: 1.5s; }
+.delay-5     { animation-delay: 1.8s; }
+
+/* 7. Nueva sección Innovación */
+.innovacion-section {
+  display: flex;
+  flex-direction: row;     /* línea y texto en fila */
+  align-items: center;     /* alineados verticalmente */
+  justify-content: center; /* centrados horizontalmente */
+  background: #fff;
+
+  /* Más espacio vertical */
+  padding: 7rem 0rem;
+  min-height: 50vh;
+
+  position: relative;      /* para que .innovacion-line absolute funcione */
+  gap: 1rem;               /* espacio entre línea y texto */
+}
+
+.innovacion-line {
+  position: absolute;      /* siempre pegada al left:0 del contenedor */
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+.innovacion-line .line {
+  width: 180px;
+  height: 2px;
+  background: #cccccc;
+  margin-right: 0.5rem;
+}
+.innovacion-line .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ef8802;
+}
+
+.innovacion-title {
+  flex: none;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333333;
+  line-height: 1.3;
+  max-width: 800px;
+  margin: 0;
+  text-align: center;
+}
+
+/* 8. Responsivo intermedio (pantallas < 1112px) */
+@media (max-width: 1112px) {
+  .innovacion-section {
+    flex-direction: column;
+    padding: 8rem 1rem;
+  }
+  .innovacion-title {
+    order: 1;        /* primero el título */
+    font-size: 1.5rem;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+  .innovacion-line {
+    order: 2;           /* luego la línea debajo */
+    position: static;   /* sale de absolute */
+    transform: none;
+    margin: 1rem 0 0 0; /* espacio arriba */
+    width: 100%;        /* ocupa todo el ancho */
+    justify-content: flex-start;
+    padding: 0 1rem;    /* alinea con padding sección */
+  }
+  .innovacion-line .line {
+    width: 100%;
+    max-width: 250px;   /* ancho máximo */
+  }
+}
+
+/* 9. Responsivo móvil (pantallas < 768px) */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  .carousel-hero-controls {
+    bottom: 20px;
+  }
+  .innovacion-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* 10. Logos */
+.logo-light {
+  display: inline-block;
+}
+.logo-dark {
+  display: none;
+}
+.transition-navbar.bg-white .logo-light {
+  display: none !important;
+}
+.transition-navbar.bg-white .logo-dark {
+  display: inline-block !important;
+}
+
+/* 11. Icono WhatsApp fijo */
+.whatsapp-icon-container {
+  position: fixed;
+  bottom: 76px;           /* más abajo */
+  right: 20px;
+  
+  display: flex;
+  flex-direction: column; /* texto arriba, icono abajo */
+  align-items: center;
+  text-decoration: none;
+  z-index: 1100;
+}
+
+.whatsapp-label {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin-bottom: 8px;     /* espacio entre texto e icono */
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.9rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.whatsapp-icon {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.whatsapp-icon-container:hover .whatsapp-label {
+  opacity: 1;
+}
+/* 12. Navbar negra en tabletas/móviles intermedios */
+@media (max-width: 991px) {
+  /* Logo siempre blanco */
+  .transition-navbar .logo-light {
+    display: inline-block !important;
+  }
+  .transition-navbar .logo-dark {
+    display: none !important;
+  }
+
+  /* Enlaces en blanco + hover naranja */
+  .transition-navbar .nav-link {
+    color: #fff !important;
+  }
+  .transition-navbar .nav-link::after {
+    background-color: #ef8802 !important;
+  }
+  .transition-navbar .nav-link:hover {
+    color: #ef8802 !important;
+  }
+
+  /* Fondo transparente en collapse abierto */
+  .transition-navbar .navbar-collapse {
+    background: transparent !important;
+  }
+}
+/* ---------------------------
+   Ajustes para el HERO en móvil
+---------------------------- */
+@media (max-width: 768px) {
+  /* 1) Empuja todo debajo del navbar (ajusta 56px si tu navbar es distinto) */
+  #inicio {
+    padding-top: 56px;
+    /* reducimos un poco la altura para no rebasar */
+    min-height: calc(100vh - 56px);
+  }
+
+  /* 2) Desactivamos el blur/scale en el background para que no se deforme */
+  #inicio::before {
+    filter: none;
+    transform: none;
+    background-size: cover;
+  }
+
+  /* 3) Centralizamos el contenido y le damos más fluidez */
+  .hero-content {
+    margin: 2rem auto 0;
+    width: 90%;
+    max-width: none;
+    text-align: center;
+    align-items: center;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+    line-height: 1.3;
+  }
+
+  .btn-hero {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  /* 4) Movemos un poco las dots para que no queden tan abajo */
+  .carousel-hero-controls {
+    bottom: 20px;
+  }
+}
+
+/* Asegúrate de que html, body y el root ocupen el 100% de alto */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* Contenedor principal de la aplicación */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* El main crece para empujar el footer al final */
+.app-main {
+  flex: 1;
+}

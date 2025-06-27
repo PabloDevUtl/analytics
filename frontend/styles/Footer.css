@@ -1,0 +1,200 @@
+/* ===========================
+   Footer.css
+   =========================== */
+
+/* Estilos generales del footer */
+.footer {
+  background: #fff;
+  padding: 2rem 1.4rem;
+  font-family: "Montserrat", sans-serif;
+  color: #333333;
+}
+
+/* ===========================
+   Sección Superior (.footer-top)
+   =========================== */
+.footer-top {
+  display: flex;            /* Flexbox para columnas */
+  flex-wrap: wrap;          /* Permite salto a nuevas filas */
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.3rem;
+}
+
+/* Columnas del footer */
+.footer-column {
+  flex: 1 1 180px;          /* Crece/reduce con base mínima 180px */
+  margin: 0.5rem;
+}
+/* Centrar el logo en su columna */
+.footer-logo-column {
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  align-items: center;     /* centra verticalmente si quedara hueco */
+}
+
+
+/* Logo */
+.footer-logo {
+  max-width: 160px;
+  height: 50px;
+  
+}
+
+/* ===========================
+   Enlaces de navegación
+   =========================== */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: #333333;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.footer-links a:hover {
+  color: #ef8802;
+}
+
+/* ===========================
+   Contacto y Dirección
+   =========================== */
+.footer-contact-column h4,
+.footer-address-column h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.footer-contact-column p,
+.footer-address-column p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+/* ===== Teléfonos clicables en footer sin subrayado ===== */
+.footer-contact-column a {
+  display: block;            /* cada número en su línea */
+  font-size: 1.2rem;         /* coincide con el tamaño de párrafo */
+  color: #333333;            /* mismo color que los textos */
+  text-decoration: none;     /* quitar subrayado */
+  margin-bottom: 0.5rem;     /* separación entre números */
+}
+
+.footer-contact-column a:hover {
+  text-decoration: underline; /* subrayado sólo al hover */
+}
+
+
+/* Iconos sociales */
+.footer-social a {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  color: #333333;
+}
+
+.footer-social a:hover {
+  color: #ef8802;
+}
+
+/* ===========================
+   Sección Inferior (.footer-bottom)
+   =========================== */
+.footer-bottom {
+  display: flex;            /* Flexbox para los 3 elementos */
+  flex-wrap: wrap;          /* Permite apilar en móvil */
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  font-size: 0.99rem;
+}
+
+/* Enlace “Administrador” en naranja y subrayado al hover */
+.footer-admin-link {
+  color: #ef8802;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.footer-admin-link:hover {
+  text-decoration: underline;
+}
+
+/* Enlaces de Aviso de Privacidad y Juan Cano
+   mantienen color naranja y subrayado al hover */
+.footer-bottom-link {
+  color: #ef8802;
+  text-decoration: none;
+}
+
+.footer-bottom-link:hover {
+  text-decoration: underline;
+}
+
+/* Elimina márgenes extra de los párrafos */
+.footer-copy,
+.footer-dev {
+  margin: 0;
+}
+
+/* ===========================
+   Responsive (pantallas < 768px)
+   =========================== */
+@media (max-width: 768px) {
+  /* Apilar la sección superior y centrar todo */
+  .footer-top {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Centrar columnas individuales */
+  .footer-column {
+    margin: 0.5rem auto;
+  }
+
+  /* Centrar textos de contacto y dirección */
+  .footer-contact-column,
+  .footer-address-column {
+    text-align: center;
+  }
+
+  /* Centrar iconos sociales */
+  .footer-social {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Centrar lista de enlaces */
+  .footer-links {
+    text-align: center;
+  }
+
+  /* Apilar y centrar la sección inferior */
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  /* Ajuste vertical del logo para reducir separación */
+  .footer-logo-column {
+    margin: 1rem auto 0 auto;
+    margin-bottom: -4rem;
+  }
+}
+
+

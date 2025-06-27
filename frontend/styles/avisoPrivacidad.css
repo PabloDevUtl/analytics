@@ -1,0 +1,131 @@
+/* src/styles/avisoPrivacidad.css */
+/* Fondo general de las páginas de aviso (detrás del contenedor) */
+.aviso-page {
+  background-color: #ececec;  /* un gris suave; cámbialo si quieres otro tono */
+  min-height: 100vh;          /* para que cubra toda la pantalla */
+  padding-top: 2rem;          /* un extra de separación arriba */
+  padding-bottom: 1px;          /* un extra de separación abajo */
+}
+
+.aviso-container {
+  max-width: 800px;
+  margin: 7rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  color: #333;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.aviso-container h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #ef8802;
+  margin-bottom: 1rem;
+}
+
+.aviso-container h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.aviso-container p,
+.aviso-container ul {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.aviso-container ul {
+  padding-left: 1.2rem;
+}
+
+.aviso-container ul li {
+  margin-bottom: 0.5rem;
+}
+
+.link-primario {
+  color: #ef8802;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link-primario:hover {
+  text-decoration: underline;
+}
+
+.fecha-actualizacion {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: right;
+  margin-top: 1rem;
+}
+
+/* ==== Responsividad ==== */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 1112px) {
+  .aviso-container {
+    max-width: 90%;
+    margin: 6rem auto;
+    padding: 1.8rem;
+  }
+  .aviso-container h1 {
+    font-size: 2.2rem;
+  }
+  .aviso-container h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Móviles (smartphones) */
+@media (max-width: 768px) {
+  .aviso-page {
+    padding-top: 1rem;
+  }
+  .aviso-container {
+    max-width: 95%;
+    margin: 4rem auto;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  }
+  .aviso-container h1 {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+  }
+  .aviso-container h2 {
+    font-size: 1.4rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+  .aviso-container p,
+  .aviso-container ul {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .aviso-container ul {
+    padding-left: 1rem;
+  }
+}
+
+/* Pantallas muy pequeñas (ej. portrait phones) */
+@media (max-width: 480px) {
+  .aviso-container {
+    margin: 3rem auto;
+    padding: 1rem;
+  }
+  .aviso-container h1 {
+    font-size: 1.8rem;
+  }
+  .aviso-container h2 {
+    font-size: 1.3rem;
+  }
+  .aviso-container p,
+  .aviso-container ul {
+    font-size: 0.9rem;
+  }
+}

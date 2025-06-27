@@ -1,0 +1,385 @@
+/* ======================================================================
+   QuienesSomosPage.css
+   ====================================================================== */
+
+/* --------------------------------------------
+   1) SECCIÓN: “Quiénes somos”
+   -------------------------------------------- */
+.quienes-full-section {
+  display: flex;
+  /* deja espacio para el navbar fijo */
+  padding-top: 70px;                /* Ajusta si tu navbar es más alto/bajo */
+  min-height: calc(100vh - 0px);
+  overflow: hidden;
+
+  /* para anclajes (scroll automático) */
+  scroll-margin-top: 70px;
+}
+
+.quienes-full-image,
+.quienes-full-content {
+  flex: 1;
+}
+
+.quienes-full-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.quienes-full-content {
+  padding: 4rem;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.quienes-full-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.quienes-full-text {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* Adaptativo para “Quiénes somos” */
+@media (max-width: 992px) {
+  .quienes-full-section {
+    flex-direction: column;
+    padding-top: 56px;
+    min-height: auto;
+  }
+  .quienes-full-image {
+    min-height: 50vh;
+  }
+}
+
+/* --------------------------------------------
+   2) SECCIÓN: Misión (nuevo bloque con fondo gris)
+   -------------------------------------------- */
+.mision-section {
+  background: #f5f5f5;    /* fondo gris claro */
+  padding: 6rem 1rem;
+  text-align: center;
+}
+
+.mision-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.mision-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.mision-underline {
+  width: 6rem;
+  height: 4px;
+  background: #ef8802;   /* naranja exacto */
+  margin: 0 auto 2rem;
+}
+
+.mision-quote {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2rem;
+  line-height: 1.3;
+}
+
+.mision-text {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Adaptativo para “Misión” */
+@media (max-width: 768px) {
+  .mision-title {
+    font-size: 2.5rem;
+  }
+  .mision-quote {
+    font-size: 1.75rem;
+  }
+  .mision-text {
+    font-size: 0.95rem;
+    padding: 0 1rem;
+  }
+}
+
+/* --------------------------------------------
+   3) SECCIÓN: Visión (fondo blanco)
+   -------------------------------------------- */
+.vision-section {
+  background: #fff;
+  padding: 6rem 1rem;
+  text-align: center;
+}
+
+.vision-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.vision-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.vision-underline {
+  width: 6rem;
+  height: 4px;
+  background: #ef8802;   /* naranja exacto */
+  margin: 0 auto 2rem;
+}
+
+.vision-quote {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2rem;
+  line-height: 1.3;
+}
+
+.vision-text {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Adaptativo para “Visión” */
+@media (max-width: 768px) {
+  .vision-title {
+    font-size: 2.5rem;
+  }
+  .vision-quote {
+    font-size: 1.75rem;
+  }
+  .vision-text {
+    font-size: 0.95rem;
+    padding: 0 1rem;
+  }
+}
+
+/* --------------------------------------------
+   4) SECCIÓN: Nuestros valores (nuevo bloque)
+   -------------------------------------------- */
+/* ======================================================================
+   Sección “Nuestros valores”
+   ====================================================================== */
+.valores-section {
+  background: #fff;
+  /* Mantenemos el padding vertical que tenías, solo quitamos el padding horizontal
+     porque ahora lo controlamos desde el contenedor interno */
+  padding: 6rem 0;
+}
+
+.valores-container {
+  /* Limita el ancho máximo y centra en pantallas grandes */
+  max-width: 1100px;
+  margin: 0 auto;
+
+  /* =====> AÑADIDO: algo de padding horizontal para que las columnas no se peguen a los bordes */
+  padding: 0 2rem;
+  text-align: center;
+}
+
+/* TÍTULO PRINCIPAL */
+.valores-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 3rem;
+}
+
+/* ------------------------------------------------------------
+   Grid de valores 1–8 (dos columnas)
+   ------------------------------------------------------------ */
+.valores-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;  /* espacio entre columnas/filas */
+  margin-bottom: 4rem;
+}
+
+/* Cada “cajita” de valor ocupa exactamente 50% menos el gap. */
+.valor-item {
+  flex: 0 0 calc(50% - 2rem);
+  text-align: left;
+}
+
+/* Número del valor (mismo color naranja) */
+.valor-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ef8802;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+/* Nombre del valor (inline-block para mantenerlo en la misma línea que el número) */
+.valor-name {
+  display: inline-block;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ef8802;
+  margin: 0;       
+  vertical-align: middle;
+}
+
+/* Línea (hr) más gruesa */
+.valor-item hr {
+  border: none;
+  border-top: 2px solid #ccc;  
+  margin: 1rem 0;
+}
+
+/* Descripción del valor */
+.valor-desc {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Adaptativo: en pantallas <992px pasa a UNA SOLA COLUMNA */
+@media (max-width: 992px) {
+  .valor-item {
+    flex: 0 0 100%;
+  }
+}
+
+/* ------------------------------------------------------------
+   Valor 9 (texto + foto)
+   ------------------------------------------------------------ */
+.valor-nine {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 4rem;
+  text-align: left;
+}
+
+.valor-nine-text {
+  flex: 1;
+}
+
+.valor-nine-text .valor-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ef8802;
+}
+
+.valor-nine-text .valor-name {
+  display: inline-block;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ef8802;
+  margin: 0;            
+  vertical-align: middle;
+}
+
+.valor-nine-text hr {
+  border: none;
+  border-top: 2px solid #ccc;  
+  margin: 1rem 0;
+}
+
+.valor-nine-text .valor-desc {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.valor-nine-image {
+  flex: 1;
+  overflow: hidden;
+}
+
+.valor-nine-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* En móvil (<992px) el valor 9 pasa a apilar verticalmente */
+@media (max-width: 992px) {
+  .valor-nine {
+    flex-direction: column;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   Ajustes de tipografía en móvil (<768px)
+   ----------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .valores-title {
+    font-size: 2.5rem;
+  }
+  .valor-number {
+    font-size: 1.75rem;
+  }
+  .valor-name {
+    font-size: 1.5rem;
+  }
+  .valor-desc {
+    font-size: 0.95rem;
+  }
+}
+
+
+/* --------------------------------------------
+   5) Icono WhatsApp fijo (igual que en Home)
+   -------------------------------------------- */
+.whatsapp-icon-container {
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  z-index: 1100;
+}
+
+.whatsapp-label {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.9rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.whatsapp-icon {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.whatsapp-icon-container:hover .whatsapp-label {
+  opacity: 1;
+}

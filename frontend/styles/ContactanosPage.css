@@ -1,0 +1,313 @@
+/* --------------------------------------------------
+   src/styles/ContactanosPage.css
+   -------------------------------------------------- */
+
+/* 1) Sección general */
+.contacto-section {
+  padding-top: 110px;            /* deja espacio para el navbar fijo */
+  background: #f5f5f5;           /* color de fondo off-white */
+  padding-bottom: 4rem;
+}
+
+/* 2) Contenedor principal de ancho fijo y centrado */
+.container-contacto {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* 3) Título “Contáctanos” */
+.contacto-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ef8802;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+/* ================================================================
+   4) Información de correo: “LÍNEA + PUNTO + EMAIL” full-width
+   ================================================================
+*/
+
+/* Hacemos que .contacto-info cubra TODO el ancho del viewport (100vw),
+   pero al mismo tiempo centramos esa “caja” bajo el contenedor de 700px,
+   para que el punto + correo queden perfectamente alineados. */
+
+.contacto-info {
+  position: relative;
+  width: 100vw;  
+  /* El siguiente margin-left lleva esta “caja de 100vw” para que quede
+     centrada exactamente en X igual que el container de 700px.      */
+  margin-left: calc(-50vw + 50%);
+  
+  display: flex;
+  align-items: center;
+  /* Ahora empujamos el punto + correo hacia la derecha, hasta la X que
+     equivale a la posición de los teléfonos (bajo el contenedor de 700px):
+     (100vw − 700px)/2 + 1rem (ese “1rem” es el padding-left que tiene
+     .container-contacto).                                      */
+  padding-left: calc((100vw - 700px) / 2 + 1rem);
+
+  /* Espacio debajo para separar del siguiente contenido (teléfonos). */
+  margin-bottom: 1rem;
+}
+
+/* ===== ESTILO PARA TELÉFONOS CLICABLES ===== */
+.contacto-telefonos {
+  text-decoration: none;     /* Sin subrayado */
+  color: #333333;            /* Mismo color que antes */
+  display: block;            /* Para respetar márgenes */
+}
+
+.contacto-telefonos:hover {
+  text-decoration: underline; /* Subrayado sólo al hover */
+}
+
+
+/* 4.a) Definimos el punto naranja */
+.contacto-info .dot {
+  position: relative;   /* necesario para el ::before de la línea */
+  flex-shrink: 0;       /* que no colapse de ancho */
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ef8802;
+  margin-right: 0.5rem;
+}
+
+/* 4.b) Dibujar la línea gris que va desde X=0 del viewport hasta el punto */
+.contacto-info .dot::before {
+  content: '';
+  position: absolute;
+  /* Ponemos el ::before justo a la izquierda del punto, a la distancia
+     calc((100vw − 700px)/2 + 1rem). De ese modo el inicio de la línea
+     queda en X=0 del viewport.                                     */
+  left: calc(-1 * ((100vw - 700px) / 2 + 1rem));
+  top: 50%;
+  transform: translateY(-50%);
+  /* El ancho de esa línea debe ser exactamente esa misma distancia,
+     de modo que termine justo “bajo” el punto naranja.           */
+  width: calc((100vw - 700px) / 2 + 1rem);
+  height: 2px;
+  background: #cccccc;
+}
+
+/* 4.c) Texto de email, justo a la derecha del punto */
+.contacto-info .email-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ef8802;
+}
+
+
+/* 5) Teléfonos de contacto (igual que antes) */
+.contacto-telefonos {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.60rem;
+  font-weight: 700;
+  color: #333333;
+  margin: 0.35rem 0;
+}
+
+/* 6) Íconos de redes sociales (igual que antes) */
+.redes-contacto {
+  display: flex;
+  gap: 1.3rem;
+  margin-bottom: 2rem;
+}
+.redes-contacto i {
+  font-size: 2.2rem;
+  color: #222222;
+  cursor: pointer;
+}
+
+/* 7) Formulario: centrar y ancho fijo (igual que antes) */
+.form-container {
+  max-width: 700px;
+  margin: 0 auto;
+  margin-top: 2rem;
+}
+
+/* Inputs y textarea sin border-radius, con padding y font (igual que antes) */
+.contacto-form .form-control {
+  border-radius: 0;
+  padding: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Al hacer foco en el campo, color de fondo naranja y texto blanco (igual) */
+.contacto-form .form-control:focus {
+  background-color: #ef8802;
+  color: #ffffff;
+  outline: none;
+  box-shadow: none;
+}
+
+/* Botón “ENVIAR”: cuadrado, color naranja por defecto (igual que antes) */
+.btn-enviar {
+  background-color: #ef8802;
+  color: #ffffff;
+  border: none;
+  border-radius: 0;
+  padding: 0.75rem 2rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.10rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Al presionar (active) el botón, pasa a fondo negro y texto blanco (igual) */
+.btn-enviar:active {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* 8) Contenedor de la alerta (igual que antes) */
+.alerta-estilo {
+  margin-top: 1.5rem;
+}
+
+/* 9) Estilos de la alerta (error / éxito) – igual que antes */
+.alert-error {
+  background-color: #ffe0e0;
+  color: #d8000c;
+  border: 1px solid #d8000c;
+  padding: 1rem;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  text-align: center;
+}
+
+.alert-exito {
+  background-color: #e0ffe0;
+  color: #4F8A10;
+  border: 1px solid #4F8A10;
+  padding: 1rem;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* 10) Icono de WhatsApp fijo (igual que antes) */
+.whatsapp-icon-container {
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  text-decoration: none;
+  z-index: 1100;
+}
+
+.whatsapp-label {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.9rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.whatsapp-icon {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.whatsapp-icon-container:hover .whatsapp-label {
+  opacity: 1;
+}
+
+/* 11) Responsivo básico (igual que antes) */
+@media (max-width: 768px) {
+  .contacto-title {
+    font-size: 2.5rem;
+  }
+  .contacto-info .email-text,
+  .contacto-telefonos {
+    font-size: 1.1rem;
+  }
+  .redes-contacto i {
+    font-size: 1.5rem;
+  }
+}
+
+
+/* ===== ESTILOS CHECKBOX TÉRMINOS ===== */
+.terms-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.terms-container input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ef8802;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.terms-container input[type="checkbox"]:checked {
+  background: #ef8802;
+  border-color: #ef8802;
+}
+
+.terms-container input[type="checkbox"]:checked::after {
+  content: '✔';
+  position: absolute;
+  top: 1px;
+  left: 3px;
+  font-size: 14px;
+  color: white;
+}
+
+.terms-container label {
+  cursor: pointer;
+}
+
+.terms-container a {
+  color: #ef8802;
+  font-weight: 600;
+  text-decoration: underline;
+  margin-left: 0.2rem;
+}
+
+.terms-container a:hover {
+  text-decoration: none;
+}
+
+/* Quitar subrayado del correo en contacto */
+.contacto-info .email-text {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* (Opcional) Subrayar al hacer hover */
+.contacto-info .email-text:hover {
+  text-decoration: underline;
+}
+
+

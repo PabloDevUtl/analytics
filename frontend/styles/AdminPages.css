@@ -1,0 +1,25 @@
+/* src/pages/AdminPages.css */
+
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-content {
+  flex: 1;                /* <— para llenar el ancho restante */
+  margin-left: 250px;
+  padding: 2rem;
+  transition: margin-left 0.3s;
+  background-color: #f8f9fa;
+}
+
+/* Cuando el sidebar está colapsado */
+.sidebar.collapsed ~ .admin-content {
+  margin-left: 60px;
+}
+
+@media (max-width: 768px) {
+  .admin-content {
+    margin-left: 0;
+  }
+}

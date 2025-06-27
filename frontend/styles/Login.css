@@ -1,0 +1,59 @@
+/* Contenedor full-screen con fondo e overlay */
+.login-page {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.login-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Tarjeta de login centrada */
+.login-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 0.75rem;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Título “Bienvenido administrador” */
+.login-title {
+  font-weight: 600;
+  color: #333;
+  font-size: 1.75rem;
+}
+
+/* Inputs: sombra y borde de marca al foco */
+.login-card .form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(239, 136, 2, 0.3);
+  border-color: #ef8802;
+}
+
+/* Botón de marca */
+.login-card .btn-primary {
+  background-color: #ef8802;
+  border-color: #ef8802;
+  font-weight: 600;
+}
+.login-card .btn-primary:hover {
+  background-color: #d67902;
+  border-color: #d67902;
+}
+
+/* Ajustes móviles */
+@media (max-width: 576px) {
+  .login-card {
+    margin: 0 1rem;
+    padding: 2rem 1.5rem;
+  }
+  .login-page::before {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
