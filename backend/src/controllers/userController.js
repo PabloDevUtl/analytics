@@ -3,7 +3,9 @@ import User from '../models/userModel.js';
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User
+      .find()
+      .select('-contrasena -token -__v'); // excluye campos sensibles
     res.json(users);
   } catch (err) {
     res.status(500).json({ message: err.message });
