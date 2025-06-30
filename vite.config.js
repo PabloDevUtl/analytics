@@ -1,24 +1,22 @@
+// vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import path from 'path'
 
 export default defineConfig({
-  // Decimos a Vite que la carpeta de entrada
-  // (donde está index.html y main.jsx) es `frontend/`
   root: path.resolve(__dirname, 'frontend'),
-
-  // Opcional: donde pondremos el build final
   build: {
     outDir: path.resolve(__dirname, 'dist'),
     emptyOutDir: true
   },
-
   server: {
-    port: 5173,           // puerto fijo para dev
+    port: 5173,
+    // si quieres usar proxy en dev local en vez de leer VITE_API_URL:
     proxy: {
       '/api': 'http://localhost:5000'
     }
   },
-
+  // VITE_* es el prefijo que Vite expone en import.meta.env
+  envPrefix: 'VITE_',
   plugins: [react()]
 })
