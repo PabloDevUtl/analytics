@@ -54,10 +54,23 @@
     flex-direction: column;
     padding-top: 56px;
     min-height: auto;
+
   }
   .quienes-full-image {
-    min-height: 50vh;
+    min-height: 56vh;
+      position: relative;
+  top: 90px;     
   }
+  .quienes-full-title{
+    margin-top: -8rem;
+  }
+  .quienes-full-text{
+     font-size: 1rem;
+  line-height: 1.7;
+  max-width: 800px;
+  margin: 1 auto;
+  }
+ 
 }
 
 /* --------------------------------------------

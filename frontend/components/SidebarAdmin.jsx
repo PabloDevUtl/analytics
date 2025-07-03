@@ -1,11 +1,18 @@
 // src/components/SidebarAdmin.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import '../styles/SidebarAdmin.css';
 
 export default function SidebarAdmin() {
-  const [collapsed, setCollapsed] = useState(false);
+  // colapsa automáticamente en pantallas <768px
+  const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const onResize = () => setCollapsed(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -14,6 +21,7 @@ export default function SidebarAdmin() {
 
   return (
     <>
+      {/* toggle siempre fijo */}
       <button
         className={`toggle-btn ${collapsed ? 'collapsed' : ''}`}
         onClick={() => setCollapsed(!collapsed)}
@@ -24,7 +32,6 @@ export default function SidebarAdmin() {
 
       <nav className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
         <div className="menu">
-          <h2 className="title">Admin</h2>
           <NavLink to="/home-admin" className="menu-item">
             Inicio
           </NavLink>

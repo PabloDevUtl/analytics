@@ -91,7 +91,7 @@ export default function Home() {
         data-aos="fade-up"
         data-aos-delay="400"
       >
-        <span className="whatsapp-label">CONTACTÁNOS</span>
+        <span className="whatsapp-label">CONTÁCTANOS</span>
         <img src={iconWhatsApp} alt="WhatsApp" className="whatsapp-icon" />
       </a>
     </>

@@ -3,8 +3,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4rem 1.5rem;
+  padding: 5rem 2rem !important;
   background: #f5f5f5;
+  gap: 2rem !important;
 }
 
 .quienes-image {
@@ -14,15 +15,15 @@
 }
 
 .quienes-image img {
-  width: 94%;
-  height: 94%;
-  object-fit: cover;
+ width: 100% !important;
+  height: auto !important;
+  object-fit: cover !important;
 }
 
 .quienes-content {
   flex: 1;
   max-width: 600px;
-  margin-left: 0.5rem;
+  margin-left: 1rem !important;
 }
 
 .quienes-title {
@@ -39,17 +40,28 @@
   margin-bottom: 1.5rem;
 }
 
-/* Responsivo */
+
+/* ———————————————— */
+/* Responsive (<992px) */
+/* ———————————————— */
 @media (max-width: 992px) {
   .quienes-section {
-    flex-direction: column;
+    flex-direction: column !important;
+    padding: 3rem 1.5rem !important;
+    gap: 1.5rem !important;
+  }
+  .quienes-image {
+    margin-bottom: -15rem !important;  /* menos separación antes del texto */
   }
   .quienes-content {
-    margin: 2rem 0 0;
-    text-align: center;
+    margin: 0 auto !important;       /* centrar en columna */
+    padding: 0 1rem !important;
+    text-align: center !important;
+  }
+  .btn-conoce {
+    margin-top: 1rem !important;     /* mantener el botón junto al texto */
   }
 }
-
 
 /* ===== Botón "Conoce más" centrado pero mismo tamaño ===== */
 .btn-conoce {
