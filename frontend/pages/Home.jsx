@@ -4,6 +4,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 import QuienesSomos from '../components/QuienesSomos';
+import Servicios from '../components/Servicios';
 import fondoAlarma  from '../assets/fondoAlarma.png';
 import fondoCamaras from '../assets/fondoCamara.png';
 import fondoRedes   from '../assets/fondoRedes.png';
@@ -72,10 +73,8 @@ export default function Home() {
       {/* Preview Quiénes somos */}
       <QuienesSomos />
 
-      {/* Servicios */}
-      <section id="servicios" data-aos="fade-up" data-aos-delay="200">
-        Servicios
-      </section>
+    {/* Sección Servicios (nuevo componente) */}
+    <Servicios />
 
       {/* Contacto */}
       <section id="contacto" data-aos="fade-up" data-aos-delay="300">
