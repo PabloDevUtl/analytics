@@ -405,3 +405,84 @@
   opacity: 1;
 }
 
+
+
+.animate-fade-up, .animate-fade-down, .animate-fade-left, .animate-fade-right {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.45s cubic-bezier(.77,0,.18,1), transform 0.45s cubic-bezier(.77,0,.18,1);
+}
+.animate-fade-down   { transform: translateY(-32px);}
+.animate-fade-left   { transform: translateX(-32px);}
+.animate-fade-right  { transform: translateX(32px); }
+
+.in-view.animate-fade-up,
+.in-view.animate-fade-down,
+.in-view.animate-fade-left,
+.in-view.animate-fade-right {
+  opacity: 1;
+  transform: none;
+}
+
+.in-view[data-delay="1"] { transition-delay: 0.06s; }
+.in-view[data-delay="2"] { transition-delay: 0.12s; }
+.in-view[data-delay="3"] { transition-delay: 0.18s; }
+.in-view[data-delay="4"] { transition-delay: 0.24s; }
+.in-view[data-delay="5"] { transition-delay: 0.30s; }
+.in-view[data-delay="6"] { transition-delay: 0.36s; }
+.in-view[data-delay="7"] { transition-delay: 0.42s; }
+.in-view[data-delay="8"] { transition-delay: 0.48s; }
+.in-view[data-delay="9"] { transition-delay: 0.54s; }
+
+/* ==================== Animaciones de aparición extra ==================== */
+.animate-fade-up, .animate-fade-down, .animate-fade-left, .animate-fade-right,
+.animate-zoom-in, .animate-blur-in, .animate-bounce-in {
+  opacity: 0;
+  will-change: opacity, transform, filter;
+}
+
+.animate-fade-up     { transform: translateY(32px);   transition: opacity 0.43s, transform 0.43s; }
+.animate-fade-down   { transform: translateY(-32px);  transition: opacity 0.43s, transform 0.43s;}
+.animate-fade-left   { transform: translateX(-32px);  transition: opacity 0.43s, transform 0.43s;}
+.animate-fade-right  { transform: translateX(32px);   transition: opacity 0.43s, transform 0.43s;}
+
+/* Nuevo: Zoom In */
+.animate-zoom-in     { transform: scale(0.88);        transition: opacity 0.44s, transform 0.44s; }
+
+/* Nuevo: Blur-in (entra desenfocado) */
+.animate-blur-in     { filter: blur(10px);            transition: opacity 0.45s, filter 0.38s; }
+
+/* Nuevo: Bounce in (rebote) */
+.animate-bounce-in   { transform: scale(0.94) translateY(38px); transition: opacity 0.41s, transform 0.57s cubic-bezier(.57,1.49,.51,1); }
+
+/* Cuando aparecen en pantalla */
+.in-view.animate-fade-up,
+.in-view.animate-fade-down,
+.in-view.animate-fade-left,
+.in-view.animate-fade-right {
+  opacity: 1;
+  transform: none;
+}
+.in-view.animate-zoom-in {
+  opacity: 1;
+  transform: scale(1);
+}
+.in-view.animate-blur-in {
+  opacity: 1;
+  filter: blur(0);
+}
+.in-view.animate-bounce-in {
+  opacity: 1;
+  transform: scale(1.0) translateY(0);
+}
+
+/* Cascada visual con data-delay */
+.in-view[data-delay="1"] { transition-delay: 0.05s; }
+.in-view[data-delay="2"] { transition-delay: 0.10s; }
+.in-view[data-delay="3"] { transition-delay: 0.15s; }
+.in-view[data-delay="4"] { transition-delay: 0.20s; }
+.in-view[data-delay="5"] { transition-delay: 0.25s; }
+.in-view[data-delay="6"] { transition-delay: 0.30s; }
+.in-view[data-delay="7"] { transition-delay: 0.35s; }
+.in-view[data-delay="8"] { transition-delay: 0.40s; }
+.in-view[data-delay="9"] { transition-delay: 0.45s; }

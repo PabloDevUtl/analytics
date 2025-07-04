@@ -51,7 +51,7 @@
     gap: 1.5rem !important;
   }
   .quienes-image {
-    margin-bottom: -15rem !important;  /* menos separación antes del texto */
+    margin-bottom: -13rem !important;  /* menos separación antes del texto */
   }
   .quienes-content {
     margin: 0 auto !important;       /* centrar en columna */
