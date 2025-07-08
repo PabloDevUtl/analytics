@@ -116,10 +116,10 @@ export default function ContactanosPage() {
             <span className="dot"></span>
             {/* Al hacer click, abre el cliente de correo */}
             <a
-              href="mailto:ventas@analytics.com"
+              href="mailto:contacto@analytics-mx.com"
               className="email-text"
             >
-              ventas@analytics.com
+              contacto@analytics-mx.com
             </a>
           </div>
 
@@ -127,18 +127,38 @@ export default function ContactanosPage() {
           <a  href='tel:+524771208831'  className="contacto-telefonos" data-aos="fade-left" data-aos-delay="150">
             (477) 120 8831
           </a>
-          <a href='tel:+524777878040' className="contacto-telefonos" data-aos="fade-left" data-aos-delay="200">
-            (477) 787 8040
-          </a>
-          <a href='tel:+525528582360' className="contacto-telefonos" data-aos="fade-left" data-aos-delay="250">
-            (55) 2858 2360
+          <a href='tel:+524779179276' className="contacto-telefonos" data-aos="fade-left" data-aos-delay="200">
+           (477) 9179 276
           </a>
 
           {/* 4) Redes sociales */}
-          <div className="redes-contacto" data-aos="fade-up" data-aos-delay="300">
-            <i className="bi bi-facebook"></i>
-            <i className="bi bi-instagram"></i>
-          </div>
+        <div className="redes-contacto" data-aos="fade-up" data-aos-delay="300">
+  <a
+    href="https://www.facebook.com/tupagina"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Facebook"
+  >
+    <i className="bi bi-facebook"></i>
+  </a>
+  <a
+    href="https://www.instagram.com/tupagina"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Instagram"
+  >
+    <i className="bi bi-instagram"></i>
+  </a>
+  <a
+    href="https://www.tiktok.com/@tupagina"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="TikTok"
+  >
+    <i className="bi bi-tiktok"></i>
+  </a>
+</div>
+
 
           {/* 5) Formulario */}
           <div className="form-container" data-aos="fade-up" data-aos-delay="350">

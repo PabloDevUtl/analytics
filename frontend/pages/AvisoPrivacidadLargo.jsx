@@ -15,7 +15,7 @@ export default function AvisoLargo() {
 
         <h2>1. Responsable del Tratamiento</h2>
         <p>
-          Analytics S.A. de C.V., con domicilio en Calle Filemón #309, Col. San Pablo, León, Gto., México, 
+          Analytics S.A. de C.V., con domicilio en Calle María de la luz #923, Col. Loma bonita, León, Gto., México, 
           es responsable de recabar, usar y proteger sus datos personales.
         </p>
 
@@ -45,12 +45,12 @@ export default function AvisoLargo() {
         <h2>5. Derechos ARCO</h2>
         <p>
           Usted puede ejercer sus Derechos de Acceso, Rectificación, Cancelación u Oposición (ARCO) mediante solicitud 
-          escrita al correo <a href="mailto:contacto@analytics.com">contacto@analytics.com</a>.
+          escrita al correo <a href="mailto:contacto@analytics-mx.com">contacto@analytics-mx.com</a>.
         </p>
 
         <h2>6. Medios para Ejercer Derechos</h2>
         <p>
-          Envíe un correo con asunto “Derechos ARCO” a <a href="mailto:contacto@analytics.com">contacto@analytics.com</a>, 
+          Envíe un correo con asunto “Derechos ARCO” a <a href="mailto:contacto@analytics-mx.com">contacto@analytics-mx.com</a>, 
           indicando nombre completo y datos a modificar.
         </p>
 
@@ -60,7 +60,8 @@ export default function AvisoLargo() {
           La fecha de última actualización se muestra a continuación.
         </p>
         <p className="fecha-actualizacion">
-          Última actualización: 24 de junio de 2025
+          Última actualización: 07 de juli
+          o de 2025
         </p>
       </section>
 
