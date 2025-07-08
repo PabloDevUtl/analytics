@@ -483,7 +483,7 @@ html, body, #root {
   /* Fondo igual que antes */
   background: 
     linear-gradient(rgba(247,147,26, 0.96), rgba(247,147,26, 0.96)), 
-    url('../assets/fondoOffice.png') center center/cover no-repeat;
+    url('assets/fondoOffice.png') center center/cover no-repeat;
   background-blend-mode: multiply;
 }
 
