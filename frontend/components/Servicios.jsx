@@ -1,7 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import servicio1 from '../assets/servicio1.png'
-import servicio2 from '../assets/servicio2.png'
+import servicioTI from '../assets/ti.png'
+import servicio2 from '../assets/servicioSG.png'
+
 import '../styles/Servicios.css'
 
 export default function Servicios() {
@@ -38,14 +39,14 @@ export default function Servicios() {
         <div className="servicio-card" style={{ '--delay': '0.3s' }}>
           <div
             className="servicio-image"
-            style={{ backgroundImage: `url(${servicio1})` }}
+            style={{ backgroundImage: `url(${servicioTI})` }}
           >
             <div className="servicio-overlay" />
             <div className="servicio-content">
               <h3>
-                Infraestrutura
+                Tecnologías de
                 <br />
-                de redes
+                la información
               </h3>
               <span className="underline" />
               <Link to="/servicios-page" className="servicio-button">
