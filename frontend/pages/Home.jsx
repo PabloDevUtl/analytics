@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { Link } from 'react-router-dom';
+
 
 import QuienesSomos from '../components/QuienesSomos';
 import Servicios from '../components/Servicios';
@@ -9,6 +11,7 @@ import fondoAlarma  from '../assets/fondoAlarma.png';
 import fondoCamaras from '../assets/fondoCamara.png';
 import fondoRedes   from '../assets/fondoRedes.png';
 import iconWhatsApp from '../assets/iconWhatsApp.png';
+import fondoOffice from '../assets/fondoOffice.png';
 
 export default function Home() {
   const images = [fondoAlarma, fondoCamaras, fondoRedes];
@@ -75,11 +78,31 @@ export default function Home() {
 
     {/* Sección Servicios (nuevo componente) */}
     <Servicios />
+    {/* Card destacado naranja (INVIERTE) */}
+<section
+  className="contactanos-home-card"
+  data-aos="fade-up"
+  data-aos-delay="150"
+>
+  <div className="contactanos-card-content">
+    <h2 className="contactanos-title">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br />
+    Praesent commodo cursus magna.
+    </h2>
+    <p className="contactanos-subtext">
+    Etiam porta sem malesuada magna mollis euismod.
+    </p>
+    <Link to="/contacto" className="contactanos-btn">
+      Contáctanos
+    </Link>
+  </div>
+</section>
 
-      {/* Contacto */}
+
+      {/* Contacto 
       <section id="contacto" data-aos="fade-up" data-aos-delay="300">
         Contacto
-      </section>
+      </section>*/}
 
       {/* WhatsApp fijo */}
       <a

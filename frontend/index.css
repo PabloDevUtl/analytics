@@ -465,3 +465,133 @@ html, body, #root {
     align-items: center !important;
   }
 }
+
+
+.contactanos-home-card {
+  position: relative;
+  width: 100%;
+  min-height: 350px;
+  margin-top: 3.5rem;
+  margin-bottom: 2.2rem;
+  border-radius: 0px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+
+  /* Fondo igual que antes */
+  background: 
+    linear-gradient(rgba(247,147,26, 0.96), rgba(247,147,26, 0.96)), 
+    url('../assets/fondoOffice.png') center center/cover no-repeat;
+  background-blend-mode: multiply;
+}
+
+
+.contactanos-card-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.contactanos-card-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.36;           /* haz la imagen tenue para que el texto resalte */
+  filter: grayscale(15%) brightness(0.92);
+  background: #f7931a;
+}
+
+/* Capa naranja encima de la imagen para lograr el look */
+.contactanos-home-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(239, 136, 2, 0.873);  /* #ef8802 con opacidad */
+  z-index: 1;
+}
+
+.contactanos-card-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 3.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* CENTRADO */
+  justify-content: center;
+  color: #fff;
+  text-align: center;    /* CENTRADO */
+}
+
+
+.contactanos-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.14;
+  color: #fff;
+  margin: 0 0 1.5rem 0;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.11);
+}
+
+.contactanos-subtext {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.25rem;
+  color: #fff;
+  margin-bottom: 2.3rem;
+  opacity: 0.88;
+  font-weight: 500;
+}
+
+.contactanos-btn {
+  background: #fff;
+  color: #ef8802;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.17rem;
+  border: none;
+  padding: 1rem 2.2rem;
+  border-radius: 0px;
+  cursor: pointer;
+  transition: background 0.23s, color 0.23s, box-shadow 0.23s;
+  box-shadow: 0 2px 10px 0 rgba(239,136,2,0.08);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  display: inline-block;
+}
+.contactanos-btn:hover {
+  background: #3b3b3b;
+  color: #fff;
+  box-shadow: 0 2px 14px 0 rgba(239,136,2,0.14);
+}
+
+
+/* -------------- RESPONSIVO ----------------- */
+@media (max-width: 1024px) {
+  .contactanos-home-card {
+    min-height: 260px;
+    margin: 2.5rem 0 2rem 0;
+  }
+  .contactanos-title { font-size: 2.0rem; }
+  .contactanos-card-content { padding: 2.3rem 1.3rem; }
+}
+@media (max-width: 768px) {
+  .contactanos-home-card {
+    min-height: 190px;
+    margin: 1.7rem 0 1.5rem 0;
+  }
+  .contactanos-title { font-size: 1.35rem; }
+  .contactanos-card-content { padding: 1.3rem 0.5rem; }
+  .contactanos-subtext { font-size: 1rem; margin-bottom: 1.2rem;}
+  .contactanos-btn { font-size: 1rem; padding: 0.75rem 1.4rem; }
+}
+@media (max-width: 480px) {
+  .contactanos-home-card {
+    min-height: 100px;
+    margin: 1.1rem 0 1rem 0;
+  }
+  .contactanos-card-content { padding: 0.8rem 0.2rem; }
+}
