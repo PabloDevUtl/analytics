@@ -5,7 +5,7 @@
 /* Estilos generales del footer */
 .footer {
   background: #fff;
-  padding: 2rem 1.4rem;
+  padding: 1.5rem 1.4rem;
   font-family: "Montserrat", sans-serif;
   color: #333333;
 }
@@ -18,7 +18,7 @@
   flex-wrap: wrap;          /* Permite salto a nuevas filas */
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1.3rem;
+  margin-bottom: 1.7rem;
 }
 
 /* Columnas del footer */
@@ -117,9 +117,11 @@
   flex-wrap: wrap;          /* Permite apilar en móvil */
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #ddd;
-  padding: 0.5rem 1rem;
+  border-top: 1.5px solid #ddd;
+  padding: 1rem 1rem;
+  padding-bottom: 0.5rem;
   font-size: 0.99rem;
+  margin: -0.6rem;
 }
 
 /* Enlace “Administrador” en naranja y subrayado al hover */
@@ -163,15 +165,20 @@
 
   /* Centrar columnas individuales */
   .footer-column {
-    margin: 0.5rem auto;
+    margin: 1rem auto;
   }
 
   /* Centrar textos de contacto y dirección */
   .footer-contact-column,
   .footer-address-column {
     text-align: center;
-  }
+        margin: 0rem auto;
 
+  }
+.footer-address-column{
+          margin: -2rem auto;
+
+}
   /* Centrar iconos sociales */
   .footer-social {
     display: flex;
@@ -193,8 +200,15 @@
   /* Ajuste vertical del logo para reducir separación */
   .footer-logo-column {
     margin: 1rem auto 0 auto;
-    margin-bottom: -4rem;
+    margin-bottom: -3rem;
   }
 }
 
 
+.footer-bottom {
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 0.6rem;
+}
