@@ -46,7 +46,7 @@ export default function Footer() {
           </p>
           <div className="footer-social">
             <a
-              href="https://www.facebook.com/tupagina"
+              href="https://www.facebook.com/profile.php?id=61563983531205&mibextid=ZbWKwL"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
@@ -54,7 +54,7 @@ export default function Footer() {
               <i className="bi bi-facebook"></i>
             </a>
             <a
-              href="https://www.instagram.com/tupagina"
+              href="https://www.instagram.com/analytics.mx?igsh=YzExNWthdWUza29i"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"

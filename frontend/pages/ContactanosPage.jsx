@@ -134,7 +134,7 @@ export default function ContactanosPage() {
           {/* 4) Redes sociales */}
         <div className="redes-contacto" data-aos="fade-up" data-aos-delay="300">
   <a
-    href="https://www.facebook.com/tupagina"
+    href="https://www.facebook.com/profile.php?id=61563983531205&mibextid=ZbWKwL"
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Facebook"
@@ -142,7 +142,7 @@ export default function ContactanosPage() {
     <i className="bi bi-facebook"></i>
   </a>
   <a
-    href="https://www.instagram.com/tupagina"
+    href="https://www.instagram.com/analytics.mx?igsh=YzExNWthdWUza29i"
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Instagram"
@@ -150,7 +150,7 @@ export default function ContactanosPage() {
     <i className="bi bi-instagram"></i>
   </a>
   <a
-    href="https://www.tiktok.com/@tupagina"
+    href="https://www.tiktok.com"
     target="_blank"
     rel="noopener noreferrer"
     aria-label="TikTok"
