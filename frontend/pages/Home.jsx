@@ -11,7 +11,6 @@ import fondoAlarma  from '../assets/fondoAlarma.png';
 import fondoCamaras from '../assets/fondoCamara.png';
 import fondoRedes   from '../assets/fondoRedes.png';
 import iconWhatsApp from '../assets/iconWhatsApp.png';
-import fondoOffice from '../assets/fondoOffice.png';
 
 export default function Home() {
   const images = [fondoAlarma, fondoCamaras, fondoRedes];
