@@ -9,6 +9,8 @@ import path from 'path';
 // Rutas
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import categoriaRoutes from './routes/categoriaRoutes.js';
+
 
 // Middleware
 import { protect } from './middleware/authMiddleware.js';
@@ -36,6 +38,8 @@ mongoose
     
     // Rutas de usuario protegidas por JWT
     app.use('/api/users', protect, userRoutes);
+    app.use('/api/categorias', protect, categoriaRoutes); // protegidas con JWT
+    app.use('/api/categorias', protect, categoriaRoutes);
 
     // Si sirves el build de React desde Node:
     // const __dirname = path.resolve();
