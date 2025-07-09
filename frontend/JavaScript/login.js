@@ -6,7 +6,7 @@ export async function doLogin(usuario, contrasena) {
   //Para produccion es ${BASE}
   // /auth/login`
   // ejemplo en tu login.js
-  const res = await fetch(`${BASE}/auth/login`, {
+  const res = await fetch(`${BASE}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ nombreUsuario: usuario, contrasena })
