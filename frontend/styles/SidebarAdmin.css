@@ -93,3 +93,30 @@
 @media (max-width: 576px) {
   .sidebar { --sidebar-width: 150px; }
 }
+
+
+/* Barra inferior en móviles (sólo aparece <768px) */
+.mobile-nav {
+  display: none;
+}
+@media (max-width: 767px) {
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0; left: 0;
+    width: 100%;
+    background: #424340;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+    z-index: 1000;
+  }
+  .mobile-nav-item {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .mobile-nav-item.active {
+    border-top: 2px solid #f18a00;
+    padding-top: 0.3rem;
+  }
+}

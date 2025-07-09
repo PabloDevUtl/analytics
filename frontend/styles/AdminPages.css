@@ -169,6 +169,7 @@
   border: 2px solid #ef8802;
 }
 
+
 /* ============================
    Botones del formulario
    ============================ */
@@ -312,7 +313,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.5rem;
   flex-wrap: wrap;
 }
 
@@ -495,5 +496,30 @@
   .admin-home-card {
     padding: 1.2rem 0.5rem 1.1rem 0.5rem;
     font-size: 1rem;
+  }
+}
+
+
+/* Al apilarse la card (tabla + formulario) en pantallas estrechas, centrar todo */
+@media (max-width: 1024px) {
+  .catadmin-card {
+    flex-direction: column;
+    align-items: center;        /* centra los bloques apilados */
+  }
+  .catadmin-table-section,
+  .catadmin-form-section {
+    width: 100%;                /* ocupan todo el ancho disponible */
+    max-width: 600px;           /* límite razonable */
+  }
+  .catadmin-form-section {
+    margin-top: 1.5rem;         /* separa un poco de la tabla */
+  }
+}
+
+/* Aseguramos que el main no quede oculto bajo la bottom-nav */
+@media (max-width: 767px) {
+  .admin-content {
+    padding-bottom: 3.5rem;     /* espacio para la nav inferior */
+    margin-left: 0;             /* quitamos margen para sidebar */
   }
 }

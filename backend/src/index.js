@@ -21,7 +21,7 @@ const app = express();
 
 // Middlewares globales
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '40mb' })); // Se puede ajustar el peso de la imagen
 
 // Conexión a MongoDB Atlas
 mongoose
@@ -39,7 +39,6 @@ mongoose
     // Rutas de usuario protegidas por JWT
     app.use('/api/users', protect, userRoutes);
     app.use('/api/categorias', protect, categoriaRoutes); // protegidas con JWT
-    app.use('/api/categorias', protect, categoriaRoutes);
 
     // Si sirves el build de React desde Node:
     // const __dirname = path.resolve();

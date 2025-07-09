@@ -14,13 +14,12 @@ export const getCategorias = async (req, res) => {
 // Crear nueva categoría
 export const createCategoria = async (req, res) => {
   try {
-    // Asigna el siguiente idCategoria
     const lastCat = await Categoria.findOne().sort({ idCategoria: -1 });
     const nextId = lastCat ? lastCat.idCategoria + 1 : 1;
-
     const nueva = new Categoria({
       idCategoria: nextId,
       nombreCategoria: req.body.nombreCategoria,
+      imagen: req.body.imagen || "", // Guardar la imagen base64
       estatus: 1
     });
     const saved = await nueva.save();
@@ -34,9 +33,16 @@ export const createCategoria = async (req, res) => {
 export const updateCategoria = async (req, res) => {
   try {
     const { idCategoria } = req.params;
+    const updateFields = {
+      nombreCategoria: req.body.nombreCategoria,
+    };
+    // Solo actualiza la imagen si viene
+    if ('imagen' in req.body) {
+      updateFields.imagen = req.body.imagen;
+    }
     const updated = await Categoria.findOneAndUpdate(
       { idCategoria: Number(idCategoria) },
-      { nombreCategoria: req.body.nombreCategoria },
+      updateFields,
       { new: true }
     );
     if (!updated) return res.status(404).json({ message: 'Categoría no encontrada' });
@@ -45,6 +51,7 @@ export const updateCategoria = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
 
 // Cambiar estatus (activar/desactivar)
 export const setEstatusCategoria = async (req, res) => {

@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SidebarAdmin from '../components/SidebarAdmin';
 import '../styles/AdminPages.css';
-
-const CATEGORIAS_DEMO = [
-  { id: 1, nombre: 'Limpieza' },
-  { id: 2, nombre: 'Papelería' },
-  { id: 3, nombre: 'Electrónica' }
-];
+import { getCategorias } from '../JavaScript/cargarCategoria';
 
 const SERVICIOS_DEMO = [
   { id: 1, categoriaId: 1, titulo: 'Desinfección', subtitulo: 'Espacios seguros', texto: 'Desinfectamos oficinas y casas.', imagen: null },
@@ -16,12 +11,14 @@ const SERVICIOS_DEMO = [
 ];
 
 export default function ServiciosAdmin() {
-  const [categorias] = useState(CATEGORIAS_DEMO);
+  const [categorias, setCategorias] = useState([]);
   const [servicios, setServicios] = useState(SERVICIOS_DEMO);
-  const [catSel, setCatSel] = useState(categorias[0].id);
+  const [catSel, setCatSel] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [form, setForm] = useState({
     id: null,
+    categoriaId: '', // Agregado: para el select del formulario
     titulo: '',
     subtitulo: '',
     texto: '',
@@ -29,9 +26,30 @@ export default function ServiciosAdmin() {
     imagenPreview: null
   });
 
+  // Cargar categorías reales al montar
+  useEffect(() => {
+    async function fetchCats() {
+      try {
+        const cats = await getCategorias();
+        const activas = cats.filter(c => c.estatus === 1);
+        setCategorias(activas);
+        setCatSel(activas[0]?.idCategoria || '');
+        setForm(f => ({
+          ...f,
+          categoriaId: activas[0]?.idCategoria || ''
+        }));
+      } catch (err) {
+        alert("Error al cargar categorías: " + err.message);
+      }
+      setLoading(false);
+    }
+    fetchCats();
+  }, []);
+
   const handleRowClick = (serv) => {
     setForm({
       id: serv.id,
+      categoriaId: serv.categoriaId,
       titulo: serv.titulo,
       subtitulo: serv.subtitulo,
       texto: serv.texto,
@@ -40,16 +58,16 @@ export default function ServiciosAdmin() {
     });
   };
 
+  // Select de categorías para filtrar tabla de la izquierda
   const handleCatChange = (e) => {
-    setCatSel(Number(e.target.value));
-    setForm({
-      id: null,
-      titulo: '',
-      subtitulo: '',
-      texto: '',
-      imagen: null,
-      imagenPreview: null
-    });
+    const selected = Number(e.target.value);
+    setCatSel(selected);
+    limpiarForm(selected);
+  };
+
+  // Select de categorías dentro del formulario (derecha)
+  const handleFormCatChange = (e) => {
+    setForm(f => ({ ...f, categoriaId: Number(e.target.value) }));
   };
 
   const handleInput = e => setForm({ ...form, [e.target.name]: e.target.value });
@@ -67,20 +85,21 @@ export default function ServiciosAdmin() {
 
   // ---- VALIDACIÓN de campos obligatorios ----
   const camposObligatoriosLlenos =
+    form.categoriaId &&
     form.titulo.trim() &&
     form.texto.trim() &&
-    form.imagenPreview; // imagenPreview sólo existe si se selecciona imagen
+    form.imagenPreview;
 
   // --- GUARDAR ---
   const handleGuardar = () => {
-    if (!form.titulo.trim() || !form.texto.trim() || !form.imagenPreview) {
+    if (!camposObligatoriosLlenos) {
       alert('Por favor, completa todos los campos obligatorios.');
       return;
     }
     if (form.id) {
       setServicios(s =>
         s.map(serv =>
-          serv.id === form.id ? { ...serv, ...form } : serv
+          serv.id === form.id ? { ...serv, ...form, categoriaId: form.categoriaId } : serv
         )
       );
     } else {
@@ -88,16 +107,23 @@ export default function ServiciosAdmin() {
         ...s,
         {
           ...form,
-          id: s.length + 1,
-          categoriaId: catSel
+          id: s.length + 1
         }
       ]);
     }
-    limpiarForm();
+    limpiarForm(catSel);
   };
 
-  const limpiarForm = () =>
-    setForm({ id: null, titulo: '', subtitulo: '', texto: '', imagen: null, imagenPreview: null });
+  const limpiarForm = (categoriaIdDefault = catSel) =>
+    setForm({
+      id: null,
+      categoriaId: categoriaIdDefault || (categorias[0]?.idCategoria || ''),
+      titulo: '',
+      subtitulo: '',
+      texto: '',
+      imagen: null,
+      imagenPreview: null
+    });
 
   const handleDesactivar = () =>
     alert('Funcionalidad de desactivar aún no implementada.');
@@ -119,12 +145,19 @@ export default function ServiciosAdmin() {
               <select
                 id="cat-select"
                 className="catadmin-input"
-                style={{ maxWidth: 220, marginBottom: 15 }}
-                value={catSel}
+                style={{ maxWidth: 290, marginBottom: 15 }}
+                value={catSel || ''}
                 onChange={handleCatChange}
+                disabled={loading}
               >
-                {categorias.map(c => (
-                  <option key={c.id} value={c.id}>{c.nombre}</option>
+                {loading && <option>Cargando...</option>}
+                {!loading && categorias.length === 0 && (
+                  <option value="">Sin categorías</option>
+                )}
+                {!loading && categorias.map(c => (
+                  <option key={c.idCategoria} value={c.idCategoria}>
+                    {c.nombreCategoria}
+                  </option>
                 ))}
               </select>
             </div>
@@ -165,6 +198,34 @@ export default function ServiciosAdmin() {
               onSubmit={e => { e.preventDefault(); handleGuardar(); }}
               autoComplete="off"
             >
+              {/* SELECT de categoría en el formulario */}
+              <div>
+                <label htmlFor="form-categoria" className="catadmin-label">
+                  Categoría <span style={{ color: '#d8000c' }}>*</span>
+                </label>
+                <br></br>
+                <select
+                  id="form-categoria"
+                  name="categoriaId"
+                  className="catadmin-input"
+                  style={{ maxWidth: 370, marginBottom: 8 }}
+                  value={form.categoriaId || ''}
+                  onChange={handleFormCatChange}
+                  required
+                  disabled={loading}
+                >
+                  {loading && <option>Cargando...</option>}
+                  {!loading && categorias.length === 0 && (
+                    <option value="">Sin categorías</option>
+                  )}
+                  {!loading && categorias.map(c => (
+                    <option key={c.idCategoria} value={c.idCategoria}>
+                      {c.nombreCategoria}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <label className="catadmin-label" htmlFor="serv-titulo">
                 Título <span style={{ color: '#d8000c' }}>*</span>
               </label>
@@ -188,7 +249,6 @@ export default function ServiciosAdmin() {
                 value={form.subtitulo}
                 onChange={handleInput}
                 placeholder="Subtítulo del servicio"
-                // No required aquí
               />
 
               <label className="catadmin-label" htmlFor="serv-texto">
@@ -235,7 +295,7 @@ export default function ServiciosAdmin() {
                 >
                   Guardar
                 </button>
-                <button type="button" className="catadmin-btn cancel" onClick={limpiarForm}>Cancelar</button>
+                <button type="button" className="catadmin-btn cancel" onClick={() => limpiarForm(catSel)}>Cancelar</button>
                 <button type="button" className="catadmin-btn danger" onClick={handleDesactivar}>Desactivar</button>
               </div>
             </form>

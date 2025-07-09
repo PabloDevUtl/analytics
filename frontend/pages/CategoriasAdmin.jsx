@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import SidebarAdmin from '../components/SidebarAdmin';
 import Alerta2 from '../components/Alerta2';
 import '../styles/AdminPages.css';
-
 import {
   getCategorias,
   crearCategoria,
   editarCategoria,
   cambiarEstatusCategoria,
-  eliminarCategoria // NUEVO: importa esta función de tu API
+  eliminarCategoria
 } from '../JavaScript/cargarCategoria';
 
 export default function CategoriasAdmin() {
@@ -16,68 +15,95 @@ export default function CategoriasAdmin() {
   const [nuevoNombre, setNuevoNombre] = useState('');
   const [selectedId, setSelectedId] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(1);
+
+  // Imagen: se guarda en base64 para preview y para la API
+  const [imagenBase64, setImagenBase64] = useState('');
+  const [imagenPreview, setImagenPreview] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
 
   const cargarCategorias = async () => {
-   try {
-     const cats = await getCategorias();
-     setCategorias(cats);
-   } catch (err) {
-     // Muestra el mensaje concreto que venga del fetch
-     alert(`Error al cargar categorías:\n${err.message}`);
-     console.error('getCategorias()', err);
-   }
+    try {
+      const cats = await getCategorias();
+      setCategorias(cats);
+    } catch (err) {
+      alert(`Error al cargar categorías:\n${err.message}`);
+    }
   };
 
   useEffect(() => { cargarCategorias(); }, []);
 
-  const handleGuardar = async () => {
-    if (nuevoNombre.trim() === '') return;
-    try {
-      if (selectedId) {
-        await editarCategoria(selectedId, nuevoNombre);
-      } else {
-        await crearCategoria(nuevoNombre);
-      }
-      setNuevoNombre('');
-      setSelectedId(null);
-      setSelectedStatus(1);
-      await cargarCategorias();
-    } catch (err) {
-      alert(err.message);
+// Al guardar...
+const handleGuardar = async () => {
+  if (nuevoNombre.trim() === '') return;
+  if (!imagenPreview) {
+    alert('La imagen es obligatoria.');
+    return;
+  }
+  try {
+    if (selectedId) {
+      // Editar: manda imagen actual (o la nueva si se subió)
+      await editarCategoria(selectedId, nuevoNombre, imagenPreview);
+    } else {
+      // Crear nueva
+      await crearCategoria(nuevoNombre, imagenPreview);
     }
-  };
+    limpiarForm();
+    await cargarCategorias();
+  } catch (err) {
+    alert(err.message);
+  }
+};
 
-  const handleCancelar = () => {
+
+  const limpiarForm = () => {
     setNuevoNombre('');
     setSelectedId(null);
     setSelectedStatus(1);
+    setImagenBase64('');
+    setImagenPreview('');
   };
 
-  // Desactivar o activar
+// Al seleccionar nueva imagen:
+const handleImagen = e => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new window.FileReader();
+    reader.onload = ev => {
+      setImagenBase64(ev.target.result);
+      setImagenPreview(ev.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+// Al seleccionar fila:
+const handleRowClick = (cat) => {
+  setNuevoNombre(cat.nombreCategoria);
+  setSelectedId(cat.idCategoria);
+  setSelectedStatus(cat.estatus);
+  setImagenBase64(cat.imagen || '');
+  setImagenPreview(cat.imagen || '');
+};
+  // Eliminar y activar/desactivar igual que antes...
+  const handleCancelar = limpiarForm;
+
   const handleDesactivar = async () => {
     if (!selectedId) return;
     try {
       await cambiarEstatusCategoria(selectedId, selectedStatus === 1 ? 0 : 1);
-      setNuevoNombre('');
-      setSelectedId(null);
-      setSelectedStatus(1);
+      limpiarForm();
       await cargarCategorias();
     } catch (err) {
       alert(err.message);
     }
   };
 
-  // Para mostrar el modal de confirmación
   const handleEliminar = () => setAlertOpen(true);
 
-  // Confirmar y eliminar de BD (y recargar)
   const confirmarEliminar = async () => {
     try {
       await eliminarCategoria(selectedId);
-      setNuevoNombre('');
-      setSelectedId(null);
-      setSelectedStatus(1);
+      limpiarForm();
       setAlertOpen(false);
       await cargarCategorias();
     } catch (err) {
@@ -86,13 +112,6 @@ export default function CategoriasAdmin() {
   };
 
   const cancelarEliminar = () => setAlertOpen(false);
-
-  // Al seleccionar fila
-  const handleRowClick = (cat) => {
-    setNuevoNombre(cat.nombreCategoria);
-    setSelectedId(cat.idCategoria);
-    setSelectedStatus(cat.estatus);
-  };
 
   return (
     <div className="admin-container">
@@ -103,6 +122,7 @@ export default function CategoriasAdmin() {
           <p className="admin-desc">Administra las categorías de tu sistema.</p>
         </div>
         <div className="catadmin-card">
+          {/* Tabla de categorías */}
           <div className="catadmin-table-section">
             <h2 className="catadmin-section-title">Listado de categorías</h2>
             <div className="catadmin-table-responsive">
@@ -110,6 +130,7 @@ export default function CategoriasAdmin() {
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>Imagen</th>
                     <th>Nombre</th>
                     <th>Estatus</th>
                   </tr>
@@ -123,6 +144,12 @@ export default function CategoriasAdmin() {
                       onClick={() => handleRowClick(cat)}
                     >
                       <td>{cat.idCategoria}</td>
+                      <td>
+                        {cat.imagen
+                          ? <img src={cat.imagen} alt="img" style={{ width: 45, height: 45, objectFit: 'cover', borderRadius: 7, border: '1px solid #ef8802', background: '#fff'}} />
+                          : <span style={{ color: '#bbb', fontSize: 14 }}>Sin imagen</span>
+                        }
+                      </td>
                       <td>{cat.nombreCategoria}</td>
                       <td>
                         <span style={{ color: cat.estatus === 1 ? '#44a40e' : '#cc0a00', fontWeight: 600 }}>
@@ -133,13 +160,14 @@ export default function CategoriasAdmin() {
                   ))}
                   {categorias.length === 0 && (
                     <tr>
-                      <td colSpan={3} style={{ textAlign: 'center', color: '#bbb' }}>Sin categorías</td>
+                      <td colSpan={4} style={{ textAlign: 'center', color: '#bbb' }}>Sin categorías</td>
                     </tr>
                   )}
                 </tbody>
               </table>
             </div>
           </div>
+          {/* Formulario de categoría */}
           <div className="catadmin-form-section">
             <h2 className="catadmin-section-title">
               {selectedId ? 'Editar categoría' : 'Nueva categoría'}
@@ -156,6 +184,27 @@ export default function CategoriasAdmin() {
                 autoComplete="off"
                 required
               />
+              {/* Imagen de la categoría */}
+             <div className="catadmin-img-card" style={{ marginBottom: 8 }}>
+  <label className="catadmin-label" style={{ marginBottom: 4 }}>
+    Imagen <span style={{ color: '#d8000c' }}>*</span>
+  </label>
+  <div className="servadmin-img-upload-box">
+    {imagenPreview
+      ? <img src={imagenPreview} alt="preview" className="servadmin-img-preview" />
+      : <span className="servadmin-img-placeholder">Selecciona una imagen</span>
+    }
+    <input
+      type="file"
+      accept="image/*"
+      className="servadmin-img-input"
+      onChange={handleImagen}
+      required={!imagenPreview} // Solo required si no hay imagen previa ni preview
+    />
+  </div>
+</div>
+
+              {/* Estatus y botones */}
               {selectedId && (
                 <div style={{ marginBottom: '0.8rem', fontSize: 14 }}>
                   <strong>Estatus:</strong>{' '}
@@ -190,7 +239,6 @@ export default function CategoriasAdmin() {
             </form>
           </div>
         </div>
-        {/* Modal de confirmación */}
         <Alerta2
           show={alertOpen}
           title="¿Eliminar categoría?"

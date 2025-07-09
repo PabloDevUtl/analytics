@@ -9,38 +9,37 @@ function getToken() {
 
 // Listar categorías
 export async function getCategorias() {
- console.log('Llamando a:', `${BASE}/api/categorias`);
-  console.log('Con token:', getToken());
+ //console.log('Llamando a:', `${BASE}/api/categorias`);
+  //console.log('Con token:', getToken());
   const res = await fetch(`${BASE}/api/categorias`, {
     headers: { 'Authorization': `Bearer ${getToken()}` }
   });
-  if (!res.ok) throw new Error('Error al cargar categorías');
+  if (!res.ok) throw new Error('Error al cargar categorías, inicie sesion nuevamente');
   return res.json();
 }
 
 // Crear nueva
-export async function crearCategoria(nombreCategoria) {
+export async function crearCategoria(nombreCategoria, imagen) {
   const res = await fetch(`${BASE}/api/categorias`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${getToken()}`
     },
-    body: JSON.stringify({ nombreCategoria })
+    body: JSON.stringify({ nombreCategoria, imagen })
   });
   if (!res.ok) throw new Error('Error al crear categoría');
   return res.json();
 }
 
-// Editar
-export async function editarCategoria(idCategoria, nombreCategoria) {
+export async function editarCategoria(idCategoria, nombreCategoria, imagen) {
   const res = await fetch(`${BASE}/api/categorias/${idCategoria}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${getToken()}`
     },
-    body: JSON.stringify({ nombreCategoria })
+    body: JSON.stringify({ nombreCategoria, imagen }) // <-- asegúrate que siempre manda imagen (incluso si está vacía)
   });
   if (!res.ok) throw new Error('Error al editar categoría');
   return res.json();
