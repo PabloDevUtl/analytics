@@ -1,0 +1,71 @@
+.alert2-backdrop {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  background: rgba(50, 50, 50, 0.38);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alert2-modal {
+  background: #fff;
+  border-radius: 15px;
+  max-width: 350px;
+  width: 95%;
+  padding: 2rem 1.2rem 1.5rem 1.2rem;
+  box-shadow: 0 8px 42px 0 rgba(239,136,2,0.13), 0 2px 6px 0 rgba(60,60,60,0.10);
+  text-align: center;
+  animation: alert2-fadein 0.26s cubic-bezier(.23,.84,.51,1.15);
+}
+
+@keyframes alert2-fadein {
+  from { opacity: 0; transform: scale(0.92);}
+  to { opacity: 1; transform: scale(1);}
+}
+
+.alert2-title {
+  font-size: 1.33rem;
+  color: #c62b14;
+  margin-bottom: 0.7rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+}
+.alert2-message {
+  font-size: 1.09rem;
+  color: #444;
+  margin-bottom: 1.1rem;
+}
+
+.alert2-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.alert2-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.3rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.17s, color 0.17s;
+  outline: none;
+}
+.alert2-btn.confirm {
+  background: #ef8802;
+  color: #fff;
+}
+.alert2-btn.confirm:hover {
+  background: #b8510b;
+}
+.alert2-btn.cancel {
+  background: #eee;
+  color: #333;
+}
+.alert2-btn.cancel:hover {
+  background: #c9c9c9;
+  color: #ef8802;
+}
