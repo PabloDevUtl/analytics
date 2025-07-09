@@ -19,12 +19,14 @@ export default function CategoriasAdmin() {
   const [alertOpen, setAlertOpen] = useState(false);
 
   const cargarCategorias = async () => {
-    try {
-      const cats = await getCategorias();
-      setCategorias(cats);
-    } catch (err) {
-      alert('Error al cargar categorías');
-    }
+   try {
+     const cats = await getCategorias();
+     setCategorias(cats);
+   } catch (err) {
+     // Muestra el mensaje concreto que venga del fetch
+     alert(`Error al cargar categorías:\n${err.message}`);
+     console.error('getCategorias()', err);
+   }
   };
 
   useEffect(() => { cargarCategorias(); }, []);

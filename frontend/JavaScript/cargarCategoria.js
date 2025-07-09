@@ -6,9 +6,12 @@ function getToken() {
   return localStorage.getItem('token');
 }
 
+
 // Listar categorías
 export async function getCategorias() {
-  const res = await fetch(`${BASE}/api/categorias-admin`, {
+ console.log('Llamando a:', `${BASE}/api/categorias`);
+  console.log('Con token:', getToken());
+  const res = await fetch(`${BASE}/api/categorias`, {
     headers: { 'Authorization': `Bearer ${getToken()}` }
   });
   if (!res.ok) throw new Error('Error al cargar categorías');
@@ -17,7 +20,7 @@ export async function getCategorias() {
 
 // Crear nueva
 export async function crearCategoria(nombreCategoria) {
-  const res = await fetch(`${BASE}/api/categorias-admin`, {
+  const res = await fetch(`${BASE}/api/categorias`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -31,7 +34,7 @@ export async function crearCategoria(nombreCategoria) {
 
 // Editar
 export async function editarCategoria(idCategoria, nombreCategoria) {
-  const res = await fetch(`${BASE}/api/categorias-admin/${idCategoria}`, {
+  const res = await fetch(`${BASE}/api/categorias/${idCategoria}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -45,7 +48,7 @@ export async function editarCategoria(idCategoria, nombreCategoria) {
 
 // Activar/desactivar
 export async function cambiarEstatusCategoria(idCategoria, estatus) {
-  const res = await fetch(`${BASE}/api/categorias-admin/${idCategoria}/estatus`, {
+  const res = await fetch(`${BASE}/api/categorias/${idCategoria}/estatus`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -59,7 +62,7 @@ export async function cambiarEstatusCategoria(idCategoria, estatus) {
 
 // Eliminar categoría (corregida para enviar el token)
 export async function eliminarCategoria(idCategoria) {
-  const res = await fetch(`${BASE}/api/categorias-admin/${idCategoria}`, {
+  const res = await fetch(`${BASE}/api/categorias/${idCategoria}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
