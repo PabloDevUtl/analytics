@@ -8,7 +8,7 @@ function getToken() {
 
 // Listar categorías
 export async function getCategorias() {
-  const res = await fetch(`${BASE}/api/categorias`, {
+  const res = await fetch(`${BASE}/api/auth/categorias`, {
     headers: { 'Authorization': `Bearer ${getToken()}` }
   });
   if (!res.ok) throw new Error('Error al cargar categorías');
