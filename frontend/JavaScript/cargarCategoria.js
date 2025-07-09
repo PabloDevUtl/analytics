@@ -17,7 +17,7 @@ export async function getCategorias() {
 
 // Crear nueva
 export async function crearCategoria(nombreCategoria) {
-  const res = await fetch(`${BASE}/api/categorias`, {
+  const res = await fetch(`${BASE}/api/categorias-admin`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ export async function crearCategoria(nombreCategoria) {
 
 // Editar
 export async function editarCategoria(idCategoria, nombreCategoria) {
-  const res = await fetch(`${BASE}/api/categorias/${idCategoria}`, {
+  const res = await fetch(`${BASE}/api/categorias-admin/${idCategoria}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export async function editarCategoria(idCategoria, nombreCategoria) {
 
 // Activar/desactivar
 export async function cambiarEstatusCategoria(idCategoria, estatus) {
-  const res = await fetch(`${BASE}/api/categorias/${idCategoria}/estatus`, {
+  const res = await fetch(`${BASE}/api/categorias-admin/${idCategoria}/estatus`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export async function cambiarEstatusCategoria(idCategoria, estatus) {
 
 // Eliminar categoría (corregida para enviar el token)
 export async function eliminarCategoria(idCategoria) {
-  const res = await fetch(`${BASE}/api/categorias/${idCategoria}`, {
+  const res = await fetch(`${BASE}/api/categorias-admin/${idCategoria}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
