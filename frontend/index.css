@@ -58,6 +58,84 @@ body {
   width: 100%;
 }
 
+.custom-dropdown-nav {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-dropdown-menu {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  min-width: 230px;
+  background: #fff;
+  box-shadow: 0 8px 30px rgba(44,44,44,0.12), 0 1.5px 4px rgba(44,44,44,0.07);
+  border-radius: 0px;
+  padding: 0.5rem 0;
+  z-index: 1050;
+  transition: all 0.19s;
+  animation: fadeDrop 0.22s;
+}
+
+@keyframes fadeDrop {
+  from { opacity: 0; transform: translateY(-15px);}
+  to   { opacity: 1; transform: translateY(0);}
+}
+
+.custom-dropdown-menu .dropdown-item {
+  font-family: 'Montserrat', sans-serif;
+  padding: 0.85rem 1.35rem;
+  font-size: 1.08rem;
+  color: #232323;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.19s, color 0.19s;
+  border: none;
+  text-align: left;
+  white-space: nowrap;
+  outline: none;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.custom-dropdown-menu .dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.custom-dropdown-menu .dropdown-item:hover,
+.custom-dropdown-menu .dropdown-item:focus {
+  background: #f6f6f6;
+  color: #ef8802;
+  outline: none;
+}
+
+.custom-dropdown-menu .dropdown-item.empty {
+  color: #b2b2b2;
+  cursor: default;
+  background: #fafafa;
+}
+
+@media (max-width: 991px) {
+  .custom-dropdown-menu {
+    left: 0;
+    right: auto;
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 600px) {
+  .custom-dropdown-menu {
+    min-width: 95vw;
+    left: -35vw;
+    font-size: 1.01rem;
+    border-radius: 0 0 9px 9px;
+    box-shadow: 0 3px 14px rgba(44,44,44,0.12), 0 1.5px 4px rgba(44,44,44,0.06);
+  }
+  .custom-dropdown-menu .dropdown-item {
+    padding: 0.95rem 1rem;
+    font-size: 1.06rem;
+  }
+}
+
 
 /* 4. Hero Inicio */
 #inicio {
