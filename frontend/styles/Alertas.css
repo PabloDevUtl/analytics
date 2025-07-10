@@ -69,3 +69,48 @@
   background: #c9c9c9;
   color: #ef8802;
 }
+
+
+/* ALERT AUTO - NOTIFICACIÓN TOAST */
+.alertauto-container {
+  position: fixed;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 220px;
+  max-width: 90vw;
+  background: #fff;
+  color: #333;
+  border-radius: 11px;
+  box-shadow: 0 6px 22px 0 rgba(239,136,2,0.18), 0 2px 6px 0 rgba(60,60,60,0.10);
+  padding: 1rem 2.2rem;
+  font-size: 1.09rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  animation: alertauto-fadein 0.25s;
+  transition: opacity 0.4s;
+}
+@keyframes alertauto-fadein {
+  from { opacity: 0; transform: translateX(-50%) translateY(-16px);}
+  to   { opacity: 1; transform: translateX(-50%) translateY(0);}
+}
+
+.alertauto-success {
+  border-left: 7px solid #44a40e;
+}
+.alertauto-error {
+  border-left: 7px solid #e22323;
+}
+.alertauto-info {
+  border-left: 7px solid #ef8802;
+}
+
+.alertauto-message {
+  color: #222;
+  letter-spacing: 0.2px;
+}

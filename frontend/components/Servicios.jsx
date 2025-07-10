@@ -1,16 +1,16 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import servicioTI from '../assets/ti.png'
-import servicioSistemasSeguridad from '../assets/servicioSG.png'
-import servicioEnergias from '../assets/servicioEnergias.png'
-import servicioGuardiasSeguridad from '../assets/servicioGuardiasS.png'
-import servicioCursos from '../assets/servicioCursos.png'
-import servicioDesarrolloWeb from '../assets/servicioWeb.png'
 import '../styles/Servicios.css'
+
+// Importa el fetch del API
+import { getCategorias } from '../JavaScript/cargarCategoria'
 
 export default function Servicios() {
   const refSection = useRef(null)
+  const [categorias, setCategorias] = useState([])
+  const [loading, setLoading] = useState(true)
 
+  // Animación con IntersectionObserver (igual que antes)
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -25,143 +25,73 @@ export default function Servicios() {
       { threshold: 0.2 }
     )
 
-    // observa título y cada card
-    const elems = refSection.current.querySelectorAll(
-      '.servicios-title, .servicio-card'
-    )
-    elems.forEach((el) => observer.observe(el))
+    if (refSection.current) {
+      const elems = refSection.current.querySelectorAll(
+        '.servicios-title, .servicio-card'
+      )
+      elems.forEach((el) => observer.observe(el))
+    }
 
     return () => observer.disconnect()
+  }, [categorias])
+
+  // Carga de categorías dinámicamente desde la API
+  useEffect(() => {
+    let isMounted = true
+    setLoading(true)
+    getCategorias()
+      .then((data) => {
+        if (isMounted) {
+          // Solo categorías activas (estatus === 1)
+          setCategorias((data || []).filter((cat) => cat.estatus === 1))
+        }
+      })
+      .catch(() => setCategorias([]))
+      .finally(() => setLoading(false))
+    return () => { isMounted = false }
   }, [])
 
   return (
     <section id="servicios" className="servicios-section" ref={refSection}>
       <h2 className="servicios-title">Servicios de alta calidad</h2>
-
       <div className="servicios-container">
 
-       <div className="servicio-card" style={{ '--delay': '0.6s' }}>
-          <div
-            className="servicio-image"
-            style={{ backgroundImage: `url(${servicioSistemasSeguridad})` }}
-          >
-            <div className="servicio-overlay" />
-            <div className="servicio-content">
-              <h3>
-                Sistemas de
-                <br />
-                seguridad
-              </h3>
-              <span className="underline" />
-              <Link to="/servicios-page" className="servicio-button">
-                Ver más
-              </Link>
-            </div>
+        {loading && (
+          <div style={{ width: '100%', textAlign: 'center', fontSize: '1.3rem', color: '#aaa', margin: '2.5rem 0' }}>
+            Cargando servicios...
           </div>
-        </div>
+        )}
 
-        <div className="servicio-card" style={{ '--delay': '0.3s' }}>
-          <div
-            className="servicio-image"
-            style={{ backgroundImage: `url(${servicioTI})` }}
-          >
-            <div className="servicio-overlay" />
-            <div className="servicio-content">
-              <h3>
-                Tecnologías de
-                <br />
-                la información
-              </h3>
-              <span className="underline" />
-              <Link to="/servicios-page" className="servicio-button">
-                Ver más
-              </Link>
-            </div>
+        {!loading && categorias.length === 0 && (
+          <div style={{ width: '100%', textAlign: 'center', fontSize: '1.15rem', color: '#aaa', margin: '2.5rem 0' }}>
+            No hay servicios disponibles en este momento.
           </div>
-        </div>
+        )}
 
-       
-        
-        
-        <div className="servicio-card" style={{ '--delay': '0.6s' }}>
-          <div
-            className="servicio-image"
-            style={{ backgroundImage: `url(${servicioEnergias})` }}
-          >
-            <div className="servicio-overlay" />
-            <div className="servicio-content">
-              <h3>
-                Energias e
-                <br />
-                innovación
-              </h3>
-              <span className="underline" />
-              <Link to="/servicios-page" className="servicio-button">
-                Ver más
-              </Link>
+        {!loading && categorias.map((cat, idx) => (
+          <div className="servicio-card" key={cat.idCategoria} style={{ '--delay': `${0.2 + (idx % 3) * 0.3}s` }}>
+            <div
+              className="servicio-image"
+              style={
+                cat.imagen
+                  ? { backgroundImage: `url(${cat.imagen})` }
+                  : { backgroundColor: '#eeeeee' }
+              }
+            >
+              <div className="servicio-overlay" />
+              <div className="servicio-content">
+                <h3>
+                  {cat.nombreCategoria}
+                </h3>
+                <span className="underline" />
+                <Link to="/servicios-page" className="servicio-button">
+                  Ver más
+                </Link>
+              </div>
             </div>
           </div>
-          
-          
-        </div>
-        <div className="servicio-card" style={{ '--delay': '0.3s' }}>
-          <div
-            className="servicio-image"
-            style={{ backgroundImage: `url(${servicioGuardiasSeguridad})` }}
-          >
-            <div className="servicio-overlay" />
-            <div className="servicio-content">
-              <h3>
-                Guardias de
-                <br />
-                seguridad
-              </h3>
-              <span className="underline" />
-              <Link to="/servicios-page" className="servicio-button">
-                Ver más
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="servicio-card" style={{ '--delay': '0.3s' }}>
-          <div
-            className="servicio-image"
-            style={{ backgroundImage: `url(${servicioCursos})` }}
-          >
-            <div className="servicio-overlay" />
-            <div className="servicio-content">
-              <h3>
-                Cursos, talleres y
-                <br />
-                capacitaciones
-              </h3>
-              <span className="underline" />
-              <Link to="/servicios-page" className="servicio-button">
-                Ver más
-              </Link>
-            </div>
-          </div>
-        </div>
+        ))}
 
-        <div className="servicio-card" style={{ '--delay': '0.3s' }}>
-          <div
-            className="servicio-image"
-            style={{ backgroundImage: `url(${servicioDesarrolloWeb})` }}
-          >
-            <div className="servicio-overlay" />
-            <div className="servicio-content">
-              <h3>
-                Desarrollo de software,
-                <br />
-                web y aplicativos
-              </h3>
-              <span className="underline" />
-              <Link to="/servicios-page" className="servicio-button">
-                Ver más
-              </Link>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )

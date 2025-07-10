@@ -6,14 +6,12 @@ function getToken() {
   return localStorage.getItem('token');
 }
 
-
 // Listar categorías
 export async function getCategorias() {
- //console.log('Llamando a:', `${BASE}/api/categorias`);
-  //console.log('Con token:', getToken());
-  const res = await fetch(`${BASE}/api/categorias`, {
-    headers: { 'Authorization': `Bearer ${getToken()}` }
-  });
+  const token = getToken();
+  const headers = {};
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const res = await fetch(`${BASE}/api/categorias`, { headers });
   if (!res.ok) throw new Error('Error al cargar categorías, inicie sesion nuevamente');
   return res.json();
 }

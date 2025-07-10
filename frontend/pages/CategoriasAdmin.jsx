@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SidebarAdmin from '../components/SidebarAdmin';
 import Alerta2 from '../components/Alerta2';
 import AlertaSesion from '../components/AlertaSesion';
+import AlertAuto from '../components/AlertAuto';
 
 import '../styles/AdminPages.css';
 import {
@@ -26,6 +27,16 @@ export default function CategoriasAdmin() {
   const [imagenPreview, setImagenPreview] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
 
+  // Alert auto
+  const [alertAuto, setAlertAuto] = useState({
+    show: false,
+    message: '',
+    type: 'success'
+  });
+
+  // NUEVO: loading
+  const [loading, setLoading] = useState(true);
+
   // --- Chequeo de token expirada al montar ---
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -45,11 +56,11 @@ export default function CategoriasAdmin() {
 
   // --- Carga de categorías y manejo de expiración en API ---
   const cargarCategorias = async () => {
+    setLoading(true); // <<<<<<<<<<<<<<<<<<<<<<
     try {
       const cats = await getCategorias();
       setCategorias(cats);
     } catch (err) {
-      // si el error es de auth, expiró el token
       if (
         err.message.toLowerCase().includes('401') ||
         err.message.toLowerCase().includes('no autorizado') ||
@@ -58,9 +69,10 @@ export default function CategoriasAdmin() {
       ) {
         setSessionExpired(true);
       } else {
-        alert(err.message);
+        setAlertAuto({ show: true, message: err.message, type: 'error' });
       }
     }
+    setLoading(false); // <<<<<<<<<<<<<<<<<<<<<<
   };
 
   useEffect(() => {
@@ -87,19 +99,20 @@ export default function CategoriasAdmin() {
   const handleGuardar = async () => {
     if (nuevoNombre.trim() === '') return;
     if (!imagenPreview) {
-      alert('La imagen es obligatoria.');
+      setAlertAuto({ show: true, message: 'La imagen es obligatoria.', type: 'error' });
       return;
     }
     try {
       if (selectedId) {
         await editarCategoria(selectedId, nuevoNombre, imagenPreview);
+        setAlertAuto({ show: true, message: '¡Categoría editada correctamente!', type: 'success' });
       } else {
         await crearCategoria(nuevoNombre, imagenPreview);
+        setAlertAuto({ show: true, message: '¡Categoría creada exitosamente!', type: 'success' });
       }
       limpiarForm();
       await cargarCategorias();
     } catch (err) {
-      // Si es sesión, bloquear
       if (
         err.message.toLowerCase().includes('401') ||
         err.message.toLowerCase().includes('no autorizado') ||
@@ -108,7 +121,7 @@ export default function CategoriasAdmin() {
       ) {
         setSessionExpired(true);
       } else {
-        alert(err.message);
+        setAlertAuto({ show: true, message: err.message, type: 'error' });
       }
     }
   };
@@ -149,6 +162,13 @@ export default function CategoriasAdmin() {
       await cambiarEstatusCategoria(selectedId, selectedStatus === 1 ? 0 : 1);
       limpiarForm();
       await cargarCategorias();
+      setAlertAuto({
+        show: true,
+        message: selectedStatus === 1
+          ? '¡Categoría desactivada con éxito!'
+          : '¡Categoría activada con éxito!',
+        type: 'success'
+      });
     } catch (err) {
       if (
         err.message.toLowerCase().includes('401') ||
@@ -158,7 +178,7 @@ export default function CategoriasAdmin() {
       ) {
         setSessionExpired(true);
       } else {
-        alert(err.message);
+        setAlertAuto({ show: true, message: err.message, type: 'error' });
       }
     }
   };
@@ -171,6 +191,7 @@ export default function CategoriasAdmin() {
       limpiarForm();
       setAlertOpen(false);
       await cargarCategorias();
+      setAlertAuto({ show: true, message: '¡Categoría eliminada con éxito!', type: 'success' });
     } catch (err) {
       if (
         err.message.toLowerCase().includes('401') ||
@@ -180,7 +201,7 @@ export default function CategoriasAdmin() {
       ) {
         setSessionExpired(true);
       } else {
-        alert(err.message);
+        setAlertAuto({ show: true, message: err.message, type: 'error' });
       }
     }
   };
@@ -189,6 +210,12 @@ export default function CategoriasAdmin() {
 
   return (
     <div className="admin-container">
+      <AlertAuto
+        show={alertAuto.show}
+        message={alertAuto.message}
+        type={alertAuto.type}
+        onClose={() => setAlertAuto(a => ({ ...a, show: false }))}
+      />
       <SidebarAdmin />
       <main className="admin-content">
         <div className="admin-header">
@@ -210,32 +237,39 @@ export default function CategoriasAdmin() {
                   </tr>
                 </thead>
                 <tbody>
-                  {categorias.map((cat) => (
-                    <tr
-                      key={cat.idCategoria}
-                      className={selectedId === cat.idCategoria ? "catadmin-row-selected" : ""}
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleRowClick(cat)}
-                    >
-                      <td>{cat.idCategoria}</td>
-                      <td>
-                        {cat.imagen
-                          ? <img src={cat.imagen} alt="img" style={{ width: 45, height: 45, objectFit: 'cover', borderRadius: 7, border: '1px solid #ef8802', background: '#fff'}} />
-                          : <span style={{ color: '#bbb', fontSize: 14 }}>Sin imagen</span>
-                        }
-                      </td>
-                      <td>{cat.nombreCategoria}</td>
-                      <td>
-                        <span style={{ color: cat.estatus === 1 ? '#44a40e' : '#cc0a00', fontWeight: 600 }}>
-                          {cat.estatus === 1 ? 'Activa' : 'Desactivada'}
-                        </span>
+                  {loading ? (
+                    <tr>
+                      <td colSpan={4} style={{ textAlign: 'center', color: '#ef8802', fontWeight: 600 }}>
+                        Cargando...
                       </td>
                     </tr>
-                  ))}
-                  {categorias.length === 0 && (
+                  ) : categorias.length === 0 ? (
                     <tr>
                       <td colSpan={4} style={{ textAlign: 'center', color: '#bbb' }}>Sin categorías</td>
                     </tr>
+                  ) : (
+                    categorias.map((cat) => (
+                      <tr
+                        key={cat.idCategoria}
+                        className={selectedId === cat.idCategoria ? "catadmin-row-selected" : ""}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleRowClick(cat)}
+                      >
+                        <td>{cat.idCategoria}</td>
+                        <td>
+                          {cat.imagen
+                            ? <img src={cat.imagen} alt="img" style={{ width: 45, height: 45, objectFit: 'cover', borderRadius: 7, border: '1px solid #ef8802', background: '#fff' }} />
+                            : <span style={{ color: '#bbb', fontSize: 14 }}>Sin imagen</span>
+                          }
+                        </td>
+                        <td>{cat.nombreCategoria}</td>
+                        <td>
+                          <span style={{ color: cat.estatus === 1 ? '#44a40e' : '#cc0a00', fontWeight: 600 }}>
+                            {cat.estatus === 1 ? 'Activa' : 'Desactivada'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
                   )}
                 </tbody>
               </table>

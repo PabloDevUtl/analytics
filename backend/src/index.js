@@ -11,7 +11,6 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import categoriaRoutes from './routes/categoriaRoutes.js';
 
-
 // Middleware
 import { protect } from './middleware/authMiddleware.js';
 
@@ -38,7 +37,9 @@ mongoose
     
     // Rutas de usuario protegidas por JWT
     app.use('/api/users', protect, userRoutes);
-    app.use('/api/categorias', protect, categoriaRoutes); // protegidas con JWT
+
+    //Ruta no proteiga para que carguen las categorias en los cards
+    app.use('/api/categorias', categoriaRoutes);
 
     // Si sirves el build de React desde Node:
     // const __dirname = path.resolve();
