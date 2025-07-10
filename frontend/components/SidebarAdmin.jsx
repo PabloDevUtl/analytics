@@ -27,6 +27,7 @@ export default function SidebarAdmin() {
         <NavLink to="/home-admin" className="mobile-nav-item">Inicio</NavLink>
         <NavLink to="/servicios-admin" className="mobile-nav-item">Servicios</NavLink>
         <NavLink to="/categorias-admin" className="mobile-nav-item">Categorías</NavLink>
+       <button onClick={handleLogout} className="mobile-nav-item mobile-nav-logout">Salir</button>
       </nav>
     );
   }

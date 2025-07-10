@@ -1,7 +1,11 @@
+// src/pages/ServiciosAdmin.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import SidebarAdmin from '../components/SidebarAdmin';
 import '../styles/AdminPages.css';
 import { getCategorias } from '../JavaScript/cargarCategoria';
+import AlertaSesion from '../components/AlertaSesion';
 
 const SERVICIOS_DEMO = [
   { id: 1, categoriaId: 1, titulo: 'Desinfección', subtitulo: 'Espacios seguros', texto: 'Desinfectamos oficinas y casas.', imagen: null },
@@ -11,6 +15,27 @@ const SERVICIOS_DEMO = [
 ];
 
 export default function ServiciosAdmin() {
+  const navigate = useNavigate();
+  const [sessionExpired, setSessionExpired] = useState(false);
+
+  // 1) Chequeo inicial de expiración de token
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setSessionExpired(true);
+      return;
+    }
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.exp * 1000 < Date.now()) {
+        setSessionExpired(true);
+      }
+    } catch {
+      setSessionExpired(true);
+    }
+  }, []);
+
+  // 2) Estados normales del componente
   const [categorias, setCategorias] = useState([]);
   const [servicios, setServicios] = useState(SERVICIOS_DEMO);
   const [catSel, setCatSel] = useState(null);
@@ -18,7 +43,7 @@ export default function ServiciosAdmin() {
 
   const [form, setForm] = useState({
     id: null,
-    categoriaId: '', // Agregado: para el select del formulario
+    categoriaId: '',
     titulo: '',
     subtitulo: '',
     texto: '',
@@ -26,7 +51,7 @@ export default function ServiciosAdmin() {
     imagenPreview: null
   });
 
-  // Cargar categorías reales al montar
+  // 3) Cargar categorías reales al montar (maneja expiración también por API)
   useEffect(() => {
     async function fetchCats() {
       try {
@@ -39,12 +64,40 @@ export default function ServiciosAdmin() {
           categoriaId: activas[0]?.idCategoria || ''
         }));
       } catch (err) {
-        alert("Error al cargar categorías: " + err.message);
+        // Si la API responde con “Error al cargar categorías, inicie sesion nuevamente” u otro error de autorización
+        if (
+          String(err.message).toLowerCase().includes('401') ||
+          String(err.message).toLowerCase().includes('no autorizado') ||
+          String(err.message).toLowerCase().includes('sesion') ||
+          String(err.message).toLowerCase().includes('expirad')
+        ) {
+          setSessionExpired(true);
+        } else {
+          alert("Error al cargar categorías: " + err.message);
+        }
       }
       setLoading(false);
     }
     fetchCats();
+    // eslint-disable-next-line
   }, []);
+
+  // Si la sesión expiró, solo mostramos el modal y bloqueamos todo lo demás
+  if (sessionExpired) {
+    return (
+      <AlertaSesion
+        show={true}
+        title="Sesión expirada"
+        message="Tu sesión ha expirado. Por favor, inicia sesión de nuevo."
+        onConfirm={() => {
+          localStorage.removeItem('token');
+          navigate('/login');
+        }}
+      />
+    );
+  }
+
+  // Resto de la lógica igual que antes
 
   const handleRowClick = (serv) => {
     setForm({
@@ -58,14 +111,12 @@ export default function ServiciosAdmin() {
     });
   };
 
-  // Select de categorías para filtrar tabla de la izquierda
   const handleCatChange = (e) => {
     const selected = Number(e.target.value);
     setCatSel(selected);
     limpiarForm(selected);
   };
 
-  // Select de categorías dentro del formulario (derecha)
   const handleFormCatChange = (e) => {
     setForm(f => ({ ...f, categoriaId: Number(e.target.value) }));
   };
@@ -83,14 +134,12 @@ export default function ServiciosAdmin() {
     }
   };
 
-  // ---- VALIDACIÓN de campos obligatorios ----
   const camposObligatoriosLlenos =
     form.categoriaId &&
     form.titulo.trim() &&
     form.texto.trim() &&
     form.imagenPreview;
 
-  // --- GUARDAR ---
   const handleGuardar = () => {
     if (!camposObligatoriosLlenos) {
       alert('Por favor, completa todos los campos obligatorios.');

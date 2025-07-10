@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Alerta2.css';
+import '../styles/Alertas.css';
 
 export default function Alerta2({ show, title, message, onConfirm, onCancel }) {
   if (!show) return null;

@@ -115,8 +115,17 @@
     text-decoration: none;
     font-weight: 600;
   }
-  .mobile-nav-item.active {
-    border-top: 2px solid #f18a00;
-    padding-top: 0.3rem;
+  /* Tu Logout naranja: */
+  .mobile-nav-logout {
+    background-color: #ef8802;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 0.1rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .mobile-nav-logout:hover {
+    background-color: #c76e00;
   }
 }

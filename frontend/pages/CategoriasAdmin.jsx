@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import SidebarAdmin from '../components/SidebarAdmin';
 import Alerta2 from '../components/Alerta2';
+import AlertaSesion from '../components/AlertaSesion';
+
 import '../styles/AdminPages.css';
 import {
   getCategorias,
@@ -11,6 +13,9 @@ import {
 } from '../JavaScript/cargarCategoria';
 
 export default function CategoriasAdmin() {
+  // controla si la sesión expiró
+  const [sessionExpired, setSessionExpired] = useState(false);
+
   const [categorias, setCategorias] = useState([]);
   const [nuevoNombre, setNuevoNombre] = useState('');
   const [selectedId, setSelectedId] = useState(null);
@@ -21,39 +26,92 @@ export default function CategoriasAdmin() {
   const [imagenPreview, setImagenPreview] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
 
+  // --- Chequeo de token expirada al montar ---
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setSessionExpired(true);
+      return;
+    }
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.exp * 1000 < Date.now()) {
+        setSessionExpired(true);
+      }
+    } catch {
+      setSessionExpired(true);
+    }
+  }, []);
+
+  // --- Carga de categorías y manejo de expiración en API ---
   const cargarCategorias = async () => {
     try {
       const cats = await getCategorias();
       setCategorias(cats);
     } catch (err) {
-      alert(`Error al cargar categorías:\n${err.message}`);
+      // si el error es de auth, expiró el token
+      if (
+        err.message.toLowerCase().includes('401') ||
+        err.message.toLowerCase().includes('no autorizado') ||
+        err.message.toLowerCase().includes('sesion') ||
+        err.message.toLowerCase().includes('expirad')
+      ) {
+        setSessionExpired(true);
+      } else {
+        alert(err.message);
+      }
     }
   };
 
-  useEffect(() => { cargarCategorias(); }, []);
+  useEffect(() => {
+    if (!sessionExpired) cargarCategorias();
+    // eslint-disable-next-line
+  }, [sessionExpired]);
 
-// Al guardar...
-const handleGuardar = async () => {
-  if (nuevoNombre.trim() === '') return;
-  if (!imagenPreview) {
-    alert('La imagen es obligatoria.');
-    return;
+  // --- Si sesión expirada, solo alerta y no más UI ---
+  if (sessionExpired) {
+    return (
+      <AlertaSesion
+        show={true}
+        title="Sesión expirada"
+        message="Tu sesión ha expirado. Por favor, inicia sesión de nuevo."
+        onConfirm={() => {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        }}
+      />
+    );
   }
-  try {
-    if (selectedId) {
-      // Editar: manda imagen actual (o la nueva si se subió)
-      await editarCategoria(selectedId, nuevoNombre, imagenPreview);
-    } else {
-      // Crear nueva
-      await crearCategoria(nuevoNombre, imagenPreview);
+
+  // --- Handlers normales ---
+  const handleGuardar = async () => {
+    if (nuevoNombre.trim() === '') return;
+    if (!imagenPreview) {
+      alert('La imagen es obligatoria.');
+      return;
     }
-    limpiarForm();
-    await cargarCategorias();
-  } catch (err) {
-    alert(err.message);
-  }
-};
-
+    try {
+      if (selectedId) {
+        await editarCategoria(selectedId, nuevoNombre, imagenPreview);
+      } else {
+        await crearCategoria(nuevoNombre, imagenPreview);
+      }
+      limpiarForm();
+      await cargarCategorias();
+    } catch (err) {
+      // Si es sesión, bloquear
+      if (
+        err.message.toLowerCase().includes('401') ||
+        err.message.toLowerCase().includes('no autorizado') ||
+        err.message.toLowerCase().includes('sesion') ||
+        err.message.toLowerCase().includes('expirad')
+      ) {
+        setSessionExpired(true);
+      } else {
+        alert(err.message);
+      }
+    }
+  };
 
   const limpiarForm = () => {
     setNuevoNombre('');
@@ -63,28 +121,26 @@ const handleGuardar = async () => {
     setImagenPreview('');
   };
 
-// Al seleccionar nueva imagen:
-const handleImagen = e => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new window.FileReader();
-    reader.onload = ev => {
-      setImagenBase64(ev.target.result);
-      setImagenPreview(ev.target.result);
-    };
-    reader.readAsDataURL(file);
-  }
-};
+  const handleImagen = e => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new window.FileReader();
+      reader.onload = ev => {
+        setImagenBase64(ev.target.result);
+        setImagenPreview(ev.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
-// Al seleccionar fila:
-const handleRowClick = (cat) => {
-  setNuevoNombre(cat.nombreCategoria);
-  setSelectedId(cat.idCategoria);
-  setSelectedStatus(cat.estatus);
-  setImagenBase64(cat.imagen || '');
-  setImagenPreview(cat.imagen || '');
-};
-  // Eliminar y activar/desactivar igual que antes...
+  const handleRowClick = (cat) => {
+    setNuevoNombre(cat.nombreCategoria);
+    setSelectedId(cat.idCategoria);
+    setSelectedStatus(cat.estatus);
+    setImagenBase64(cat.imagen || '');
+    setImagenPreview(cat.imagen || '');
+  };
+
   const handleCancelar = limpiarForm;
 
   const handleDesactivar = async () => {
@@ -94,7 +150,16 @@ const handleRowClick = (cat) => {
       limpiarForm();
       await cargarCategorias();
     } catch (err) {
-      alert(err.message);
+      if (
+        err.message.toLowerCase().includes('401') ||
+        err.message.toLowerCase().includes('no autorizado') ||
+        err.message.toLowerCase().includes('sesion') ||
+        err.message.toLowerCase().includes('expirad')
+      ) {
+        setSessionExpired(true);
+      } else {
+        alert(err.message);
+      }
     }
   };
 
@@ -107,7 +172,16 @@ const handleRowClick = (cat) => {
       setAlertOpen(false);
       await cargarCategorias();
     } catch (err) {
-      alert(err.message);
+      if (
+        err.message.toLowerCase().includes('401') ||
+        err.message.toLowerCase().includes('no autorizado') ||
+        err.message.toLowerCase().includes('sesion') ||
+        err.message.toLowerCase().includes('expirad')
+      ) {
+        setSessionExpired(true);
+      } else {
+        alert(err.message);
+      }
     }
   };
 
@@ -185,24 +259,24 @@ const handleRowClick = (cat) => {
                 required
               />
               {/* Imagen de la categoría */}
-             <div className="catadmin-img-card" style={{ marginBottom: 8 }}>
-  <label className="catadmin-label" style={{ marginBottom: 4 }}>
-    Imagen <span style={{ color: '#d8000c' }}>*</span>
-  </label>
-  <div className="servadmin-img-upload-box">
-    {imagenPreview
-      ? <img src={imagenPreview} alt="preview" className="servadmin-img-preview" />
-      : <span className="servadmin-img-placeholder">Selecciona una imagen</span>
-    }
-    <input
-      type="file"
-      accept="image/*"
-      className="servadmin-img-input"
-      onChange={handleImagen}
-      required={!imagenPreview} // Solo required si no hay imagen previa ni preview
-    />
-  </div>
-</div>
+              <div className="catadmin-img-card" style={{ marginBottom: 8 }}>
+                <label className="catadmin-label" style={{ marginBottom: 4 }}>
+                  Imagen <span style={{ color: '#d8000c' }}>*</span>
+                </label>
+                <div className="servadmin-img-upload-box">
+                  {imagenPreview
+                    ? <img src={imagenPreview} alt="preview" className="servadmin-img-preview" />
+                    : <span className="servadmin-img-placeholder">Selecciona una imagen</span>
+                  }
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="servadmin-img-input"
+                    onChange={handleImagen}
+                    required={!imagenPreview}
+                  />
+                </div>
+              </div>
 
               {/* Estatus y botones */}
               {selectedId && (
