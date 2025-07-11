@@ -10,6 +10,7 @@ import path from 'path';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import categoriaRoutes from './routes/categoriaRoutes.js';
+import servicioRoutes from './routes/servicioRoutes.js';
 
 // Middleware
 import { protect } from './middleware/authMiddleware.js';
@@ -40,6 +41,7 @@ mongoose
 
     //Ruta no proteiga para que carguen las categorias en los cards
     app.use('/api/categorias', categoriaRoutes);
+    app.use('/api/servicios', servicioRoutes);
 
     // Si sirves el build de React desde Node:
     // const __dirname = path.resolve();

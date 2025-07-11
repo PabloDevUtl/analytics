@@ -1,24 +1,39 @@
-// src/pages/ServiciosAdmin.jsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
 import SidebarAdmin from '../components/SidebarAdmin';
+import Alerta2 from '../components/Alerta2';
+import AlertaSesion from '../components/AlertaSesion';
+import AlertAuto from '../components/AlertAuto';
+
 import '../styles/AdminPages.css';
 import { getCategorias } from '../JavaScript/cargarCategoria';
-import AlertaSesion from '../components/AlertaSesion';
-
-const SERVICIOS_DEMO = [
-  { id: 1, categoriaId: 1, titulo: 'Desinfección', subtitulo: 'Espacios seguros', texto: 'Desinfectamos oficinas y casas.', imagen: null },
-  { id: 2, categoriaId: 1, titulo: 'Limpieza profunda', subtitulo: 'Brillo total', texto: 'Limpieza para negocios y hogares.', imagen: null },
-  { id: 3, categoriaId: 2, titulo: 'Hojas tamaño carta', subtitulo: 'Alta calidad', texto: 'Venta de hojas sueltas.', imagen: null },
-  { id: 4, categoriaId: 3, titulo: 'Soporte computacional', subtitulo: 'Rápido y confiable', texto: 'Soluciones para tu PC.', imagen: null }
-];
+import {
+  getServicios,
+  crearServicio,
+  editarServicio,
+  cambiarEstatusServicio,
+  eliminarServicio
+} from '../JavaScript/cargarServicio';
 
 export default function ServiciosAdmin() {
-  const navigate = useNavigate();
   const [sessionExpired, setSessionExpired] = useState(false);
+  const [categorias, setCategorias] = useState([]);
+  const [servicios, setServicios] = useState([]);
+  const [catSel, setCatSel] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertAuto, setAlertAuto] = useState({ show: false, message: '', type: 'success' });
 
-  // 1) Chequeo inicial de expiración de token
+  const [form, setForm] = useState({
+    idServicio: null,
+    idCategoria: '',
+    titulo: '',
+    subtitulo: '',
+    texto: '',
+    imagenPreview: '',
+    estatus: 1
+  });
+
+  // --- Chequeo de expiración de sesión ---
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -35,54 +50,37 @@ export default function ServiciosAdmin() {
     }
   }, []);
 
-  // 2) Estados normales del componente
-  const [categorias, setCategorias] = useState([]);
-  const [servicios, setServicios] = useState(SERVICIOS_DEMO);
-  const [catSel, setCatSel] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const [form, setForm] = useState({
-    id: null,
-    categoriaId: '',
-    titulo: '',
-    subtitulo: '',
-    texto: '',
-    imagen: null,
-    imagenPreview: null
-  });
-
-  // 3) Cargar categorías reales al montar (maneja expiración también por API)
+  // --- Cargar categorías ---
   useEffect(() => {
-    async function fetchCats() {
-      try {
-        const cats = await getCategorias();
+    setLoading(true);
+    getCategorias()
+      .then(cats => {
         const activas = cats.filter(c => c.estatus === 1);
         setCategorias(activas);
         setCatSel(activas[0]?.idCategoria || '');
         setForm(f => ({
           ...f,
-          categoriaId: activas[0]?.idCategoria || ''
+          idCategoria: activas[0]?.idCategoria || ''
         }));
-      } catch (err) {
-        // Si la API responde con “Error al cargar categorías, inicie sesion nuevamente” u otro error de autorización
-        if (
-          String(err.message).toLowerCase().includes('401') ||
-          String(err.message).toLowerCase().includes('no autorizado') ||
-          String(err.message).toLowerCase().includes('sesion') ||
-          String(err.message).toLowerCase().includes('expirad')
-        ) {
-          setSessionExpired(true);
-        } else {
-          alert("Error al cargar categorías: " + err.message);
-        }
-      }
-      setLoading(false);
-    }
-    fetchCats();
-    // eslint-disable-next-line
+      })
+      .catch(() => setSessionExpired(true))
+      .finally(() => setLoading(false));
   }, []);
 
-  // Si la sesión expiró, solo mostramos el modal y bloqueamos todo lo demás
+  // --- Cargar servicios por categoría ---
+  useEffect(() => {
+    if (catSel) {
+      setLoading(true);
+      getServicios(catSel)
+        .then(servs => setServicios(servs))
+        .catch(() => setSessionExpired(true))
+        .finally(() => setLoading(false));
+    } else {
+      setServicios([]);
+    }
+  }, [catSel]);
+
+  // --- Si la sesión expiró, mostrar alerta ---
   if (sessionExpired) {
     return (
       <AlertaSesion
@@ -91,23 +89,33 @@ export default function ServiciosAdmin() {
         message="Tu sesión ha expirado. Por favor, inicia sesión de nuevo."
         onConfirm={() => {
           localStorage.removeItem('token');
-          navigate('/login');
+          window.location.href = '/login';
         }}
       />
     );
   }
 
-  // Resto de la lógica igual que antes
+  // --- Handlers ---
+  const limpiarForm = (categoriaIdDefault = catSel) =>
+    setForm({
+      idServicio: null,
+      idCategoria: categoriaIdDefault || (categorias[0]?.idCategoria || ''),
+      titulo: '',
+      subtitulo: '',
+      texto: '',
+      imagenPreview: '',
+      estatus: 1
+    });
 
   const handleRowClick = (serv) => {
     setForm({
-      id: serv.id,
-      categoriaId: serv.categoriaId,
+      idServicio: serv.idServicio,
+      idCategoria: serv.idCategoria,
       titulo: serv.titulo,
       subtitulo: serv.subtitulo,
       texto: serv.texto,
-      imagen: serv.imagen,
-      imagenPreview: serv.imagen
+      imagenPreview: serv.imagen,
+      estatus: serv.estatus
     });
   };
 
@@ -118,7 +126,7 @@ export default function ServiciosAdmin() {
   };
 
   const handleFormCatChange = (e) => {
-    setForm(f => ({ ...f, categoriaId: Number(e.target.value) }));
+    setForm(f => ({ ...f, idCategoria: Number(e.target.value) }));
   };
 
   const handleInput = e => setForm({ ...form, [e.target.name]: e.target.value });
@@ -128,59 +136,125 @@ export default function ServiciosAdmin() {
     if (file) {
       const reader = new window.FileReader();
       reader.onload = function(ev) {
-        setForm(f => ({ ...f, imagen: file, imagenPreview: ev.target.result }));
+        setForm(f => ({ ...f, imagenPreview: ev.target.result }));
       };
       reader.readAsDataURL(file);
     }
   };
 
   const camposObligatoriosLlenos =
-    form.categoriaId &&
+    form.idCategoria &&
     form.titulo.trim() &&
     form.texto.trim() &&
     form.imagenPreview;
 
-  const handleGuardar = () => {
+  // --- Guardar (crear/editar) ---
+  const handleGuardar = async () => {
     if (!camposObligatoriosLlenos) {
-      alert('Por favor, completa todos los campos obligatorios.');
+      setAlertAuto({ show: true, message: 'Completa todos los campos obligatorios.', type: 'error' });
       return;
     }
-    if (form.id) {
-      setServicios(s =>
-        s.map(serv =>
-          serv.id === form.id ? { ...serv, ...form, categoriaId: form.categoriaId } : serv
-        )
-      );
-    } else {
-      setServicios(s => [
-        ...s,
-        {
-          ...form,
-          id: s.length + 1
-        }
-      ]);
+    try {
+      if (form.idServicio) {
+        await editarServicio(form.idServicio, {
+          idCategoria: form.idCategoria,
+          titulo: form.titulo,
+          subtitulo: form.subtitulo,
+          texto: form.texto,
+          imagen: form.imagenPreview
+        });
+        setAlertAuto({ show: true, message: '¡Servicio editado correctamente!', type: 'success' });
+      } else {
+        await crearServicio({
+          idCategoria: form.idCategoria,
+          titulo: form.titulo,
+          subtitulo: form.subtitulo,
+          texto: form.texto,
+          imagen: form.imagenPreview
+        });
+        setAlertAuto({ show: true, message: '¡Servicio creado exitosamente!', type: 'success' });
+      }
+      limpiarForm();
+      setServicios(await getServicios(catSel));
+    } catch (err) {
+      if (
+        err.message.toLowerCase().includes('401') ||
+        err.message.toLowerCase().includes('no autorizado') ||
+        err.message.toLowerCase().includes('sesion') ||
+        err.message.toLowerCase().includes('expirad')
+      ) {
+        setSessionExpired(true);
+      } else {
+        setAlertAuto({ show: true, message: err.message, type: 'error' });
+      }
     }
-    limpiarForm(catSel);
   };
 
-  const limpiarForm = (categoriaIdDefault = catSel) =>
-    setForm({
-      id: null,
-      categoriaId: categoriaIdDefault || (categorias[0]?.idCategoria || ''),
-      titulo: '',
-      subtitulo: '',
-      texto: '',
-      imagen: null,
-      imagenPreview: null
-    });
+  // --- Desactivar/activar ---
+  const handleDesactivar = async () => {
+    if (!form.idServicio) return;
+    try {
+      await cambiarEstatusServicio(form.idServicio, form.estatus === 1 ? 0 : 1);
+      limpiarForm();
+      setServicios(await getServicios(catSel));
+      setAlertAuto({
+        show: true,
+        message: form.estatus === 1
+          ? '¡Servicio desactivado con éxito!'
+          : '¡Servicio activado con éxito!',
+        type: 'success'
+      });
+    } catch (err) {
+      if (
+        err.message.toLowerCase().includes('401') ||
+        err.message.toLowerCase().includes('no autorizado') ||
+        err.message.toLowerCase().includes('sesion') ||
+        err.message.toLowerCase().includes('expirad')
+      ) {
+        setSessionExpired(true);
+      } else {
+        setAlertAuto({ show: true, message: err.message, type: 'error' });
+      }
+    }
+  };
 
-  const handleDesactivar = () =>
-    alert('Funcionalidad de desactivar aún no implementada.');
+  // --- Eliminar ---
+  const handleEliminar = () => setAlertOpen(true);
 
-  const serviciosFiltrados = servicios.filter(s => s.categoriaId === catSel);
+  const confirmarEliminar = async () => {
+    try {
+      await eliminarServicio(form.idServicio);
+      limpiarForm();
+      setAlertOpen(false);
+      setServicios(await getServicios(catSel));
+      setAlertAuto({ show: true, message: '¡Servicio eliminado con éxito!', type: 'success' });
+    } catch (err) {
+      if (
+        err.message.toLowerCase().includes('401') ||
+        err.message.toLowerCase().includes('no autorizado') ||
+        err.message.toLowerCase().includes('sesion') ||
+        err.message.toLowerCase().includes('expirad')
+      ) {
+        setSessionExpired(true);
+      } else {
+        setAlertAuto({ show: true, message: err.message, type: 'error' });
+      }
+    }
+  };
+
+  const cancelarEliminar = () => setAlertOpen(false);
+
+  // --- Filtrar servicios por categoría seleccionada ---
+  const serviciosFiltrados = servicios.filter(s => s.idCategoria === catSel);
 
   return (
     <div className="admin-container">
+      <AlertAuto
+        show={alertAuto.show}
+        message={alertAuto.message}
+        type={alertAuto.type}
+        onClose={() => setAlertAuto(a => ({ ...a, show: false }))}
+      />
       <SidebarAdmin />
       <main className="admin-content">
         <div className="admin-header">
@@ -188,7 +262,7 @@ export default function ServiciosAdmin() {
         </div>
         <div className="servadmin-card">
           {/* IZQUIERDA: Categoría y Tabla */}
-          <div className="servadmin-table-section">
+          <div className="servadmin-table-section" style={{ flex: 2, minWidth: 400, maxWidth: 600 }}>
             <div className="servadmin-catselect">
               <label htmlFor="cat-select" className="catadmin-label">Categoría:</label>
               <select
@@ -212,35 +286,70 @@ export default function ServiciosAdmin() {
             </div>
             <h2 className="catadmin-section-title" style={{marginTop:8}}>Servicios</h2>
             <div className="catadmin-table-responsive">
-              <table className="catadmin-table">
+              <table className="catadmin-table" style={{ minWidth: 550 }}>
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
+                    <th style={{ width: 65 }}>#</th>
+                    <th style={{ width: 170 }}>Título</th>
+                    <th style={{ width: 95 }}>Imagen</th>
+                    <th style={{ width: 90 }}>Estatus</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {serviciosFiltrados.map(serv => (
-                    <tr
-                      key={serv.id}
-                      onClick={() => handleRowClick(serv)}
-                      style={{ cursor: "pointer" }}
-                      className={form.id === serv.id ? "catadmin-row-selected" : ""}
-                    >
-                      <td>{serv.id}</td>
-                      <td>{serv.titulo}</td>
+                  {loading ? (
+                    <tr>
+                      <td colSpan={4} style={{ textAlign: 'center', color: '#ef8802', fontWeight: 600 }}>
+                        Cargando...
+                      </td>
                     </tr>
-                  ))}
-                  {serviciosFiltrados.length === 0 &&
-                    <tr><td colSpan={2} style={{textAlign:'center',color:'#bbb'}}>No hay servicios</td></tr>}
+                  ) : serviciosFiltrados.length === 0 ? (
+                    <tr>
+                      <td colSpan={4} style={{ textAlign: 'center', color: '#bbb' }}>No hay servicios</td>
+                    </tr>
+                  ) : (
+                    serviciosFiltrados.map((serv, idx) => (
+                      <tr
+                        key={serv.idServicio}
+                        onClick={() => handleRowClick(serv)}
+                        style={{ cursor: "pointer" }}
+                        className={form.idServicio === serv.idServicio ? "catadmin-row-selected" : ""}
+                      >
+                        <td>{idx + 1}</td>
+                        <td>{serv.titulo}</td>
+                        <td>
+                          {serv.imagen ? (
+                            <img
+                              src={serv.imagen}
+                              alt="img"
+                              style={{
+                                width: 50,
+                                height: 50,
+                                objectFit: 'cover',
+                                borderRadius: 7,
+                                border: '1.5px solid #ef8802',
+                                background: '#fff'
+                              }}
+                            />
+                          ) : (
+                            <span style={{ color: '#bbb', fontSize: 14 }}>Sin imagen</span>
+                          )}
+                        </td>
+                        <td>
+                          <span style={{ color: serv.estatus === 1 ? '#44a40e' : '#cc0a00', fontWeight: 600 }}>
+                            {serv.estatus === 1 ? 'Activo' : 'Desactivado'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
           </div>
           {/* DERECHA: Formulario */}
-          <div className="servadmin-form-section">
+          <div className="servadmin-form-section" style={{ flex: 1, maxWidth: 500 }}>
             <h2 className="catadmin-section-title">
-              {form.id ? 'Editar servicio' : 'Nuevo servicio'}
+              {form.idServicio ? 'Editar servicio' : 'Nuevo servicio'}
             </h2>
             <form
               className="catadmin-form"
@@ -252,13 +361,13 @@ export default function ServiciosAdmin() {
                 <label htmlFor="form-categoria" className="catadmin-label">
                   Categoría <span style={{ color: '#d8000c' }}>*</span>
                 </label>
-                <br></br>
+                <br />
                 <select
                   id="form-categoria"
-                  name="categoriaId"
+                  name="idCategoria"
                   className="catadmin-input"
                   style={{ maxWidth: 370, marginBottom: 8 }}
-                  value={form.categoriaId || ''}
+                  value={form.idCategoria || ''}
                   onChange={handleFormCatChange}
                   required
                   disabled={loading}
@@ -334,7 +443,15 @@ export default function ServiciosAdmin() {
                   />
                 </div>
               </div>
-              {/* Botones */}
+              {/* Estatus y botones */}
+              {form.idServicio && (
+                <div style={{ marginBottom: '0.8rem', fontSize: 14 }}>
+                  <strong>Estatus:</strong>{' '}
+                  <span style={{ color: form.estatus === 1 ? '#44a40e' : '#cc0a00', fontWeight: 600 }}>
+                    {form.estatus === 1 ? 'Activo' : 'Desactivado'}
+                  </span>
+                </div>
+              )}
               <div className="catadmin-btn-group">
                 <button
                   type="submit"
@@ -345,11 +462,36 @@ export default function ServiciosAdmin() {
                   Guardar
                 </button>
                 <button type="button" className="catadmin-btn cancel" onClick={() => limpiarForm(catSel)}>Cancelar</button>
-                <button type="button" className="catadmin-btn danger" onClick={handleDesactivar}>Desactivar</button>
+                {form.idServicio &&
+                  <>
+                    <button
+                      type="button"
+                      className="catadmin-btn danger"
+                      onClick={handleDesactivar}
+                    >
+                      {form.estatus === 1 ? 'Desactivar' : 'Activar'}
+                    </button>
+                    <button
+                      type="button"
+                      className="catadmin-btn danger"
+                      style={{ background: "#e22323", color: "#fff" }}
+                      onClick={handleEliminar}
+                    >
+                      Eliminar
+                    </button>
+                  </>
+                }
               </div>
             </form>
           </div>
         </div>
+        <Alerta2
+          show={alertOpen}
+          title="¿Eliminar servicio?"
+          message="¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer."
+          onConfirm={confirmarEliminar}
+          onCancel={cancelarEliminar}
+        />
       </main>
     </div>
   );

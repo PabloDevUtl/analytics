@@ -1,3 +1,5 @@
+import ScrollToTop from './components/ScrollToTop';
+
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
@@ -9,6 +11,9 @@ import HomeAdmin from './pages/HomeAdmin';
 import ServiciosAdmin from './pages/ServiciosAdmin';
 import CategoriasAdmin from './pages/CategoriasAdmin';
 import QuienesSomosPage from './pages/QuienesSomosPage';
+import ServiciosPage from './pages/ServiciosPage';
+
+
 import ContactanosPage from './pages/ContactanosPage';
 import Login from './pages/Login';
 import AvisoCorto from './pages/AvisoPrivacidadCorto';
@@ -33,7 +38,8 @@ export default function App() {
   ].includes(pathname);
 
   return (
-    <div className="app-container">
+   <div className="app-container">
+      <ScrollToTop /> 
       {/* Navbar solo si NO estamos en las rutas de hideNav */}
       {!hideNav && <NavigationBar />}
 
@@ -44,6 +50,7 @@ export default function App() {
           <Route path="/servicios-admin" element={<ServiciosAdmin />} />
           <Route path="/categorias-admin" element={<CategoriasAdmin />} />
           <Route path="/quienes-somos" element={<QuienesSomosPage />} />
+           <Route path="/servicios-page" element={<ServiciosPage />} />
           <Route path="/contacto" element={<ContactanosPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/avisocorto" element={<AvisoCorto />} />
