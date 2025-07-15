@@ -6,6 +6,17 @@ import logoNegro from "../assets/analytics_logo_black.png";
 import logoBlanco from "../assets/analytics_logo_white.png";
 import { getCategorias } from "../JavaScript/cargarCategoria";
 
+function slugify(text) {
+  return (text || "")
+    .toString()
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export default function NavigationBar() {
   const scrolled = useScroll(60);
   const { pathname } = useLocation();
@@ -56,10 +67,10 @@ export default function NavigationBar() {
     dropdownTimeout.current = setTimeout(() => setShowDropdown(false), 130);
   };
 
-  // Cerrar navbar y dropdown en móviles/tablets
+  // ¡CAMBIADO! Ir a /servicios/slug-categoria
   const handleCategoriaClick = (cat) => {
     setShowDropdown(false);
-    navigate(`/servicios?cat=${encodeURIComponent(cat.nombreCategoria)}`);
+    navigate(`/servicios/${slugify(cat.nombreCategoria)}`);
     if (isCollapsedDevice) setShowCollapse(false);
   };
 

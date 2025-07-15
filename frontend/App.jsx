@@ -1,3 +1,4 @@
+import { CategoriasProvider } from "./context/CategoriaContext";
 import ScrollToTop from './components/ScrollToTop';
 
 import React from 'react';
@@ -12,6 +13,7 @@ import ServiciosAdmin from './pages/ServiciosAdmin';
 import CategoriasAdmin from './pages/CategoriasAdmin';
 import QuienesSomosPage from './pages/QuienesSomosPage';
 import ServiciosPage from './pages/ServiciosPage';
+import CategoriaPage from './pages/CategoriaPage';
 
 
 import ContactanosPage from './pages/ContactanosPage';
@@ -38,6 +40,7 @@ export default function App() {
   ].includes(pathname);
 
   return (
+     <CategoriasProvider>
    <div className="app-container">
       <ScrollToTop /> 
       {/* Navbar solo si NO estamos en las rutas de hideNav */}
@@ -51,6 +54,8 @@ export default function App() {
           <Route path="/categorias-admin" element={<CategoriasAdmin />} />
           <Route path="/quienes-somos" element={<QuienesSomosPage />} />
            <Route path="/servicios-page" element={<ServiciosPage />} />
+           <Route path="/servicios/:slugCategoria" element={<CategoriaPage />} />
+
           <Route path="/contacto" element={<ContactanosPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/avisocorto" element={<AvisoCorto />} />
@@ -61,5 +66,6 @@ export default function App() {
       {/* Footer solo si NO estamos en las rutas de hideFooter */}
       {!hideFooter && <Footer />}
     </div>
+    </CategoriasProvider>
   );
 }

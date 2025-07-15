@@ -156,6 +156,10 @@
 
 /* Inputs del formulario */
 .catadmin-input {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
   font-size: 1rem;
   padding: 0.7rem 1rem;
@@ -168,6 +172,7 @@
 .catadmin-input:focus {
   border: 2px solid #ef8802;
 }
+
 
 
 /* ============================
@@ -355,6 +360,13 @@
   height: 100%;
   cursor: pointer;
 }
+.servadmin-img-placeholder {
+  color: #ef8802;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
 
 /* ============================
    Cards de acceso HomeAdmin
@@ -427,6 +439,7 @@
    ============================ */
 
 @media (max-width: 1024px) {
+  
   .catadmin-card {
     flex-direction: column;
     gap: 1.5rem;
@@ -502,6 +515,7 @@
 
 /* Al apilarse la card (tabla + formulario) en pantallas estrechas, centrar todo */
 @media (max-width: 1024px) {
+  
   .catadmin-card {
     flex-direction: column;
     align-items: center;        /* centra los bloques apilados */

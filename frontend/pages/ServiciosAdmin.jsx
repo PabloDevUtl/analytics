@@ -1,47 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import SidebarAdmin from '../components/SidebarAdmin';
-import Alerta2 from '../components/Alerta2';
-import AlertaSesion from '../components/AlertaSesion';
-import AlertAuto from '../components/AlertAuto';
+import React, { useState, useEffect } from "react";
+import SidebarAdmin from "../components/SidebarAdmin";
+import Alerta2 from "../components/Alerta2";
+import AlertaSesion from "../components/AlertaSesion";
+import AlertAuto from "../components/AlertAuto";
 
-import '../styles/AdminPages.css';
-import { getCategorias } from '../JavaScript/cargarCategoria';
+import "../styles/AdminPages.css";
+import { getCategorias } from "../JavaScript/cargarCategoria";
 import {
   getServicios,
   crearServicio,
   editarServicio,
   cambiarEstatusServicio,
-  eliminarServicio
-} from '../JavaScript/cargarServicio';
+  eliminarServicio,
+} from "../JavaScript/cargarServicio";
 
 export default function ServiciosAdmin() {
   const [sessionExpired, setSessionExpired] = useState(false);
   const [categorias, setCategorias] = useState([]);
   const [servicios, setServicios] = useState([]);
-  const [catSel, setCatSel] = useState('');
+  const [catSel, setCatSel] = useState("");
   const [loading, setLoading] = useState(true);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [alertAuto, setAlertAuto] = useState({ show: false, message: '', type: 'success' });
+  const [alertAuto, setAlertAuto] = useState({
+    show: false,
+    message: "",
+    type: "success",
+  });
+
+  const [loadingImg, setLoadingImg] = useState(false);
+  const fileInputRef = React.useRef(null);
 
   const [form, setForm] = useState({
     idServicio: null,
-    idCategoria: '',
-    titulo: '',
-    subtitulo: '',
-    texto: '',
-    imagenPreview: '',
-    estatus: 1
+    idCategoria: "",
+    titulo: "",
+    subtitulo: "",
+    texto: "",
+    imagenPreview: "",
+    estatus: 1,
   });
 
   // --- Chequeo de expiración de sesión ---
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
       setSessionExpired(true);
       return;
     }
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const payload = JSON.parse(atob(token.split(".")[1]));
       if (payload.exp * 1000 < Date.now()) {
         setSessionExpired(true);
       }
@@ -54,13 +61,13 @@ export default function ServiciosAdmin() {
   useEffect(() => {
     setLoading(true);
     getCategorias()
-      .then(cats => {
-        const activas = cats.filter(c => c.estatus === 1);
+      .then((cats) => {
+        const activas = cats.filter((c) => c.estatus === 1);
         setCategorias(activas);
-        setCatSel(activas[0]?.idCategoria || '');
-        setForm(f => ({
+        setCatSel(activas[0]?.idCategoria || "");
+        setForm((f) => ({
           ...f,
-          idCategoria: activas[0]?.idCategoria || ''
+          idCategoria: activas[0]?.idCategoria || "",
         }));
       })
       .catch(() => setSessionExpired(true))
@@ -72,7 +79,7 @@ export default function ServiciosAdmin() {
     if (catSel) {
       setLoading(true);
       getServicios(catSel)
-        .then(servs => setServicios(servs))
+        .then((servs) => setServicios(servs))
         .catch(() => setSessionExpired(true))
         .finally(() => setLoading(false));
     } else {
@@ -88,8 +95,8 @@ export default function ServiciosAdmin() {
         title="Sesión expirada"
         message="Tu sesión ha expirado. Por favor, inicia sesión de nuevo."
         onConfirm={() => {
-          localStorage.removeItem('token');
-          window.location.href = '/login';
+          localStorage.removeItem("token");
+          window.location.href = "/login";
         }}
       />
     );
@@ -99,12 +106,12 @@ export default function ServiciosAdmin() {
   const limpiarForm = (categoriaIdDefault = catSel) =>
     setForm({
       idServicio: null,
-      idCategoria: categoriaIdDefault || (categorias[0]?.idCategoria || ''),
-      titulo: '',
-      subtitulo: '',
-      texto: '',
-      imagenPreview: '',
-      estatus: 1
+      idCategoria: categoriaIdDefault || categorias[0]?.idCategoria || "",
+      titulo: "",
+      subtitulo: "",
+      texto: "",
+      imagenPreview: "",
+      estatus: 1,
     });
 
   const handleRowClick = (serv) => {
@@ -115,7 +122,7 @@ export default function ServiciosAdmin() {
       subtitulo: serv.subtitulo,
       texto: serv.texto,
       imagenPreview: serv.imagen,
-      estatus: serv.estatus
+      estatus: serv.estatus,
     });
   };
 
@@ -126,19 +133,85 @@ export default function ServiciosAdmin() {
   };
 
   const handleFormCatChange = (e) => {
-    setForm(f => ({ ...f, idCategoria: Number(e.target.value) }));
+    setForm((f) => ({ ...f, idCategoria: Number(e.target.value) }));
   };
 
-  const handleInput = e => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleInput = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleImage = e => {
+  const handleImage = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new window.FileReader();
-      reader.onload = function(ev) {
-        setForm(f => ({ ...f, imagenPreview: ev.target.result }));
-      };
-      reader.readAsDataURL(file);
+      setLoadingImg(true);
+
+      // Valida tipo
+      if (!file.type.startsWith("image/")) {
+        setAlertAuto({
+          show: true,
+          message: "El archivo seleccionado no es una imagen.",
+          type: "error",
+        });
+        setLoadingImg(false);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
+
+      // Valida tamaño máximo
+      const MAX_MB = 1; // 1MB
+      if (file.size > MAX_MB * 1024 * 1024) {
+        setAlertAuto({
+          show: true,
+          message: "La imagen no debe pesar más de 1MB.",
+          type: "error",
+        });
+        setLoadingImg(false);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
+
+      // Forza repintado antes de procesar
+      setTimeout(() => {
+        const img = new window.Image();
+        const reader = new window.FileReader();
+        reader.onload = function (ev) {
+          img.onload = function () {
+            // Redimensiona
+            const canvas = document.createElement("canvas");
+            const maxW = 600; // Ajusta si lo deseas
+            const scale = Math.min(1, maxW / img.width);
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // Calidad 0.7
+            const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+            setForm((f) => ({ ...f, imagenPreview: dataUrl }));
+            setLoadingImg(false);
+            if (fileInputRef.current) fileInputRef.current.value = "";
+          };
+          img.onerror = () => {
+            setAlertAuto({
+              show: true,
+              message: "Error al cargar la imagen.",
+              type: "error",
+            });
+            setLoadingImg(false);
+            if (fileInputRef.current) fileInputRef.current.value = "";
+          };
+          img.src = ev.target.result;
+        };
+        reader.onerror = () => {
+          setAlertAuto({
+            show: true,
+            message: "No se pudo leer la imagen.",
+            type: "error",
+          });
+          setLoadingImg(false);
+          if (fileInputRef.current) fileInputRef.current.value = "";
+        };
+        reader.readAsDataURL(file);
+      }, 0);
     }
   };
 
@@ -151,7 +224,11 @@ export default function ServiciosAdmin() {
   // --- Guardar (crear/editar) ---
   const handleGuardar = async () => {
     if (!camposObligatoriosLlenos) {
-      setAlertAuto({ show: true, message: 'Completa todos los campos obligatorios.', type: 'error' });
+      setAlertAuto({
+        show: true,
+        message: "Completa todos los campos obligatorios.",
+        type: "error",
+      });
       return;
     }
     try {
@@ -161,31 +238,39 @@ export default function ServiciosAdmin() {
           titulo: form.titulo,
           subtitulo: form.subtitulo,
           texto: form.texto,
-          imagen: form.imagenPreview
+          imagen: form.imagenPreview,
         });
-        setAlertAuto({ show: true, message: '¡Servicio editado correctamente!', type: 'success' });
+        setAlertAuto({
+          show: true,
+          message: "¡Servicio editado correctamente!",
+          type: "success",
+        });
       } else {
         await crearServicio({
           idCategoria: form.idCategoria,
           titulo: form.titulo,
           subtitulo: form.subtitulo,
           texto: form.texto,
-          imagen: form.imagenPreview
+          imagen: form.imagenPreview,
         });
-        setAlertAuto({ show: true, message: '¡Servicio creado exitosamente!', type: 'success' });
+        setAlertAuto({
+          show: true,
+          message: "¡Servicio creado exitosamente!",
+          type: "success",
+        });
       }
       limpiarForm();
       setServicios(await getServicios(catSel));
     } catch (err) {
       if (
-        err.message.toLowerCase().includes('401') ||
-        err.message.toLowerCase().includes('no autorizado') ||
-        err.message.toLowerCase().includes('sesion') ||
-        err.message.toLowerCase().includes('expirad')
+        err.message.toLowerCase().includes("401") ||
+        err.message.toLowerCase().includes("no autorizado") ||
+        err.message.toLowerCase().includes("sesion") ||
+        err.message.toLowerCase().includes("expirad")
       ) {
         setSessionExpired(true);
       } else {
-        setAlertAuto({ show: true, message: err.message, type: 'error' });
+        setAlertAuto({ show: true, message: err.message, type: "error" });
       }
     }
   };
@@ -199,21 +284,22 @@ export default function ServiciosAdmin() {
       setServicios(await getServicios(catSel));
       setAlertAuto({
         show: true,
-        message: form.estatus === 1
-          ? '¡Servicio desactivado con éxito!'
-          : '¡Servicio activado con éxito!',
-        type: 'success'
+        message:
+          form.estatus === 1
+            ? "¡Servicio desactivado con éxito!"
+            : "¡Servicio activado con éxito!",
+        type: "success",
       });
     } catch (err) {
       if (
-        err.message.toLowerCase().includes('401') ||
-        err.message.toLowerCase().includes('no autorizado') ||
-        err.message.toLowerCase().includes('sesion') ||
-        err.message.toLowerCase().includes('expirad')
+        err.message.toLowerCase().includes("401") ||
+        err.message.toLowerCase().includes("no autorizado") ||
+        err.message.toLowerCase().includes("sesion") ||
+        err.message.toLowerCase().includes("expirad")
       ) {
         setSessionExpired(true);
       } else {
-        setAlertAuto({ show: true, message: err.message, type: 'error' });
+        setAlertAuto({ show: true, message: err.message, type: "error" });
       }
     }
   };
@@ -227,17 +313,21 @@ export default function ServiciosAdmin() {
       limpiarForm();
       setAlertOpen(false);
       setServicios(await getServicios(catSel));
-      setAlertAuto({ show: true, message: '¡Servicio eliminado con éxito!', type: 'success' });
+      setAlertAuto({
+        show: true,
+        message: "¡Servicio eliminado con éxito!",
+        type: "success",
+      });
     } catch (err) {
       if (
-        err.message.toLowerCase().includes('401') ||
-        err.message.toLowerCase().includes('no autorizado') ||
-        err.message.toLowerCase().includes('sesion') ||
-        err.message.toLowerCase().includes('expirad')
+        err.message.toLowerCase().includes("401") ||
+        err.message.toLowerCase().includes("no autorizado") ||
+        err.message.toLowerCase().includes("sesion") ||
+        err.message.toLowerCase().includes("expirad")
       ) {
         setSessionExpired(true);
       } else {
-        setAlertAuto({ show: true, message: err.message, type: 'error' });
+        setAlertAuto({ show: true, message: err.message, type: "error" });
       }
     }
   };
@@ -245,7 +335,7 @@ export default function ServiciosAdmin() {
   const cancelarEliminar = () => setAlertOpen(false);
 
   // --- Filtrar servicios por categoría seleccionada ---
-  const serviciosFiltrados = servicios.filter(s => s.idCategoria === catSel);
+  const serviciosFiltrados = servicios.filter((s) => s.idCategoria === catSel);
 
   return (
     <div className="admin-container">
@@ -253,7 +343,7 @@ export default function ServiciosAdmin() {
         show={alertAuto.show}
         message={alertAuto.message}
         type={alertAuto.type}
-        onClose={() => setAlertAuto(a => ({ ...a, show: false }))}
+        onClose={() => setAlertAuto((a) => ({ ...a, show: false }))}
       />
       <SidebarAdmin />
       <main className="admin-content">
@@ -262,14 +352,19 @@ export default function ServiciosAdmin() {
         </div>
         <div className="servadmin-card">
           {/* IZQUIERDA: Categoría y Tabla */}
-          <div className="servadmin-table-section" style={{ flex: 2, minWidth: 400, maxWidth: 600 }}>
+          <div
+            className="servadmin-table-section"
+            style={{ flex: 2, minWidth: 400, maxWidth: 600 }}
+          >
             <div className="servadmin-catselect">
-              <label htmlFor="cat-select" className="catadmin-label">Categoría:</label>
+              <label htmlFor="cat-select" className="catadmin-label">
+                Categoría:
+              </label>
               <select
                 id="cat-select"
                 className="catadmin-input"
                 style={{ maxWidth: 290, marginBottom: 15 }}
-                value={catSel || ''}
+                value={catSel || ""}
                 onChange={handleCatChange}
                 disabled={loading}
               >
@@ -277,14 +372,17 @@ export default function ServiciosAdmin() {
                 {!loading && categorias.length === 0 && (
                   <option value="">Sin categorías</option>
                 )}
-                {!loading && categorias.map(c => (
-                  <option key={c.idCategoria} value={c.idCategoria}>
-                    {c.nombreCategoria}
-                  </option>
-                ))}
+                {!loading &&
+                  categorias.map((c) => (
+                    <option key={c.idCategoria} value={c.idCategoria}>
+                      {c.nombreCategoria}
+                    </option>
+                  ))}
               </select>
             </div>
-            <h2 className="catadmin-section-title" style={{marginTop:8}}>Servicios</h2>
+            <h2 className="catadmin-section-title" style={{ marginTop: 8 }}>
+              Servicios
+            </h2>
             <div className="catadmin-table-responsive">
               <table className="catadmin-table" style={{ minWidth: 550 }}>
                 <thead>
@@ -298,13 +396,25 @@ export default function ServiciosAdmin() {
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan={4} style={{ textAlign: 'center', color: '#ef8802', fontWeight: 600 }}>
+                      <td
+                        colSpan={4}
+                        style={{
+                          textAlign: "center",
+                          color: "#ef8802",
+                          fontWeight: 600,
+                        }}
+                      >
                         Cargando...
                       </td>
                     </tr>
                   ) : serviciosFiltrados.length === 0 ? (
                     <tr>
-                      <td colSpan={4} style={{ textAlign: 'center', color: '#bbb' }}>No hay servicios</td>
+                      <td
+                        colSpan={4}
+                        style={{ textAlign: "center", color: "#bbb" }}
+                      >
+                        No hay servicios
+                      </td>
                     </tr>
                   ) : (
                     serviciosFiltrados.map((serv, idx) => (
@@ -312,7 +422,11 @@ export default function ServiciosAdmin() {
                         key={serv.idServicio}
                         onClick={() => handleRowClick(serv)}
                         style={{ cursor: "pointer" }}
-                        className={form.idServicio === serv.idServicio ? "catadmin-row-selected" : ""}
+                        className={
+                          form.idServicio === serv.idServicio
+                            ? "catadmin-row-selected"
+                            : ""
+                        }
                       >
                         <td>{idx + 1}</td>
                         <td>{serv.titulo}</td>
@@ -324,19 +438,26 @@ export default function ServiciosAdmin() {
                               style={{
                                 width: 50,
                                 height: 50,
-                                objectFit: 'cover',
+                                objectFit: "cover",
                                 borderRadius: 7,
-                                border: '1.5px solid #ef8802',
-                                background: '#fff'
+                                border: "1.5px solid #ef8802",
+                                background: "#fff",
                               }}
                             />
                           ) : (
-                            <span style={{ color: '#bbb', fontSize: 14 }}>Sin imagen</span>
+                            <span style={{ color: "#bbb", fontSize: 14 }}>
+                              Sin imagen
+                            </span>
                           )}
                         </td>
                         <td>
-                          <span style={{ color: serv.estatus === 1 ? '#44a40e' : '#cc0a00', fontWeight: 600 }}>
-                            {serv.estatus === 1 ? 'Activo' : 'Desactivado'}
+                          <span
+                            style={{
+                              color: serv.estatus === 1 ? "#44a40e" : "#cc0a00",
+                              fontWeight: 600,
+                            }}
+                          >
+                            {serv.estatus === 1 ? "Activo" : "Desactivado"}
                           </span>
                         </td>
                       </tr>
@@ -347,45 +468,51 @@ export default function ServiciosAdmin() {
             </div>
           </div>
           {/* DERECHA: Formulario */}
-          <div className="servadmin-form-section" style={{ flex: 1, maxWidth: 500 }}>
+          <div
+            className="servadmin-form-section"
+            style={{ flex: 1, maxWidth: 500 }}
+          >
             <h2 className="catadmin-section-title">
-              {form.idServicio ? 'Editar servicio' : 'Nuevo servicio'}
+              {form.idServicio ? "Editar servicio" : "Nuevo servicio"}
             </h2>
             <form
               className="catadmin-form"
-              onSubmit={e => { e.preventDefault(); handleGuardar(); }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleGuardar();
+              }}
               autoComplete="off"
             >
               {/* SELECT de categoría en el formulario */}
               <div>
                 <label htmlFor="form-categoria" className="catadmin-label">
-                  Categoría <span style={{ color: '#d8000c' }}>*</span>
+                  Categoría <span style={{ color: "#d8000c" }}>*</span>
                 </label>
-                <br />
                 <select
                   id="form-categoria"
                   name="idCategoria"
                   className="catadmin-input"
-                  style={{ maxWidth: 370, marginBottom: 8 }}
-                  value={form.idCategoria || ''}
+                  value={form.idCategoria || ""}
                   onChange={handleFormCatChange}
                   required
                   disabled={loading}
+                  style={{ marginBottom: 8 }} // elimina cualquier width o maxWidth aquí
                 >
                   {loading && <option>Cargando...</option>}
                   {!loading && categorias.length === 0 && (
                     <option value="">Sin categorías</option>
                   )}
-                  {!loading && categorias.map(c => (
-                    <option key={c.idCategoria} value={c.idCategoria}>
-                      {c.nombreCategoria}
-                    </option>
-                  ))}
+                  {!loading &&
+                    categorias.map((c) => (
+                      <option key={c.idCategoria} value={c.idCategoria}>
+                        {c.nombreCategoria}
+                      </option>
+                    ))}
                 </select>
               </div>
 
               <label className="catadmin-label" htmlFor="serv-titulo">
-                Título <span style={{ color: '#d8000c' }}>*</span>
+                Título <span style={{ color: "#d8000c" }}>*</span>
               </label>
               <input
                 id="serv-titulo"
@@ -410,13 +537,13 @@ export default function ServiciosAdmin() {
               />
 
               <label className="catadmin-label" htmlFor="serv-texto">
-                Texto <span style={{ color: '#d8000c' }}>*</span>
+                Texto <span style={{ color: "#d8000c" }}>*</span>
               </label>
               <textarea
                 id="serv-texto"
                 name="texto"
                 className="catadmin-input"
-                style={{minHeight: 60, resize: 'vertical'}}
+                style={{ minHeight: 180, resize: "vertical" }}
                 value={form.texto}
                 onChange={handleInput}
                 placeholder="Descripción del servicio"
@@ -425,14 +552,29 @@ export default function ServiciosAdmin() {
 
               {/* Card de imagen */}
               <div className="servadmin-img-card">
-                <label className="catadmin-label" style={{marginBottom:4}}>
-                  Imagen <span style={{ color: '#d8000c' }}>*</span>
+                <label className="catadmin-label" style={{ marginBottom: 4 }}>
+                  Imagen <span style={{ color: "#d8000c" }}>*</span>
                 </label>
+
                 <div className="servadmin-img-upload-box">
-                  {form.imagenPreview ? (
-                    <img src={form.imagenPreview} alt="preview" className="servadmin-img-preview" />
+                  {loadingImg ? (
+                    <span className="servadmin-img-placeholder">
+                      <i
+                        className="fa fa-spinner fa-spin"
+                        style={{ fontSize: 22, color: "#ef8802" }}
+                      ></i>
+                      &nbsp;Procesando imagen...
+                    </span>
+                  ) : form.imagenPreview ? (
+                    <img
+                      src={form.imagenPreview}
+                      alt="preview"
+                      className="servadmin-img-preview"
+                    />
                   ) : (
-                    <span className="servadmin-img-placeholder">Selecciona una imagen</span>
+                    <span className="servadmin-img-placeholder">
+                      Selecciona una imagen
+                    </span>
                   )}
                   <input
                     type="file"
@@ -440,15 +582,22 @@ export default function ServiciosAdmin() {
                     className="servadmin-img-input"
                     onChange={handleImage}
                     required={!form.imagenPreview}
+                    disabled={loadingImg}
+                    ref={fileInputRef}
                   />
                 </div>
               </div>
               {/* Estatus y botones */}
               {form.idServicio && (
-                <div style={{ marginBottom: '0.8rem', fontSize: 14 }}>
-                  <strong>Estatus:</strong>{' '}
-                  <span style={{ color: form.estatus === 1 ? '#44a40e' : '#cc0a00', fontWeight: 600 }}>
-                    {form.estatus === 1 ? 'Activo' : 'Desactivado'}
+                <div style={{ marginBottom: "0.8rem", fontSize: 14 }}>
+                  <strong>Estatus:</strong>{" "}
+                  <span
+                    style={{
+                      color: form.estatus === 1 ? "#44a40e" : "#cc0a00",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {form.estatus === 1 ? "Activo" : "Desactivado"}
                   </span>
                 </div>
               )}
@@ -457,19 +606,29 @@ export default function ServiciosAdmin() {
                   type="submit"
                   className="catadmin-btn save"
                   disabled={!camposObligatoriosLlenos}
-                  title={!camposObligatoriosLlenos ? "Completa los campos obligatorios" : ""}
+                  title={
+                    !camposObligatoriosLlenos
+                      ? "Completa los campos obligatorios"
+                      : ""
+                  }
                 >
                   Guardar
                 </button>
-                <button type="button" className="catadmin-btn cancel" onClick={() => limpiarForm(catSel)}>Cancelar</button>
-                {form.idServicio &&
+                <button
+                  type="button"
+                  className="catadmin-btn cancel"
+                  onClick={() => limpiarForm(catSel)}
+                >
+                  Cancelar
+                </button>
+                {form.idServicio && (
                   <>
                     <button
                       type="button"
                       className="catadmin-btn danger"
                       onClick={handleDesactivar}
                     >
-                      {form.estatus === 1 ? 'Desactivar' : 'Activar'}
+                      {form.estatus === 1 ? "Desactivar" : "Activar"}
                     </button>
                     <button
                       type="button"
@@ -480,7 +639,7 @@ export default function ServiciosAdmin() {
                       Eliminar
                     </button>
                   </>
-                }
+                )}
               </div>
             </form>
           </div>

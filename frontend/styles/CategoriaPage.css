@@ -1,0 +1,118 @@
+.categoria-hero {
+  position: relative;
+  min-height: 100vh;         /* ¡Ahora cubre todo el alto de pantalla! */
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;   /* El texto va a la izquierda */
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-left: 5vw;         /* Espacio a la izquierda */
+}
+
+.categoria-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  filter: brightness(0.75) blur(1.1px);
+  transition: background-image 0.5s;
+}
+
+.categoria-hero-bg.loading {
+  background: #eee;
+  filter: blur(2px);
+}
+
+.categoria-hero-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.44);
+  z-index: 2;
+}
+
+.categoria-hero-content {
+  position: relative;
+  z-index: 3;
+  color: #fff;
+  width: 48vw;              /* ancho máximo del contenido */
+  max-width: 600px;
+  text-align: left;
+  padding: 2.2rem 2.8rem;
+  margin-top: 2vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;   /* texto pegado a la izquierda */
+}
+
+.categoria-hero-title {
+  font-size: 3.3rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  margin: 0;
+  margin-bottom: 0.4em;
+  text-shadow: 0 4px 22px rgba(0,0,0,0.20);
+  color: #fff;
+}
+
+/* Responsive laptop/tablet */
+@media (max-width: 1200px) {
+  .categoria-hero-content {
+    width: 60vw;
+    max-width: 500px;
+    padding: 1.7rem 2rem;
+  }
+  .categoria-hero-title {
+    font-size: 2.4rem;
+  }
+}
+@media (max-width: 900px) {
+  .categoria-hero-content {
+    width: 70vw;
+    max-width: 430px;
+    padding: 1.2rem 1.2rem;
+  }
+  .categoria-hero-title {
+    font-size: 2.5rem;
+  }
+}
+
+/* Responsive: Móvil vertical, iPad mini, etc */
+@media (max-width: 600px) {
+  .categoria-hero {
+    min-height: 100vh;
+    align-items: center;         /* Cambia de flex-end a center */
+    justify-content: center;     /* Centrado horizontal también */
+    padding-left: 0;
+    padding-bottom: 0;
+  }
+  .categoria-hero-content {
+    width: 97vw;
+    max-width: 97vw;
+    padding: 1.2rem 0.9rem;
+    margin-top: 0;
+    text-align: left;
+    align-items: flex-start;
+    background: rgba(0,0,0,0.11); /* fondo semitransparente para el texto */
+    border-radius: 8px;
+  }
+  .categoria-hero-title {
+    font-size: 2rem;
+    margin-bottom: 0.2em;
+  }
+}
+
+/* Ajusta altura de imagen y overlay si hay notch/barras móviles */
+@media (max-width: 480px) {
+  .categoria-hero-bg,
+  .categoria-hero-overlay {
+    height: 100svh;
+  }
+}

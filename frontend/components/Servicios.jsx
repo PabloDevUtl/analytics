@@ -1,9 +1,19 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/Servicios.css'
-
-// Importa el fetch del API
 import { getCategorias } from '../JavaScript/cargarCategoria'
+
+// Función para crear el slug del nombre de la categoría
+function slugify(text) {
+  return (text || "")
+    .toString()
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 export default function Servicios() {
   const refSection = useRef(null)
@@ -42,7 +52,6 @@ export default function Servicios() {
     getCategorias()
       .then((data) => {
         if (isMounted) {
-          // Solo categorías activas (estatus === 1)
           setCategorias((data || []).filter((cat) => cat.estatus === 1))
         }
       })
@@ -84,7 +93,8 @@ export default function Servicios() {
                   {cat.nombreCategoria}
                 </h3>
                 <span className="underline" />
-                <Link to="/servicios-page" className="servicio-button">
+                {/* AHORA USA SLUG */}
+                <Link to={`/servicios/${slugify(cat.nombreCategoria)}`} className="servicio-button">
                   Ver más
                 </Link>
               </div>
