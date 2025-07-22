@@ -70,7 +70,7 @@
     padding: 1.7rem 2rem;
   }
   .categoria-hero-title {
-    font-size: 2.4rem;
+    font-size: 4.5rem;
   }
 }
 @media (max-width: 900px) {
@@ -80,7 +80,7 @@
     padding: 1.2rem 1.2rem;
   }
   .categoria-hero-title {
-    font-size: 2.5rem;
+    font-size: 4rem;
   }
 }
 

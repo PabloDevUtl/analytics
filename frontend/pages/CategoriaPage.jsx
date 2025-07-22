@@ -90,24 +90,26 @@ export default function CategoriaPage() {
           <div className="categoria-servicios-nodata">No hay servicios disponibles para esta categoría.</div>
         ) : (
           servicios.map((serv, idx) => (
-            <div
-              key={serv.idServicio}
-              className={`servicio-alterno-container ${idx % 2 === 0 ? 'white-bg' : 'gray-bg'} ${idx % 2 === 0 ? 'img-left' : 'img-right'}`}
-            >
-              <div className="servicio-alterno-img">
-                {serv.imagen ? (
-                  <img src={serv.imagen} alt={serv.titulo} />
-                ) : (
-                  <div className="servicio-alterno-img-placeholder">Sin imagen</div>
-                )}
-              </div>
-              <div className="servicio-alterno-content">
-                <h2 className="servicio-alterno-title">{serv.titulo}</h2>
-                {serv.subtitulo && <h3 className="servicio-alterno-sub">{serv.subtitulo}</h3>}
-                <p className="servicio-alterno-text">{serv.texto}</p>
-              </div>
-            </div>
-          ))
+  <div
+    key={serv.idServicio}
+    className={`servicio-alterno-container ${idx % 2 === 0 ? 'white-bg' : 'gray-bg'} ${idx % 2 === 0 ? 'img-left' : 'img-right'}`}
+    style={{ "--idx": idx }}
+  >
+    <div className="servicio-alterno-img">
+      {serv.imagen ? (
+        <img src={serv.imagen} alt={serv.titulo} />
+      ) : (
+        <div className="servicio-alterno-img-placeholder">Sin imagen</div>
+      )}
+    </div>
+    <div className="servicio-alterno-content">
+      <h2 className="servicio-alterno-title">{serv.titulo}</h2>
+      {serv.subtitulo && <h3 className="servicio-alterno-sub">{serv.subtitulo}</h3>}
+      <p className="servicio-alterno-text">{serv.texto}</p>
+    </div>
+  </div>
+))
+
         )}
       </section>
     </div>
