@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
+
 import logo from "../assets/analytics_logo_black.png";
 import "../styles/Footer.css";
 
@@ -21,8 +23,11 @@ export default function Footer() {
               <Link to="/quienes-somos">Quiénes somos</Link>
             </li>
             <li>
-              <Link to="/servicios">Servicios</Link>
+              <HashLink to="/#servicios" smooth>
+                Servicios
+              </HashLink>
             </li>
+
             <li>
               <Link to="/contacto">CONTÁCTANOS</Link>
             </li>
@@ -74,8 +79,6 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-     
-
         {/* 2) Copyright + Aviso */}
         <p className="footer-copy">
           © {year} Analytics |{" "}
@@ -83,12 +86,10 @@ export default function Footer() {
             Aviso de Privacidad
           </Link>{" "}
         </p>
-           {/* 1) Enlace a Login */}
+        {/* 1) Enlace a Login */}
         <Link to="/login" className="footer-admin-link">
           Administrador
         </Link>
-
-    
       </div>
     </footer>
   );

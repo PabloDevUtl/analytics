@@ -98,39 +98,42 @@ export default function NavigationBar() {
             </Nav.Link>
 
             {/* Dropdown personalizado de categorías */}
-            <div
-              className="custom-dropdown-nav"
-              onMouseEnter={!isCollapsedDevice ? handleDropdownEnter : undefined}
-              onMouseLeave={!isCollapsedDevice ? handleDropdownLeave : undefined}
-              onClick={isCollapsedDevice ? () => setShowDropdown((v) => !v) : undefined}
-              tabIndex={0}
-              style={{ position: "relative" }}
-            >
-              <span
-                className={`nav-link ${pathname.startsWith("/servicios") ? "active-nav-link" : ""}`}
-                style={{ cursor: "pointer", userSelect: "none" }}
-              >
-                SERVICIOS
-              </span>
-              {showDropdown && (
-                <div className="custom-dropdown-menu">
-                  <div className="dropdown-grid">
-                    {categorias.length === 0 && (
-                      <div className="dropdown-item empty">Cargando servicios</div>
-                    )}
-                    {categorias.map((cat) => (
-                      <div
-                        key={cat.idCategoria}
-                        className="dropdown-item"
-                        onClick={() => handleCategoriaClick(cat)}
-                      >
-                        {cat.nombreCategoria}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+<div
+  className="custom-dropdown-nav"
+  // Mantener hover en escritorio:
+  onMouseEnter={!isCollapsedDevice ? handleDropdownEnter : undefined}
+  onMouseLeave={!isCollapsedDevice ? handleDropdownLeave : undefined}
+  // Ahora siempre togglea al click:
+  onClick={() => setShowDropdown(v => !v)}
+  tabIndex={0}
+  style={{ position: "relative" }}
+>
+  <span
+    className={`nav-link ${pathname.startsWith("/servicios") ? "active-nav-link" : ""}`}
+    style={{ cursor: "pointer", userSelect: "none" }}
+  >
+    SERVICIOS
+  </span>
+  {showDropdown && (
+    <div className="custom-dropdown-menu" onClick={e => e.stopPropagation()}>
+      <div className="dropdown-grid">
+        {categorias.length === 0 && (
+          <div className="dropdown-item empty">Cargando servicios</div>
+        )}
+        {categorias.map((cat) => (
+          <div
+            key={cat.idCategoria}
+            className="dropdown-item"
+            onClick={() => handleCategoriaClick(cat)}
+          >
+            {cat.nombreCategoria}
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
+
 
             <Nav.Link as={NavLink} to="/contacto" onClick={() => isCollapsedDevice && setShowCollapse(false)}>
               CONTÁCTANOS

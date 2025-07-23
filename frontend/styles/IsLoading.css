@@ -1,0 +1,58 @@
+/* Overlay con degradado sutil */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Contenedor vertical centrado */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(12px, 3vw, 24px);
+  padding: clamp(12px, 3vw, 24px);
+}
+
+/* Spinner circular, responsive con clamp */
+.spinner {
+  width: clamp(60px, 10vw, 120px);
+  height: clamp(60px, 10vw, 120px);
+  border: clamp(4px, 0.8vw, 8px) solid rgba(0, 0, 0, 0.1);
+  border-top-color: #ef8802;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Animación de giro */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Texto debajo del spinner */
+.loading-text {
+  text-align: center;
+}
+
+.loading-text h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #ef8802;
+}
+
+.loading-text p {
+  margin: 8px 0 0;
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  color: #6c757d;
+  letter-spacing: 0.5px;
+}
