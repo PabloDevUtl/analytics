@@ -5,7 +5,7 @@
 /* Estilos generales del footer */
 .footer {
   background: #fff;
-  padding: 1.5rem 1.4rem;
+  padding: 0.8rem 1.4rem;
   font-family: "Montserrat", sans-serif;
   color: #333333;
 }
@@ -14,31 +14,29 @@
    Sección Superior (.footer-top)
    =========================== */
 .footer-top {
-  display: flex;            /* Flexbox para columnas */
-  flex-wrap: wrap;          /* Permite salto a nuevas filas */
+  display: flex; /* Flexbox para columnas */
+  flex-wrap: wrap; /* Permite salto a nuevas filas */
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1.7rem;
+  margin-bottom: 1.3rem;
 }
 
 /* Columnas del footer */
 .footer-column {
-  flex: 1 1 180px;          /* Crece/reduce con base mínima 180px */
+  flex: 1 1 180px; /* Crece/reduce con base mínima 180px */
   margin: 0.5rem;
 }
 /* Centrar el logo en su columna */
 .footer-logo-column {
   display: flex;
   justify-content: center; /* centra horizontalmente */
-  align-items: center;     /* centra verticalmente si quedara hueco */
+  align-items: center; /* centra verticalmente si quedara hueco */
 }
-
 
 /* Logo */
 .footer-logo {
   max-width: 160px;
   height: 50px;
-  
 }
 
 /* ===========================
@@ -73,7 +71,7 @@
 .footer-address-column h4 {
   font-size: 1.2rem;
   font-weight: 700;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.65rem;
   text-transform: uppercase;
 }
 
@@ -82,8 +80,8 @@
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
   line-height: 1.4;
-   color: inherit;           /* toma #333333 */
-  text-decoration: none;    /* sin subrayado */
+  color: inherit; /* toma #333333 */
+  text-decoration: none; /* sin subrayado */
 }
 /* subrayado al pasar el ratón */
 .footer-address-column p a:hover {
@@ -92,22 +90,35 @@
 
 /* ===== Teléfonos clicables en footer sin subrayado ===== */
 .footer-contact-column a {
-  display: block;            /* cada número en su línea */
-  font-size: 1.2rem;         /* coincide con el tamaño de párrafo */
-  color: #333333;            /* mismo color que los textos */
-  text-decoration: none;     /* quitar subrayado */
-  margin-bottom: 0.5rem;     /* separación entre números */
+  display: block; /* cada número en su línea */
+  font-size: 1.2rem; /* coincide con el tamaño de párrafo */
+  color: #333333; /* mismo color que los textos */
+  text-decoration: none; /* quitar subrayado */
+  margin-bottom: 0.5rem; /* separación entre números */
 }
 
 .footer-contact-column a:hover {
   text-decoration: underline; /* subrayado sólo al hover */
 }
 
-
-/* Iconos sociales */
+/* -----------------------------------
+   Footer Social Icons - Escritorio / Laptop
+   ----------------------------------- */
+.footer-social {
+  display: flex;
+  justify-content: flex-start; /* alineados a la izquierda */
+  align-items: center;
+  gap: 0.3rem; /* espacio pequeño entre ellos */
+  margin-bottom: 0; /* sin solaparse con la línea */
+  margin-top: -0.8rem !important;
+}
 .footer-social a {
-  margin-right: 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1.2rem; /* tamaño discreto en desktop */
+  width: 2rem; /* zona de click justa */
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #333333;
 }
 
@@ -119,15 +130,16 @@
    Sección Inferior (.footer-bottom)
    =========================== */
 .footer-bottom {
-  display: flex;            /* Flexbox para los 3 elementos */
-  flex-wrap: wrap;          /* Permite apilar en móvil */
+  display: flex; /* Flexbox para los 3 elementos */
+  flex-wrap: wrap; /* Permite apilar en móvil */
   justify-content: space-between;
   align-items: center;
   border-top: 1.5px solid #ddd;
   padding: 1rem 1rem;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0rem;
   font-size: 0.99rem;
-  margin: -0.6rem;
+  margin: 0;
+  padding-top: 1rem;
 }
 
 /* Enlace “Administrador” en naranja y subrayado al hover */
@@ -164,7 +176,7 @@
 @media (max-width: 1024px) {
   /* Seguimos en fila, pero con columnas más estrechas */
   .footer-column {
-    flex: 1 1 150px;    /* base más pequeña para caber 4 cols */
+    flex: 1 1 150px; /* base más pequeña para caber 4 cols */
     margin: 0.5rem;
   }
 
@@ -172,6 +184,16 @@
   .footer-logo {
     max-width: 120px;
     height: auto;
+  }
+  .footer-social {
+    justify-content: flex-start;
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+  }
+
+  .footer-social a {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    width: clamp(2.5rem, 5vw, 3rem);
+    height: clamp(2.5rem, 5vw, 3rem);
   }
 
   /* Ajustamos tamaños de texto */
@@ -190,7 +212,6 @@
     font-size: 1rem;
   }
 }
-
 
 /* ===========================
    Responsive (pantallas < 768px)
@@ -211,17 +232,23 @@
   .footer-contact-column,
   .footer-address-column {
     text-align: center;
-        margin: 0rem auto;
-
+    margin: 0rem auto;
   }
-.footer-address-column{
-          margin: -2rem auto;
-
-}
+  .footer-address-column {
+    margin: -2rem auto;
+  }
   /* Centrar iconos sociales */
   .footer-social {
-    display: flex;
     justify-content: center;
+    gap: clamp(1rem, 4vw, 1.5rem);
+    margin-bottom: 2rem; /* espacio antes de la línea */
+    margin-top: 1rem !important;
+  }
+
+  .footer-social a {
+    font-size: clamp(2rem, 6vw, 3rem);
+    width: clamp(3rem, 6vw, 4rem);
+    height: clamp(3rem, 6vw, 4rem);
   }
 
   /* Centrar lista de enlaces */
@@ -242,7 +269,6 @@
     margin-bottom: -3rem;
   }
 }
-
 
 .footer-bottom {
   flex-direction: column !important;
