@@ -78,10 +78,16 @@
 }
 
 .footer-contact-column p,
-.footer-address-column p {
+.footer-address-column p a {
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
   line-height: 1.4;
+   color: inherit;           /* toma #333333 */
+  text-decoration: none;    /* sin subrayado */
+}
+/* subrayado al pasar el ratón */
+.footer-address-column p a:hover {
+  text-decoration: underline;
 }
 
 /* ===== Teléfonos clicables en footer sin subrayado ===== */
@@ -152,6 +158,39 @@
 .footer-dev {
   margin: 0;
 }
+/* ===========================
+   Tablet y mini-laptops (≤1024px)
+   =========================== */
+@media (max-width: 1024px) {
+  /* Seguimos en fila, pero con columnas más estrechas */
+  .footer-column {
+    flex: 1 1 150px;    /* base más pequeña para caber 4 cols */
+    margin: 0.5rem;
+  }
+
+  /* Reducimos un poco el logo */
+  .footer-logo {
+    max-width: 120px;
+    height: auto;
+  }
+
+  /* Ajustamos tamaños de texto */
+  .footer-links a {
+    font-size: 1rem;
+  }
+
+  .footer-contact-column h4,
+  .footer-address-column h4 {
+    font-size: 1.1rem;
+  }
+
+  .footer-contact-column a,
+  .footer-contact-column p,
+  .footer-address-column p a {
+    font-size: 1rem;
+  }
+}
+
 
 /* ===========================
    Responsive (pantallas < 768px)

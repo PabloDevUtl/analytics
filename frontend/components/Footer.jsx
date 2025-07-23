@@ -6,6 +6,9 @@ import "../styles/Footer.css";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const mapsQuery = encodeURIComponent(
+    "Calle María de la luz #923, Loma bonita, 37420 León, Guanajuato, México"
+  );
   return (
     <footer className="footer">
       <div className="footer-top">
@@ -22,9 +25,7 @@ export default function Footer() {
               <Link to="/quienes-somos">Quiénes somos</Link>
             </li>
             <li>
-              <Link to="/#servicios" >
-                Servicios
-              </Link>
+              <Link to="/#servicios">Servicios</Link>
             </li>
 
             <li>
@@ -42,11 +43,18 @@ export default function Footer() {
         <div className="footer-column footer-address-column">
           <h4>Dirección</h4>
           <p>
-            Calle: María de la luz #923,
-            <br />
-            Colonia: Loma bonita,
-            <br />
-            C.P. 37420 | León, Gto., México
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-address-link"
+            >
+              Calle: María de la luz #923,
+              <br />
+              Colonia: Loma bonita,
+              <br />
+              C.P. 37420 | León, Gto., México
+            </a>
           </p>
           <div className="footer-social">
             <a
