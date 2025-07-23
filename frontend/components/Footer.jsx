@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
 
 import logo from "../assets/analytics_logo_black.png";
 import "../styles/Footer.css";
@@ -23,9 +22,9 @@ export default function Footer() {
               <Link to="/quienes-somos">Quiénes somos</Link>
             </li>
             <li>
-              <HashLink to="/#servicios" smooth>
+              <Link to="/#servicios" >
                 Servicios
-              </HashLink>
+              </Link>
             </li>
 
             <li>
