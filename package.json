@@ -5,15 +5,12 @@
   "type": "module",
   "scripts": {
     "dev:frontend": "vite",
-    "build":        "vite build",
-    "preview":      "vite preview",
-
-    "dev:backend":  "npm --prefix backend run dev",
-    "start":        "npm --prefix backend start",
-
-    "dev":          "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-
-    "lint":         "eslint ."
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev:backend": "npm --prefix backend run dev",
+    "start": "npm --prefix backend start",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
