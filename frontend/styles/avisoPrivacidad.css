@@ -1,10 +1,11 @@
 /* src/styles/avisoPrivacidad.css */
+
 /* Fondo general de las páginas de aviso (detrás del contenedor) */
 .aviso-page {
-  background-color: #ececec;  /* un gris suave; cámbialo si quieres otro tono */
-  min-height: 100vh;          /* para que cubra toda la pantalla */
-  padding-top: 2rem;          /* un extra de separación arriba */
-  padding-bottom: 1px;          /* un extra de separación abajo */
+  background-color: #ececec;  /* un gris suave */
+  min-height: 100vh;
+  padding-top: 6rem;          /* ajustamos para no solaparse con el Navbar fijo */
+  padding-bottom: 1px;
 }
 
 .aviso-container {
@@ -85,11 +86,11 @@
 /* Móviles (smartphones) */
 @media (max-width: 768px) {
   .aviso-page {
-    padding-top: 1rem;
+    padding-top: 5rem;       /* reducimos ligeramente en móvil */
   }
   .aviso-container {
     max-width: 95%;
-    margin: 4rem auto;
+    margin: 5rem auto;       /* aumentamos margen-top para separarlo del Navbar */
     padding: 1.5rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.03);
   }
@@ -112,10 +113,13 @@
   }
 }
 
-/* Pantallas muy pequeñas (ej. portrait phones) */
+/* Pantallas muy pequeñas (portrait phones) */
 @media (max-width: 480px) {
+  .aviso-page {
+    padding-top: 4rem;       /* aún suficiente espacio sobre la tarjeta */
+  }
   .aviso-container {
-    margin: 3rem auto;
+    margin: 4rem auto;       /* margen-top reducido acorde a nav más pequeño */
     padding: 1rem;
   }
   .aviso-container h1 {

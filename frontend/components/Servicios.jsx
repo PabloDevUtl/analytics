@@ -1,108 +1,87 @@
-import React, { useRef, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import '../styles/Servicios.css'
-import { getCategorias } from '../JavaScript/cargarCategoria'
+// src/components/Servicios.jsx
+import React, { useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useCategorias } from '../context/CategoriaContext';
+import '../styles/Servicios.css';
 
-// Función para crear el slug del nombre de la categoría
+// Utilidad para generar el slug de cada categoría
 function slugify(text) {
-  return (text || "")
+  return (text || '')
     .toString()
     .toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/[^\w-]+/g, "")
-    .replace(/--+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 export default function Servicios() {
-  const refSection = useRef(null)
-  const [categorias, setCategorias] = useState([])
-  const [loading, setLoading] = useState(true)
+  const refSection = useRef(null);
+  const { categorias, loadingCategorias } = useCategorias();
 
-  // Animación con IntersectionObserver (igual que antes)
+  // IntersectionObserver para animar visibilidad
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add('visible')
-          } else {
-            e.target.classList.remove('visible')
-          }
-        })
+        entries.forEach((entry) => {
+          entry.target.classList.toggle('visible', entry.isIntersecting);
+        });
       },
       { threshold: 0.2 }
-    )
+    );
 
     if (refSection.current) {
       const elems = refSection.current.querySelectorAll(
         '.servicios-title, .servicio-card'
-      )
-      elems.forEach((el) => observer.observe(el))
+      );
+      elems.forEach((el) => observer.observe(el));
     }
 
-    return () => observer.disconnect()
-  }, [categorias])
-
-  // Carga de categorías dinámicamente desde la API
-  useEffect(() => {
-    let isMounted = true
-    setLoading(true)
-    getCategorias()
-      .then((data) => {
-        if (isMounted) {
-          setCategorias((data || []).filter((cat) => cat.estatus === 1))
-        }
-      })
-      .catch(() => setCategorias([]))
-      .finally(() => setLoading(false))
-    return () => { isMounted = false }
-  }, [])
+    return () => observer.disconnect();
+  }, [categorias]);
 
   return (
     <section id="servicios" className="servicios-section" ref={refSection}>
       <h2 className="servicios-title">Servicios de alta calidad</h2>
       <div className="servicios-container">
-
-        {loading && (
-          <div style={{ width: '100%', textAlign: 'center', fontSize: '1.3rem', color: '#aaa', margin: '2.5rem 0' }}>
+        {loadingCategorias ? (
+          <div className="servicios-loading">
             Cargando servicios...
           </div>
-        )}
-
-        {!loading && categorias.length === 0 && (
-          <div style={{ width: '100%', textAlign: 'center', fontSize: '1.15rem', color: '#aaa', margin: '2.5rem 0' }}>
+        ) : categorias.length === 0 ? (
+          <div className="servicios-empty">
             No hay servicios disponibles en este momento.
           </div>
-        )}
-
-        {!loading && categorias.map((cat, idx) => (
-          <div className="servicio-card" key={cat.idCategoria} style={{ '--delay': `${0.2 + (idx % 3) * 0.3}s` }}>
+        ) : (
+          categorias.map((cat, idx) => (
             <div
-              className="servicio-image"
-              style={
-                cat.imagen
-                  ? { backgroundImage: `url(${cat.imagen})` }
-                  : { backgroundColor: '#eeeeee' }
-              }
+              className="servicio-card"
+              key={cat.idCategoria}
+              style={{ '--delay': `${0.2 + (idx % 3) * 0.3}s` }}
             >
-              <div className="servicio-overlay" />
-              <div className="servicio-content">
-                <h3>
-                  {cat.nombreCategoria}
-                </h3>
-                <span className="underline" />
-                {/* AHORA USA SLUG */}
-                <Link to={`/servicios/${slugify(cat.nombreCategoria)}`} className="servicio-button">
-                  Ver más
-                </Link>
+              <div
+                className="servicio-image"
+                style={
+                  cat.imagen
+                    ? { backgroundImage: `url(${cat.imagen})` }
+                    : { backgroundColor: '#eeeeee' }
+                }
+              >
+                <div className="servicio-overlay" />
+                <div className="servicio-content">
+                  <h3>{cat.nombreCategoria}</h3>
+                  <span className="underline" />
+                  <Link to={`/servicios/${slugify(cat.nombreCategoria)}`} className="servicio-button">
+                    Ver más
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-
+          ))
+        )}
       </div>
     </section>
-  )
+  );
 }

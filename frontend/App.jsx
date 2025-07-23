@@ -1,6 +1,8 @@
+import { CategoriasProvider } from "./context/CategoriaContext";
+import { ServiciosProvider } from "./context/ServiciosContext";
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { CategoriasProvider } from "./context/CategoriaContext";
+
 import ScrollToTop from "./components/ScrollToTop";
 import IsLoading from "./components/IsLoading";
 
@@ -51,6 +53,7 @@ export default function App() {
   }
   return (
     <CategoriasProvider>
+      <ServiciosProvider>
       <div className="app-container">
         <ScrollToTop />
         {/* Navbar solo si NO estamos en las rutas de hideNav */}
@@ -79,6 +82,7 @@ export default function App() {
         {/* Footer solo si NO estamos en las rutas de hideFooter */}
         {!hideFooter && <Footer />}
       </div>
+      </ServiciosProvider>
     </CategoriasProvider>
   );
 }
