@@ -1,7 +1,7 @@
 // src/components/SidebarAdmin.jsx
-import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import '../styles/SidebarAdmin.css';
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import "../styles/SidebarAdmin.css";
 
 export default function SidebarAdmin() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -17,23 +17,37 @@ export default function SidebarAdmin() {
   // Detectar cambio de tamaño de pantalla
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   // Barra inferior en móvil
   if (isMobile) {
     return (
       <nav className="mobile-nav">
-        <NavLink to="/home-admin" className="mobile-nav-item">Inicio</NavLink>
-        <NavLink to="/servicios-admin" className="mobile-nav-item">Servicios</NavLink>
-        <NavLink to="/categorias-admin" className="mobile-nav-item">Categorías</NavLink>
-        <button onClick={handleLogout} className="mobile-nav-item mobile-nav-logout">Salir</button>
+        <NavLink to="/home-admin" className="mobile-nav-item">
+          Inicio
+        </NavLink>
+        <NavLink to="/servicios-admin" className="mobile-nav-item">
+          Servicios
+        </NavLink>
+        <NavLink to="/categorias-admin" className="mobile-nav-item">
+          Categorías
+        </NavLink>
+        <NavLink to="/usuario-admin" className="mobile-nav-item">
+          Mi cuenta
+        </NavLink>
+        <button
+          onClick={handleLogout}
+          className="mobile-nav-item mobile-nav-logout"
+        >
+          Salir
+        </button>
       </nav>
     );
   }
@@ -42,34 +56,30 @@ export default function SidebarAdmin() {
   return (
     <>
       <button
-        className={`toggle-btn ${collapsed ? 'collapsed' : ''}`}
+        className={`toggle-btn ${collapsed ? "collapsed" : ""}`}
         onClick={() => setCollapsed((c) => !c)}
         aria-label="Toggle sidebar"
       >
         ☰
       </button>
-      <nav className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+      <nav className={`sidebar ${collapsed ? "collapsed" : ""}`}>
         <div className="menu">
-          <NavLink
-            to="/home-admin"
-            className="menu-item"
-          >
+          <NavLink to="/home-admin" className="menu-item">
             Inicio
           </NavLink>
-          <NavLink
-            to="/servicios-admin"
-            className="menu-item"
-          >
+          <NavLink to="/servicios-admin" className="menu-item">
             Servicios
           </NavLink>
-          <NavLink
-            to="/categorias-admin"
-            className="menu-item"
-          >
+          <NavLink to="/categorias-admin" className="menu-item">
             Categorías
           </NavLink>
+          <NavLink to="/usuario-admin" className="menu-item">
+            Mi cuenta
+          </NavLink>
         </div>
-        <button className="logout-btn" onClick={handleLogout}>Salir</button>
+        <button className="logout-btn" onClick={handleLogout}>
+          Salir
+        </button>
       </nav>
     </>
   );

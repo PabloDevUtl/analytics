@@ -16,6 +16,7 @@ import CategoriasAdmin from "./pages/CategoriasAdmin";
 import QuienesSomosPage from "./pages/QuienesSomosPage";
 import ServiciosPage from "./pages/ServiciosPage";
 import CategoriaPage from "./pages/CategoriaPage";
+import UsuarioAdmin from "./pages/UsuarioAdmin";
 
 import ContactanosPage from "./pages/ContactanosPage";
 import Login from "./pages/Login";
@@ -33,6 +34,7 @@ export default function App() {
     "/home-admin",
     "/servicios-admin",
     "/categorias-admin",
+    "/usuario-admin",
   ].includes(pathname);
 
   // Rutas en las que NO quieres ver el Footer:
@@ -40,6 +42,7 @@ export default function App() {
     "/home-admin",
     "/servicios-admin",
     "/categorias-admin",
+    "/usuario-admin",
   ].includes(pathname);
 
     useEffect(() => {
@@ -65,6 +68,7 @@ export default function App() {
             <Route path="/home-admin" element={<HomeAdmin />} />
             <Route path="/servicios-admin" element={<ServiciosAdmin />} />
             <Route path="/categorias-admin" element={<CategoriasAdmin />} />
+            <Route path="/usuario-admin" element={<UsuarioAdmin />} />
             <Route path="/quienes-somos" element={<QuienesSomosPage />} />
             <Route path="/servicios-page" element={<ServiciosPage />} />
             <Route
