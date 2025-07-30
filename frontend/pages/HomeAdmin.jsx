@@ -1,33 +1,33 @@
 // src/pages/HomeAdmin.jsx
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SidebarAdmin from '../components/SidebarAdmin';
-import AlertaSesion from '../components/AlertaSesion';
-import '../styles/AdminPages.css';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import SidebarAdmin from "../components/SidebarAdmin";
+import AlertaSesion from "../components/AlertaSesion";
+import "../styles/AdminPages.css";
 
 export default function HomeAdmin() {
   const navigate = useNavigate();
   const [sessionExpired, setSessionExpired] = useState(false);
+  const [rol, setRol] = useState(null);
 
-  // Chequeo inicial de expiración del JWT en localStorage
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
       setSessionExpired(true);
       return;
     }
     try {
-      // Decodificamos el payload y comprobamos el exp
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const payload = JSON.parse(atob(token.split(".")[1]));
       if (payload.exp * 1000 < Date.now()) {
         setSessionExpired(true);
+      } else {
+        setRol(payload.rol);
       }
-    } catch (err) {
+    } catch {
       setSessionExpired(true);
     }
   }, []);
 
-  // --- Si sesión expirada, solo alerta y no más UI ---
   if (sessionExpired) {
     return (
       <AlertaSesion
@@ -35,8 +35,8 @@ export default function HomeAdmin() {
         title="Sesión expirada"
         message="Tu sesión ha expirado. Por favor, inicia sesión de nuevo."
         onConfirm={() => {
-          localStorage.removeItem('token');
-          window.location.href = '/login';
+          localStorage.removeItem("token");
+          window.location.href = "/login";
         }}
       />
     );
@@ -55,7 +55,7 @@ export default function HomeAdmin() {
         <div className="admin-home-cards">
           <div
             className="admin-home-card"
-            onClick={() => navigate('/servicios-admin')}
+            onClick={() => navigate("/servicios-admin")}
             tabIndex={0}
             role="button"
             aria-label="Gestionar Servicios"
@@ -72,7 +72,7 @@ export default function HomeAdmin() {
           </div>
           <div
             className="admin-home-card"
-            onClick={() => navigate('/categorias-admin')}
+            onClick={() => navigate("/categorias-admin")}
             tabIndex={0}
             role="button"
             aria-label="Gestionar Categorías"
@@ -87,6 +87,25 @@ export default function HomeAdmin() {
               </p>
             </div>
           </div>
+          {rol === 1 && (
+            <div
+              className="admin-home-card"
+              onClick={() => navigate("/super-admin")}
+              tabIndex={0}
+              role="button"
+              aria-label="Gestionar Usuarios"
+            >
+              <div className="admin-home-card-icon">
+                <i className="bi bi-people-fill"></i>
+              </div>
+              <div>
+                <h2 className="admin-home-card-title">Gestionar Usuarios</h2>
+                <p className="admin-home-card-desc">
+                  Administra los usuarios del sistema: crea, edita o elimina.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>

@@ -658,3 +658,45 @@
     margin-left: 0; /* quitamos margen para sidebar */
   }
 }
+/* Mensaje de éxito en formularios */
+.success-text {
+  color: #28a745;
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+/* ——————————————
+   Oculta el ojito nativo de los inputs password
+   en Chrome/Safari/Edge/IE y deja sólo tu propio botón
+   —————————————— */
+
+/* Para Edge / IE */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+/* Para Chrome / Safari */
+input[type="password"]::-webkit-textfield-decoration-container {
+  display: none !important;
+}
+
+
+/* en móviles, quita el margin-left y da más colchón abajo */
+@media (max-width: 767px) {
+  .admin-content {
+    margin-left: 0;
+    padding: 1rem;       /* un poco de padding general */
+    padding-bottom: 5rem; /* espacio extra para la bottom-nav */
+  }
+  /* que las secciones de tabla y formulario ocupen 100% */
+  .catadmin-card {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .catadmin-table-section,
+  .catadmin-form-section {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+}

@@ -16,6 +16,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+   rol: {
+    type: Number,
+    required: true,
+    enum: [1, 2],
+    default: 2 // 1 = SuperAdmin, 2 = Admin
+  },
   token: {
     type: String,
     default: ''

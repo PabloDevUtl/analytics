@@ -18,7 +18,7 @@
   z-index: 1000;
 }
 .sidebar.collapsed {
-  --sidebar-width: 60px;
+  --sidebar-width: 50px;
 }
 
 /* 2) Toggle fijo, junto al sidebar */
@@ -30,7 +30,7 @@
   color: #fff;
   border: none;
   font-size: 1.8rem;
-  padding: 0.9rem;
+  padding: 0.8rem;
   cursor: pointer;
   z-index: 1100;
   transition: left 0.3s;
@@ -95,12 +95,12 @@
 }
 
 
-/* Barra inferior en móviles (sólo aparece <768px) */
-.mobile-nav {
+/* -- Barra inferior en móviles -- */
+.mobile-bottom-nav {
   display: none;
 }
 @media (max-width: 767px) {
-  .mobile-nav {
+  .mobile-bottom-nav {
     display: flex;
     position: fixed;
     bottom: 0; left: 0;
@@ -110,22 +110,101 @@
     padding: 0.5rem 0;
     z-index: 1000;
   }
-  .mobile-nav-item {
+  .bottom-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     color: #fff;
+    font-size: 0.75rem;
     text-decoration: none;
-    font-weight: 600;
-  }
-  /* Tu Logout naranja: */
-  .mobile-nav-logout {
-    background-color: #ef8802;
-    color: #fff;
+    background: transparent;
     border: none;
-    border-radius: 3px;
-    padding: 0.1rem 1rem;
-    cursor: pointer;
-    transition: background 0.2s;
   }
-  .mobile-nav-logout:hover {
-    background-color: #c76e00;
+  .bottom-item i {
+    font-size: 1.4rem;
+    margin-bottom: 0.2rem;
   }
 }
+
+/* -- Overlay menú móvil -- */
+.mobile-menu-overlay {
+   position: fixed;
+  /* cubrir TODO el viewport */
+  inset: 0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  z-index: 1100;
+}
+.overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #424340;
+  color: #fff;
+}
+.overlay-header .username {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.overlay-list {
+flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* suaviza el scroll en iOS */
+  padding-bottom: 1rem; /* para que no choque con el footer */
+}
+.overlay-list li + li {
+  margin-top: 0.8rem;
+}
+.overlay-link {
+  display: flex;
+  align-items: center;
+  color: #424340;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 0.6rem 0.4rem;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.overlay-link i {
+  margin-right: 0.6rem;
+  font-size: 1.2rem;
+}
+.overlay-link:hover,
+.overlay-link.active {
+  background: #f0f0f0;
+}
+.overlay-footer {
+  padding: 1rem;
+  border-top: 1px solid #ddd;
+  text-align: center; /* centramos todo */
+}
+.overlay-footer .logout-btn {
+display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem auto;
+  background: #ef8802;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.overlay-footer .logout-btn i {
+  margin-right: 1rem;
+}
+.overlay-footer .logout-btn:hover {
+  background: #c76e00;
+}
+

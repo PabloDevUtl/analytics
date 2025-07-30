@@ -1,4 +1,3 @@
-// src/pages/UsuarioAdmin.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SidebarAdmin from "../components/SidebarAdmin";
@@ -7,9 +6,9 @@ import "../styles/AdminPages.css";
 
 const PW_CRITERIA = [
   { id: "length", label: "8+ caracteres", test: (pw) => pw.length >= 8 },
-  { id: "upper", label: "Una mayúscula", test: (pw) => /[A-Z]/.test(pw) },
-  { id: "lower", label: "Una minúscula", test: (pw) => /[a-z]/.test(pw) },
-  { id: "digit", label: "Un número", test: (pw) => /\d/.test(pw) },
+  { id: "upper",  label: "Una mayúscula",   test: (pw) => /[A-Z]/.test(pw) },
+  { id: "lower",  label: "Una minúscula",   test: (pw) => /[a-z]/.test(pw) },
+  { id: "digit",  label: "Un número",       test: (pw) => /\d/.test(pw) },
   {
     id: "symbol",
     label: "Un símbolo (!@#$%^&*()_-=+<>?)",
@@ -18,8 +17,7 @@ const PW_CRITERIA = [
   {
     id: "noconsec",
     label: "Sin números consecutivos",
-    test: (pw) =>
-      pw.length > 0 && !/(012|123|234|345|456|567|678|789)/.test(pw),
+    test: (pw) => pw.length > 0 && !/(012|123|234|345|456|567|678|789)/.test(pw),
   },
 ];
 
@@ -27,20 +25,22 @@ export default function UsuarioAdmin() {
   const nav = useNavigate();
 
   // — Estado usuario —
-  const [origUser, setOrigUser] = useState("");
-  const [inputUser, setInputUser] = useState("");
+  const [origUser, setOrigUser]       = useState("");
+  const [inputUser, setInputUser]     = useState("");
   const [allUsernames, setAllUsernames] = useState([]);
-  const [uError, setUError] = useState("");
-  const [uSuccess, setUSuccess] = useState("");
+  const [uError, setUError]           = useState("");
+  const [uSuccess, setUSuccess]       = useState("");
 
   // — Estado contraseña —
-  const [current, setCurrent] = useState("");
-  const [new1, setNew1] = useState("");
-  const [new2, setNew2] = useState("");
-  const [showNew, setShowNew] = useState(false);
-  const [pwError, setPWError] = useState("");
-  const [pwSuccess, setPWSuccess] = useState("");
-  const [crit, setCrit] = useState({});
+  const [current, setCurrent]         = useState("");
+  const [new1, setNew1]               = useState("");
+  const [new2, setNew2]               = useState("");
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew]         = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [pwError, setPWError]         = useState("");
+  const [pwSuccess, setPWSuccess]     = useState("");
+  const [crit, setCrit]               = useState({});
 
   // Fetch inicial de MI usuario y de todos los usuarios
   useEffect(() => {
@@ -122,7 +122,9 @@ export default function UsuarioAdmin() {
       setInputUser("");
       setUSuccess("Usuario actualizado correctamente");
       setAllUsernames((prev) =>
-        prev.filter((u) => u !== origUser.toLowerCase()).concat(trimmed.toLowerCase())
+        prev
+          .filter((u) => u !== origUser.toLowerCase())
+          .concat(trimmed.toLowerCase())
       );
     } catch (err) {
       setUError(err.message);
@@ -185,7 +187,7 @@ export default function UsuarioAdmin() {
     setPWSuccess("");
   };
 
-  // duplicado en estado local para mostrar mensaje
+  // Duplicado local para mostrar mensaje
   const isDuplicateInput =
     inputUser.trim().length >= 8 &&
     allUsernames.includes(inputUser.trim().toLowerCase()) &&
@@ -214,7 +216,6 @@ export default function UsuarioAdmin() {
                 onChange={(e) => setInputUser(e.target.value)}
               />
             </label>
-            {/* Mensaje de duplicado debajo */}
             {isDuplicateInput && (
               <p className="error-text">Ese usuario ya existe</p>
             )}
@@ -223,13 +224,10 @@ export default function UsuarioAdmin() {
                 type="submit"
                 className="catadmin-btn save"
                 disabled={
-                  !(
-                    inputUser.trim().length >= 8 &&
+                  !(inputUser.trim().length >= 8 &&
                     inputUser.trim().length <= 30 &&
                     (!allUsernames.includes(inputUser.trim().toLowerCase()) ||
-                      inputUser.trim().toLowerCase() ===
-                        origUser.toLowerCase())
-                  )
+                      inputUser.trim().toLowerCase() === origUser.toLowerCase()))
                 }
               >
                 Guardar usuario
@@ -261,16 +259,29 @@ export default function UsuarioAdmin() {
         <section className="usuario-section password-section">
           <h2>Cambiar contraseña</h2>
           <form onSubmit={handlePW} className="usuario-form">
+
+            {/* Contraseña actual */}
             <label className="catadmin-label">
               Contraseña actual
-              <input
-                className="catadmin-input"
-                type="password"
-                value={current}
-                onChange={(e) => setCurrent(e.target.value)}
-              />
+              <div className="password-wrapper">
+                <input
+                  className="catadmin-input with-icon"
+                  type={showCurrent ? "text" : "password"}
+                  value={current}
+                  onChange={(e) => setCurrent(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="show-toggle"
+                  onClick={() => setShowCurrent(v => !v)}
+                  aria-label={ showCurrent ? "Ocultar contraseña" : "Mostrar contraseña" }
+                >
+                  <i className={ showCurrent ? "bi bi-eye-slash" : "bi bi-eye" } />
+                </button>
+              </div>
             </label>
 
+            {/* Nueva contraseña */}
             <label className="catadmin-label">
               Nueva contraseña
               <div className="password-wrapper">
@@ -283,34 +294,39 @@ export default function UsuarioAdmin() {
                 <button
                   type="button"
                   className="show-toggle"
-                  onClick={() => setShowNew((v) => !v)}
-                  aria-label={
-                    showNew ? "Ocultar contraseña" : "Mostrar contraseña"
-                  }
+                  onClick={() => setShowNew(v => !v)}
+                  aria-label={ showNew ? "Ocultar contraseña" : "Mostrar contraseña" }
                 >
-                  <i className={showNew ? "bi bi-eye-slash" : "bi bi-eye"} />
+                  <i className={ showNew ? "bi bi-eye-slash" : "bi bi-eye" } />
                 </button>
               </div>
             </label>
 
+            {/* Confirmar nueva contraseña */}
             <label className="catadmin-label">
               Confirmar nueva contraseña
-              <input
-                className="catadmin-input"
-                type="password"
-                value={new2}
-                onChange={(e) => setNew2(e.target.value)}
-              />
+              <div className="password-wrapper">
+                <input
+                  className="catadmin-input with-icon"
+                  type={showConfirm ? "text" : "password"}
+                  value={new2}
+                  onChange={(e) => setNew2(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="show-toggle"
+                  onClick={() => setShowConfirm(v => !v)}
+                  aria-label={ showConfirm ? "Ocultar contraseña" : "Mostrar contraseña" }
+                >
+                  <i className={ showConfirm ? "bi bi-eye-slash" : "bi bi-eye" } />
+                </button>
+              </div>
             </label>
 
             <div className="password-criteria">
-              {PW_CRITERIA.map((c) => (
+              {PW_CRITERIA.map(c => (
                 <div key={c.id} className={`crit ${crit[c.id] ? "valid" : ""}`}>
-                  <i
-                    className={
-                      crit[c.id] ? "bi bi-check-circle-fill" : "bi bi-circle"
-                    }
-                  />
+                  <i className={ crit[c.id] ? "bi bi-check-circle-fill" : "bi bi-circle" } />
                   <span>{c.label}</span>
                 </div>
               ))}
@@ -320,7 +336,7 @@ export default function UsuarioAdmin() {
               <button
                 type="submit"
                 className="catadmin-btn save"
-                disabled={!(current.trim() && new1.trim() && new2.trim())}
+                disabled={!(current && new1 && new2)}
               >
                 Guardar contraseña
               </button>
@@ -332,20 +348,12 @@ export default function UsuarioAdmin() {
                 Cancelar
               </button>
             </div>
+
           </form>
-          <AlertAuto
-            show={!!pwSuccess}
-            message={pwSuccess}
-            type="success"
-            onClose={() => setPWSuccess("")}
-          />
-          <AlertAuto
-            show={!!pwError}
-            message={pwError}
-            type="error"
-            onClose={() => setPWError("")}
-          />
+          <AlertAuto show={!!pwSuccess} message={pwSuccess} type="success" onClose={() => setPWSuccess("")} />
+          <AlertAuto show={!!pwError}   message={pwError}   type="error"   onClose={() => setPWError("")} />
         </section>
+
       </div>
     </div>
   );
