@@ -746,3 +746,35 @@ input[type="password"]::-webkit-textfield-decoration-container {
     margin-left: 0 !important;
   }
 }
+/* ─────────────────────────────────────────────── */
+/* Ajustes extra para que ServiciosAdmin no se desborde */
+/* ─────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* 1) El contenedor de la tabla ya tiene overflow-x, pero lo reforzamos */
+  .servadmin-table-section .catadmin-table-responsive {
+    overflow-x: auto !important;
+  }
+
+  /* 2) Quitamos cualquier min-width inline que fuerce desborde */
+  .servadmin-table-section .catadmin-table {
+    width: auto !important;
+    min-width: 0 !important;
+  }
+
+  /* 3) Ajuste de padding y tamaño de fuente en celdas */
+  .servadmin-table-section .catadmin-table th,
+  .servadmin-table-section .catadmin-table td {
+    padding: 0.5rem 0.6rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* 4) Opcional: que el select y botón de categoría no superpongan */
+  .servadmin-catselect {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .servadmin-catselect .catadmin-input {
+    width: 100%;
+    max-width: none !important;
+  }
+}
