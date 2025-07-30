@@ -73,6 +73,7 @@ export default function Footer() {
             >
               <i className="bi bi-instagram"></i>
             </a>
+                {/* 
             <a
               href="https://www.tiktok.com/@tupagina"
               target="_blank"
@@ -80,7 +81,7 @@ export default function Footer() {
               aria-label="TikTok"
             >
               <i className="bi bi-tiktok"></i>
-            </a>
+            </a>*/}
           </div>
         </div>
       </div>

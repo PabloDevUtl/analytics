@@ -5,13 +5,14 @@ import SidebarAdmin from "../components/SidebarAdmin";
 import Alerta from "../components/Alerta";
 import Alerta2 from "../components/Alerta2";
 import AlertaSesion from "../components/AlertaSesion";
+import AlertAuto from "../components/AlertAuto";
 import "../styles/AdminPages.css";
 
 const PW_CRITERIA = [
-  { id: "length",    label: "8+ caracteres",    test: (pw) => pw.length >= 8 },
-  { id: "upper",     label: "Una mayúscula",    test: (pw) => /[A-Z]/.test(pw) },
-  { id: "lower",     label: "Una minúscula",    test: (pw) => /[a-z]/.test(pw) },
-  { id: "digit",     label: "Un número",        test: (pw) => /\d/.test(pw) },
+  { id: "length", label: "8+ caracteres", test: (pw) => pw.length >= 8 },
+  { id: "upper", label: "Una mayúscula", test: (pw) => /[A-Z]/.test(pw) },
+  { id: "lower", label: "Una minúscula", test: (pw) => /[a-z]/.test(pw) },
+  { id: "digit", label: "Un número", test: (pw) => /\d/.test(pw) },
   {
     id: "symbol",
     label: "Un símbolo (!@#$%^&*()_-=+<>?)",
@@ -20,19 +21,20 @@ const PW_CRITERIA = [
   {
     id: "noconsec",
     label: "Sin números consecutivos",
-    test: (pw) => pw.length > 0 && !/(012|123|234|345|456|567|678|789)/.test(pw),
+    test: (pw) =>
+      pw.length > 0 && !/(012|123|234|345|456|567|678|789)/.test(pw),
   },
 ];
 
 export default function SuperAdmin() {
   const navigate = useNavigate();
-  const token   = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-  // Mi usuario actual (para excluirlo de la tabla y de duplicados)
+  // Mi usuario actual (para excluirlo de la tabla y duplicados)
   const [meName, setMeName] = useState("");
 
-  // Estado de usuarios y selección
-  const [users,    setUsers]    = useState([]);
+  // Usuarios y selección
+  const [users, setUsers] = useState([]);
   const [selected, setSelected] = useState(null);
 
   // Formulario
@@ -43,24 +45,30 @@ export default function SuperAdmin() {
     confirmPassword: "",
   });
 
-  // Mostrar/ocultar cada contraseña
-  const [showPW,        setShowPW]        = useState(false);
+  // Mostrar/ocultar contraseña
+  const [showPW, setShowPW] = useState(false);
   const [showConfirmPW, setShowConfirmPW] = useState(false);
 
-  // Estado de validación de criterios
-  const [crit,    setCrit]    = useState({});
+  // Validación de criterios de password
+  const [crit, setCrit] = useState({});
 
-  // Mensajes
-  const [error,   setError]   = useState("");
-  const [success, setSuccess] = useState("");
+  // Mensajes de error en el formulario
+  const [error, setError] = useState("");
 
-  // Confirmación de borrado
+  // Toasts automáticos
+  const [alertAuto, setAlertAuto] = useState({
+    show: false,
+    message: "",
+    type: "success",
+  });
+
+  // Modal de confirmación de borrado
   const [showDelete, setShowDelete] = useState(false);
 
   // Sesión expirada
   const [sessionExpired, setSessionExpired] = useState(false);
 
-  // Al montar: chequear token/rol y cargar usuarios
+  // Al montar: chequear token y cargar usuarios
   useEffect(() => {
     if (!token) {
       setSessionExpired(true);
@@ -79,12 +87,15 @@ export default function SuperAdmin() {
     }
   }, []);
 
-  // Traer usuarios y excluir al logueado
+  // Fetch usuarios (excluye al propio)
   const fetchUsers = async (me) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       if (!res.ok) throw new Error("Error al obtener usuarios");
       const list = await res.json();
       setUsers(list.filter((u) => u.nombreUsuario !== me));
@@ -93,7 +104,7 @@ export default function SuperAdmin() {
     }
   };
 
-  // Validación dinámica de criterios de contraseña
+  // Validación de criterios de password
   useEffect(() => {
     const status = {};
     PW_CRITERIA.forEach((c) => {
@@ -102,28 +113,26 @@ export default function SuperAdmin() {
     setCrit(status);
   }, [form.password]);
 
-  // Detección de nombre duplicado (incluye mi propio usuario)
+  // Detección de nombre duplicado
   const isDuplicateName =
     form.nombreUsuario.trim() &&
-    (
-      users.some(
-        (u) =>
-          u.nombreUsuario.toLowerCase() === form.nombreUsuario.trim().toLowerCase() &&
-          (!selected || u._id !== selected._id)
-      ) ||
-      form.nombreUsuario.trim().toLowerCase() === meName.toLowerCase()
-    );
+    (users.some(
+      (u) =>
+        u.nombreUsuario.toLowerCase() ===
+          form.nombreUsuario.trim().toLowerCase() &&
+        (!selected || u._id !== selected._id)
+    ) ||
+      form.nombreUsuario.trim().toLowerCase() === meName.toLowerCase());
 
   const handleSelect = (u) => {
     setSelected(u);
     setForm({
-      nombreUsuario:    u.nombreUsuario,
-      rol:               u.rol,
-      password:         "",
-      confirmPassword:  "",
+      nombreUsuario: u.nombreUsuario,
+      rol: u.rol,
+      password: "",
+      confirmPassword: "",
     });
     setError("");
-    setSuccess("");
     setShowPW(false);
     setShowConfirmPW(false);
   };
@@ -132,25 +141,26 @@ export default function SuperAdmin() {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
     setError("");
-    setSuccess("");
   };
 
   const handleCancel = () => {
     setSelected(null);
-    setForm({ nombreUsuario: "", rol: 2, password: "", confirmPassword: "" });
+    setForm({
+      nombreUsuario: "",
+      rol: 2,
+      password: "",
+      confirmPassword: "",
+    });
     setError("");
-    setSuccess("");
     setShowPW(false);
     setShowConfirmPW(false);
   };
 
   const validatePassword = () => {
-    // En creación, contraseña obligatoria
     if (!selected && !form.password) {
       setError("La contraseña es obligatoria.");
       return false;
     }
-    // Si existe contraseña, validar coincidencia y criterios
     if (form.password) {
       if (form.password !== form.confirmPassword) {
         setError("Las contraseñas no coinciden.");
@@ -178,30 +188,37 @@ export default function SuperAdmin() {
     if (!validatePassword()) return;
 
     try {
-      const url    = selected
+      const url = selected
         ? `${import.meta.env.VITE_API_URL}/api/users/${selected._id}`
         : `${import.meta.env.VITE_API_URL}/api/users`;
       const method = selected ? "PATCH" : "POST";
-      const body   = {
+      const body = {
         nombreUsuario: form.nombreUsuario.trim(),
-        rol:            Number(form.rol),
+        rol: Number(form.rol),
       };
       if (form.password) body.contrasena = form.password;
 
       const res = await fetch(url, {
         method,
         headers: {
-          "Content-Type":  "application/json",
-          Authorization:   `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error((await res.json()).message);
+
       await fetchUsers(meName);
-      setSuccess(`Usuario ${selected ? "actualizado" : "creado"} correctamente.`);
+      setAlertAuto({
+        show: true,
+        message: `Usuario ${
+          selected ? "actualizado" : "creado"
+        } correctamente.`,
+        type: "success",
+      });
       handleCancel();
     } catch (e) {
-      setError(e.message);
+      setAlertAuto({ show: true, message: e.message, type: "error" });
     }
   };
 
@@ -224,11 +241,16 @@ export default function SuperAdmin() {
         }
       );
       if (!res.ok) throw new Error((await res.json()).message);
+
       await fetchUsers(meName);
-      setSuccess("Usuario eliminado correctamente.");
+      setAlertAuto({
+        show: true,
+        message: "Usuario eliminado correctamente.",
+        type: "success",
+      });
       handleCancel();
     } catch (e) {
-      setError(e.message);
+      setAlertAuto({ show: true, message: e.message, type: "error" });
     }
   };
 
@@ -238,6 +260,14 @@ export default function SuperAdmin() {
 
   return (
     <div className="admin-container">
+      {/* Toast automático */}
+      <AlertAuto
+        show={alertAuto.show}
+        message={alertAuto.message}
+        type={alertAuto.type}
+        onClose={() => setAlertAuto((a) => ({ ...a, show: false }))}
+      />
+
       <SidebarAdmin />
       <main className="admin-content">
         <div className="catadmin-card">
@@ -267,7 +297,9 @@ export default function SuperAdmin() {
                       onClick={() => handleSelect(u)}
                     >
                       <td>{u.nombreUsuario}</td>
-                      <td>{u.rol === 1 ? "SuperAdmin" : "Admin"}</td>
+                      <td>
+                        {u.rol === 1 ? "SuperAdmin" : "Admin"}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -284,8 +316,7 @@ export default function SuperAdmin() {
               {selected ? "Editar Usuario" : "Nuevo Usuario"}
             </h2>
 
-            {error   && <Alerta tipo="error"  mensaje={error} />}
-            {success && <Alerta tipo="exito"  mensaje={success} />}
+            {error && <Alerta tipo="error" mensaje={error} />}
 
             <form className="catadmin-form" onSubmit={handleSubmit}>
               {/* Nombre de Usuario */}
@@ -340,7 +371,9 @@ export default function SuperAdmin() {
                       showPW ? "Ocultar contraseña" : "Mostrar contraseña"
                     }
                   >
-                    <i className={showPW ? "bi bi-eye-slash" : "bi bi-eye"} />
+                    <i
+                      className={showPW ? "bi bi-eye-slash" : "bi bi-eye"}
+                    />
                   </button>
                 </div>
               </label>
@@ -350,7 +383,9 @@ export default function SuperAdmin() {
                 Confirmar Contraseña
                 <div className="password-wrapper">
                   <input
-                    type={showConfirmPW ? "text" : "password"}
+                    type={
+                      showConfirmPW ? "text" : "password"
+                    }
                     className="catadmin-input with-icon"
                     name="confirmPassword"
                     value={form.confirmPassword}

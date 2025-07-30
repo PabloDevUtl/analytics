@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/SidebarAdmin";
 import Alerta2 from "../components/Alerta2";
-import AlertaSesion from "../components/AlertaSesion";
 import AlertAuto from "../components/AlertAuto";
-
 import "../styles/AdminPages.css";
+
 import {
   getCategorias,
   crearCategoria,
@@ -15,89 +14,30 @@ import {
 
 export default function CategoriasAdmin() {
   const fileInputRef = React.useRef(null);
-  const [loadingImg, setLoadingImg] = useState(false);
-
-
-  // controla si la sesión expiró
-  const [sessionExpired, setSessionExpired] = useState(false);
-
   const [categorias, setCategorias] = useState([]);
   const [nuevoNombre, setNuevoNombre] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(1);
-
-  // Imagen: se guarda en base64 para preview y para la API
-  const [imagenBase64, setImagenBase64] = useState("");
   const [imagenPreview, setImagenPreview] = useState("");
+  const [imagenBase64, setImagenBase64] = useState("");
+  const [loadingImg, setLoadingImg] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
-
-  // Alert auto
-  const [alertAuto, setAlertAuto] = useState({
-    show: false,
-    message: "",
-    type: "success",
-  });
-
-  // NUEVO: loading
+  const [alertAuto, setAlertAuto] = useState({ show: false, message: "", type: "success" });
   const [loading, setLoading] = useState(true);
 
-  // --- Chequeo de token expirada al montar ---
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setSessionExpired(true);
-      return;
-    }
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      if (payload.exp * 1000 < Date.now()) {
-        setSessionExpired(true);
-      }
-    } catch {
-      setSessionExpired(true);
-    }
-  }, []);
-
-  // --- Carga de categorías y manejo de expiración en API ---
   const cargarCategorias = async () => {
-    setLoading(true); // <<<<<<<<<<<<<<<<<<<<<<
+    setLoading(true);
     try {
       const cats = await getCategorias();
       setCategorias(cats);
-    } catch (err) {
-      if (
-        err.message.toLowerCase().includes("401") ||
-        err.message.toLowerCase().includes("no autorizado") ||
-        err.message.toLowerCase().includes("sesion") ||
-        err.message.toLowerCase().includes("expirad")
-      ) {
-        setSessionExpired(true);
-      } else {
-        setAlertAuto({ show: true, message: err.message, type: "error" });
-      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false); // <<<<<<<<<<<<<<<<<<<<<<
   };
 
   useEffect(() => {
-    if (!sessionExpired) cargarCategorias();
-    // eslint-disable-next-line
-  }, [sessionExpired]);
-
-  // --- Si sesión expirada, solo alerta y no más UI ---
-  if (sessionExpired) {
-    return (
-      <AlertaSesion
-        show={true}
-        title="Sesión expirada"
-        message="Tu sesión ha expirado. Por favor, inicia sesión de nuevo."
-        onConfirm={() => {
-          localStorage.removeItem("token");
-          window.location.href = "/login";
-        }}
-      />
-    );
-  }
+    cargarCategorias();
+  }, []);
 
   // --- Handlers normales ---
   const handleGuardar = async () => {

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/SidebarAdmin";
 import Alerta2 from "../components/Alerta2";
-import AlertaSesion from "../components/AlertaSesion";
 import AlertAuto from "../components/AlertAuto";
-
 import "../styles/AdminPages.css";
+
 import { getCategorias } from "../JavaScript/cargarCategoria";
 import {
   getServicios,
@@ -15,21 +14,14 @@ import {
 } from "../JavaScript/cargarServicio";
 
 export default function ServiciosAdmin() {
-  const [sessionExpired, setSessionExpired] = useState(false);
   const [categorias, setCategorias] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [catSel, setCatSel] = useState("");
   const [loading, setLoading] = useState(true);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [alertAuto, setAlertAuto] = useState({
-    show: false,
-    message: "",
-    type: "success",
-  });
-
+  const [alertAuto, setAlertAuto] = useState({ show: false, message: "", type: "success" });
   const [loadingImg, setLoadingImg] = useState(false);
   const fileInputRef = React.useRef(null);
-
   const [form, setForm] = useState({
     idServicio: null,
     idCategoria: "",
@@ -40,68 +32,25 @@ export default function ServiciosAdmin() {
     estatus: 1,
   });
 
-  // --- Chequeo de expiración de sesión ---
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setSessionExpired(true);
-      return;
-    }
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      if (payload.exp * 1000 < Date.now()) {
-        setSessionExpired(true);
-      }
-    } catch {
-      setSessionExpired(true);
-    }
-  }, []);
-
-  // --- Cargar categorías ---
   useEffect(() => {
     setLoading(true);
     getCategorias()
-      .then((cats) => {
-        const activas = cats.filter((c) => c.estatus === 1);
+      .then(cats => {
+        const activas = cats.filter(c => c.estatus === 1);
         setCategorias(activas);
         setCatSel(activas[0]?.idCategoria || "");
-        setForm((f) => ({
-          ...f,
-          idCategoria: activas[0]?.idCategoria || "",
-        }));
+        setForm(f => ({ ...f, idCategoria: activas[0]?.idCategoria || "" }));
       })
-      .catch(() => setSessionExpired(true))
       .finally(() => setLoading(false));
   }, []);
 
-  // --- Cargar servicios por categoría ---
   useEffect(() => {
-    if (catSel) {
-      setLoading(true);
-      getServicios(catSel)
-        .then((servs) => setServicios(servs))
-        .catch(() => setSessionExpired(true))
-        .finally(() => setLoading(false));
-    } else {
-      setServicios([]);
-    }
+    if (!catSel) return setServicios([]);
+    setLoading(true);
+    getServicios(catSel)
+      .then(setServicios)
+      .finally(() => setLoading(false));
   }, [catSel]);
-
-  // --- Si la sesión expiró, mostrar alerta ---
-  if (sessionExpired) {
-    return (
-      <AlertaSesion
-        show={true}
-        title="Sesión expirada"
-        message="Tu sesión ha expirado. Por favor, inicia sesión de nuevo."
-        onConfirm={() => {
-          localStorage.removeItem("token");
-          window.location.href = "/login";
-        }}
-      />
-    );
-  }
-
   // --- Handlers ---
   const limpiarForm = (categoriaIdDefault = catSel) =>
     setForm({

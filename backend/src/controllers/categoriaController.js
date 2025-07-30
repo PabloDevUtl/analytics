@@ -1,5 +1,6 @@
 // backend/src/controllers/categoriaController.js
 import Categoria from '../models/categoriaModel.js';
+import Servicio from '../models/servicioModel.js';
 
 // Obtener todas las categorías
 export const getCategorias = async (req, res) => {
@@ -70,13 +71,21 @@ export const setEstatusCategoria = async (req, res) => {
   }
 };
 
-//Metodo para eliminar categoria
+// Metodo para eliminar categoria y sus servicios relacionados
 export const eliminarCategoria = async (req, res) => {
   try {
-    const cat = await Categoria.findOneAndDelete({ idCategoria: req.params.id });
-    if (!cat) return res.status(404).json({ message: 'No encontrada' });
-    // Aquí podrías agregar lógica para eliminar servicios relacionados si deseas
-    res.json({ message: 'Eliminado correctamente' });
+    const idCat = Number(req.params.id);
+    
+    // Elimina la categoría
+    const cat = await Categoria.findOneAndDelete({ idCategoria: idCat });
+    if (!cat) return res.status(404).json({ message: 'Categoría no encontrada' });
+
+    // Elimina los servicios relacionados a esa categoría
+    const deletedServices = await Servicio.deleteMany({ idCategoria: idCat });
+
+    res.json({
+      message: `Categoría eliminada correctamente. Se eliminaron ${deletedServices.deletedCount} servicios relacionados.`
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
