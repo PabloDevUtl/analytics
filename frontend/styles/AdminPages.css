@@ -700,3 +700,49 @@ input[type="password"]::-webkit-textfield-decoration-container {
     margin: 0;
   }
 }
+/* ──────────────────────────────────────────────── */
+/*  Ajustes de responsividad para Servicios y Categorías en móviles  */
+/* ──────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* 1) Que el layout principal pase a columna */
+  .servadmin-card,
+  .catadmin-card {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  /* 2) Las secciones de tabla y de formulario ocupan 100% */
+  .servadmin-table-section,
+  .servadmin-form-section,
+  .catadmin-table-section,
+  .catadmin-form-section {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  /* 3) Hacer la tabla scrollable en lugar de desbordarse */
+  .servadmin-table-section .catadmin-table-responsive,
+  .catadmin-table-responsive {
+    overflow-x: auto;
+  }
+  .servadmin-table-section table.catadmin-table,
+  .catadmin-table {
+    width: 100% !important;
+    min-width: auto !important;
+  }
+
+  /* 4) Formularios: inputs y textarea al 100% */
+  .servadmin-form-section .catadmin-input,
+  .servadmin-form-section textarea,
+  .catadmin-form-section .catadmin-input,
+  .catadmin-form-section textarea {
+    width: 100%;
+  }
+
+  /* 5) Un poco de padding para que no choque con la barra inferior */
+  .admin-content {
+    padding: 1rem 1rem 6rem 1rem; /* bottom extra para mobile-nav */
+    margin-left: 0 !important;
+  }
+}
