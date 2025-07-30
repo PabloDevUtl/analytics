@@ -1,16 +1,21 @@
+/* =============================================== */
+/*  Sección general de servicios                   */
+/* =============================================== */
 .categoria-servicios-section {
   max-width: 1260px;
   margin: 0 auto;
   padding: 2.8rem 1.2rem 3.5rem 1.2rem;
 }
 
-
+/* =============================================== */
+/*  Card de servicio: desktop      */
+/* =============================================== */
 .servicio-alterno-container {
   display: flex;
   align-items: stretch;
-  min-height: 450px;
+  min-height: 450px; /* mantiene tu mínimo */
   margin-bottom: 3.5rem;
-  border-radius: 0px;
+  border-radius: 0;
   box-shadow: 0 14px 28px rgba(40, 60, 90, 0.12),
     0 3px 12px rgba(50, 70, 110, 0.1);
   overflow: hidden;
@@ -59,20 +64,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
   position: relative;
-  border-radius: 0;
 }
-
 .servicio-alterno-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   min-height: 290px;
   border-radius: 0;
-  box-shadow: 0 2px 20px 0 rgba(64, 82, 115, 0.1);
+  box-shadow: 0 2px 20px rgba(64, 82, 115, 0.1);
 }
-
 .servicio-alterno-img-placeholder {
   font-size: 1.13rem;
   color: #aaa;
@@ -91,7 +92,6 @@
   position: relative;
   z-index: 2;
 }
-
 .white-bg .servicio-alterno-content {
   border-left: 4px solid #ededed;
 }
@@ -103,26 +103,24 @@
   font-size: 2.5rem;
   font-weight: 800;
   color: #101010;
-  margin-bottom: 1.5rem;
+  margin: 0 0 1.5rem;
   line-height: 1.06;
   letter-spacing: 0.01em;
 }
-
 .servicio-alterno-sub {
   font-size: 1.5rem;
   color: #303030;
   font-weight: 600;
-  margin-bottom: 1.05rem;
+  margin: 0 0 1.05rem;
   letter-spacing: 0.01em;
   opacity: 0.89;
 }
-
 .servicio-alterno-text {
   color: #181818;
   font-size: 1.17rem;
   line-height: 1.7;
   letter-spacing: 0.01em;
-  margin-bottom: 0.2rem;
+  margin: 0 0 0.2rem;
   font-weight: 400;
   opacity: 0.97;
 }
@@ -132,31 +130,28 @@
   font-size: 1.17rem;
   text-align: center;
   color: #757575;
-  margin: 2.6rem 0 1.5rem 0;
+  margin: 2.6rem 0 1.5rem;
 }
-/* iPad Mini (768×1024) en retrato */
+
+/* =============================================== */
+/*  MEDIA QUERY: iPad Mini (768×1024) en retrato   */
+/*  — IMAGEN ARRIBA, luego título/sub/texto       */
+/* =============================================== */
 @media only screen and (device-width: 768px) and (device-height: 1024px) and (orientation: portrait) {
   .servicio-alterno-container {
     flex-direction: column;
-    /* eliminamos márgenes extra */
     margin-bottom: 2.5rem;
-  }
-  .servicio-alterno-content {
-    order: 1 !important;
-    padding: 0rem 2rem;
-    border: none !important;
-
+     justify-content: center !important;
+    align-items: center !important;
   }
   .servicio-alterno-img {
-    order: 2 !important;
+    order: 1 !important;
     width: 100%;
-    padding: -2rem 2rem !important;
-    margin: 1rem auto 0;
-
+    padding: 0 !important;
+    margin: 0 auto 1rem !important;
     background: transparent;
     border-radius: 0 !important;
     display: flex;
-    justify-content: center;
   }
   .servicio-alterno-img img {
     width: auto;
@@ -165,11 +160,16 @@
     object-fit: cover;
     box-shadow: none !important;
   }
-   /* Ajustes de tipografía más grandes y legibles */
+  .servicio-alterno-content {
+    order: 2 !important;
+    padding: 0 2rem !important;
+    border: none !important;
+        text-align: justify;
+
+  }
+  /* Tipografía */
   .servicio-alterno-title {
     font-size: 3rem !important;
-    margin-bottom: 1.5rem;
-    align-items: center;
   }
   .servicio-alterno-sub {
     font-size: 2rem !important;
@@ -180,24 +180,20 @@
   }
 }
 
-/* iPad Air (820×1180) en retrato */
+/* =============================================== */
+/*  MEDIA QUERY: iPad Air (820×1180) en retrato    */
+/*  — IMAGEN ARRIBA, luego título/sub/texto       */
+/* =============================================== */
 @media only screen and (device-width: 820px) and (device-height: 1180px) and (orientation: portrait) {
   .servicio-alterno-container {
     flex-direction: column;
     margin-bottom: 2.5rem;
   }
-
-  .servicio-alterno-content {
-    order: 1 !important;
-    padding: 0rem 3rem !important;
-    border: none !important;
-  }
   .servicio-alterno-img {
-    order: 2 !important;
+    order: 1 !important;
     width: 100%;
-    padding: -2rem 2rem !important;
-    margin: 0rem auto 0;
-
+    padding: 0 !important;
+    margin: 0 auto 1rem !important;
     background: transparent;
     border-radius: 0 !important;
     display: flex;
@@ -210,11 +206,15 @@
     object-fit: cover;
     box-shadow: none !important;
   }
-  /* Ajustes de tipografía más grandes y legibles */
+  .servicio-alterno-content {
+    order: 2 !important;
+    padding: 0 3rem !important;
+    border: none !important;
+    text-align:justify !important ;
+  }
+  /* Tipografía */
   .servicio-alterno-title {
     font-size: 3rem !important;
-    margin-bottom: 1.5rem !important;
-    align-items: center !important;
   }
   .servicio-alterno-sub {
     font-size: 2rem !important;
@@ -225,45 +225,44 @@
   }
 }
 
-/* === RESPONSIVE para móviles y tablets === */
+/* =============================================== */
+/*  MEDIA QUERY: tablet / móviles grandes (≤900px) */
+/*  — IMAGEN ARRIBA, luego título/sub/texto       */
+/* =============================================== */
 @media (max-width: 900px) {
-  /* Apila verticalmente */
   .servicio-alterno-container {
+
     flex-direction: column;
-    min-height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    justify-content: center !important;
+    align-items: center !important;
   }
-
-  /* Texto primero, sin bordes */
-  .servicio-alterno-content {
-    order: 1 !important;
-    padding: 0rem 2rem;
-    border: none !important;
-  }
-
-  /* Imagen debajo, sin radio ni sombra extra */
   .servicio-alterno-img {
-    order: 2 !important;
+    order: 1 !important;
     width: 100%;
-    padding: 1rem;
-    margin-top: -6rem;
+    padding: 0rem !important;
+    margin: 0 !important;
     background: transparent;
     border-radius: 0 !important;
+        margin-bottom: -3rem !important;
+
   }
   .servicio-alterno-img img {
     width: 100%;
     height: auto;
-    max-height: 240px;
+    max-height: 240px !important;
     object-fit: cover;
-    border-radius: 0 !important;
     box-shadow: none !important;
   }
-
-  /* Ajustes de tipografía más grandes y legibles */
+  .servicio-alterno-content {
+    order: 2 !important;
+    padding: 0 2rem !important;
+    border: none !important;
+    text-align: justify;
+  }
+  /* Tipografía responsive */
   .servicio-alterno-title {
     font-size: 2rem;
-    margin-bottom: 1.5rem;
-    align-items: center;
   }
   .servicio-alterno-sub {
     font-size: 1.5rem;
@@ -274,27 +273,20 @@
   }
 }
 
+/* =============================================== */
+/*  MEDIA QUERY: móviles pequeños (≤400px)        */
+/*  — IMAGEN ARRIBA, luego título/sub/texto       */
+/* =============================================== */
 @media (max-width: 400px) {
-  .servicio-alterno-content {
-    margin-bottom: -5rem;
-    padding: 0rem 2rem;
-  }
-  .servicio-alterno-title {
-    margin-top: -10rem;
-    font-size: 1.3rem;
-    align-items: center;
-  }
-  .servicio-alterno-sub {
-    font-size: 1.1rem;
-  }
-  .servicio-alterno-text {
-    font-size: 0.95rem;
+  .servicio-alterno-container {
+    flex-direction: column;
+    margin-bottom: 0.5rem;
   }
   .servicio-alterno-img {
-    order: 2 !important;
+    order: 1 !important;
     width: 100%;
-    padding: 1rem;
-    margin-top: -10rem;
+    padding: 0.8rem !important;
+    margin: 0 !important;
     background: transparent;
     border-radius: 0 !important;
   }
@@ -303,7 +295,23 @@
     height: auto;
     max-height: 240px;
     object-fit: cover;
-    border-radius: 0 !important;
     box-shadow: none !important;
+  }
+  .servicio-alterno-content {
+    order: 2 !important;
+    padding: 0.8rem 1rem !important;
+    border: none !important;
+    text-align: justify;
+  }
+  /* Tipografía móvil */
+  .servicio-alterno-title {
+    font-size: 1.3rem !important;
+  }
+  .servicio-alterno-sub {
+    font-size: 1.1rem !important;
+  }
+  .servicio-alterno-text {
+    font-size: 0.95rem !important;
+    line-height: 1.4 !important;
   }
 }

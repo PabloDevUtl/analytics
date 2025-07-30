@@ -19,7 +19,11 @@ export default function ServiciosAdmin() {
   const [catSel, setCatSel] = useState("");
   const [loading, setLoading] = useState(true);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [alertAuto, setAlertAuto] = useState({ show: false, message: "", type: "success" });
+  const [alertAuto, setAlertAuto] = useState({
+    show: false,
+    message: "",
+    type: "success",
+  });
   const [loadingImg, setLoadingImg] = useState(false);
   const fileInputRef = React.useRef(null);
   const [form, setForm] = useState({
@@ -35,11 +39,11 @@ export default function ServiciosAdmin() {
   useEffect(() => {
     setLoading(true);
     getCategorias()
-      .then(cats => {
-        const activas = cats.filter(c => c.estatus === 1);
+      .then((cats) => {
+        const activas = cats.filter((c) => c.estatus === 1);
         setCategorias(activas);
         setCatSel(activas[0]?.idCategoria || "");
-        setForm(f => ({ ...f, idCategoria: activas[0]?.idCategoria || "" }));
+        setForm((f) => ({ ...f, idCategoria: activas[0]?.idCategoria || "" }));
       })
       .finally(() => setLoading(false));
   }, []);
@@ -494,10 +498,22 @@ export default function ServiciosAdmin() {
                 className="catadmin-input"
                 style={{ minHeight: 180, resize: "vertical" }}
                 value={form.texto}
-                onChange={handleInput}
+                onChange={handleInput} // tu handler modificado
                 placeholder="Descripción del servicio"
                 required
+                maxLength={550} // evita más de 550 caracteres
               />
+
+              <div
+                style={{
+                  textAlign: "right",
+                  fontSize: "0.85rem",
+                  color: "#666",
+                  marginBottom: "0.8rem",
+                }}
+              >
+                {form.texto.length}/550 caracteres
+              </div>
 
               {/* Card de imagen */}
               <div className="servadmin-img-card">
