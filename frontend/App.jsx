@@ -17,7 +17,6 @@ import CategoriasAdmin from "./pages/CategoriasAdmin";
 import UsuarioAdmin from "./pages/UsuarioAdmin";
 import SuperAdmin from "./pages/SuperAdmin";
 import QuienesSomosPage from "./pages/QuienesSomosPage";
-import ServiciosPage from "./pages/ServiciosPage";
 import CategoriaPage from "./pages/CategoriaPage";
 import ContactanosPage from "./pages/ContactanosPage";
 import Login from "./pages/Login";
@@ -61,7 +60,6 @@ export default function App() {
               {/* resto público */}
               <Route path="/" element={<Home />} />
               <Route path="/quienes-somos" element={<QuienesSomosPage />} />
-              <Route path="/servicios-page" element={<ServiciosPage />} />
               <Route path="/servicios/:slugCategoria" element={<CategoriaPage />} />
               <Route path="/contacto" element={<ContactanosPage />} />
               <Route path="/avisocorto" element={<AvisoCorto />} />

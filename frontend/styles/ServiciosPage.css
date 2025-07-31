@@ -13,7 +13,7 @@
 .servicio-alterno-container {
   display: flex;
   align-items: stretch;
-  min-height: 450px; /* mantiene tu mínimo */
+  min-height: 440px; /* mantiene tu mínimo */
   margin-bottom: 3.5rem;
   border-radius: 0;
   box-shadow: 0 14px 28px rgba(40, 60, 90, 0.12),
@@ -58,8 +58,8 @@
 
 .servicio-alterno-img {
   flex: 1.2 1 420px;
-  min-width: 280px;
-  max-width: 520px;
+  min-width: 530px;
+  max-width: 530px;
   background: #e9ebee;
   display: flex;
   align-items: center;
@@ -70,7 +70,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  min-height: 290px;
+  min-height: 440px;
   border-radius: 0;
   box-shadow: 0 2px 20px rgba(64, 82, 115, 0.1);
 }
@@ -100,7 +100,7 @@
 }
 
 .servicio-alterno-title {
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   font-weight: 800;
   color: #101010;
   margin: 0 0 1.5rem;
@@ -108,7 +108,7 @@
   letter-spacing: 0.01em;
 }
 .servicio-alterno-sub {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: #303030;
   font-weight: 600;
   margin: 0 0 1.05rem;
@@ -117,7 +117,7 @@
 }
 .servicio-alterno-text {
   color: #181818;
-  font-size: 1.17rem;
+  font-size: 1.10rem;
   line-height: 1.7;
   letter-spacing: 0.01em;
   margin: 0 0 0.2rem;
@@ -289,16 +289,24 @@
     margin: 0 !important;
     background: transparent;
     border-radius: 0 !important;
-            margin-bottom: -7rem !important;
+            margin-bottom: -6rem !important;
 
   }
-  .servicio-alterno-img img {
-    width: 100%;
-    height: auto;
-    max-height: 240px;
-    object-fit: cover;
-    box-shadow: none !important;
-  }
+ .servicio-alterno-img img {
+  display: block;       /* elimina espacios en blanco */
+  object-fit: cover;    /* recorta, mantiene ratio */
+  width: 600px;         /* fuerza el mismo ancho */
+  height: 400px;        /* fuerza la misma altura */
+  image-rendering: auto;/* deja al navegador usar la mejor interpolación */
+}
+.servadmin-img-card p {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+
   .servicio-alterno-content {
     order: 2 !important;
     padding: 0.8rem 1rem !important;
@@ -317,3 +325,42 @@
     line-height: 1.4 !important;
   }
 }
+
+
+/* ================= Animaciones genéricas ================= */
+.animate-fade-up, .animate-fade-down, .animate-fade-left, .animate-fade-right,
+.animate-zoom-in, .animate-blur-in, .animate-bounce-in {
+  opacity: 0;
+  will-change: opacity, transform, filter;
+  transition: opacity 0.45s cubic-bezier(.77,0,.18,1), transform 0.45s cubic-bezier(.77,0,.18,1), filter 0.38s;
+}
+.animate-fade-up     { transform: translateY(32px); }
+.animate-fade-down   { transform: translateY(-32px); }
+.animate-fade-left   { transform: translateX(-32px); }
+.animate-fade-right  { transform: translateX(32px); }
+.animate-zoom-in     { transform: scale(0.88); }
+.animate-blur-in     { filter: blur(10px); }
+.animate-bounce-in   { transform: scale(0.94) translateY(38px); }
+
+.in-view.animate-fade-up,
+.in-view.animate-fade-down,
+.in-view.animate-fade-left,
+.in-view.animate-fade-right,
+.in-view.animate-zoom-in,
+.in-view.animate-blur-in,
+.in-view.animate-bounce-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Escalonamiento con data-delay */
+.in-view[data-delay="1"] { transition-delay: 0.05s; }
+.in-view[data-delay="2"] { transition-delay: 0.10s; }
+.in-view[data-delay="3"] { transition-delay: 0.15s; }
+.in-view[data-delay="4"] { transition-delay: 0.20s; }
+.in-view[data-delay="5"] { transition-delay: 0.25s; }
+.in-view[data-delay="6"] { transition-delay: 0.30s; }
+.in-view[data-delay="7"] { transition-delay: 0.35s; }
+.in-view[data-delay="8"] { transition-delay: 0.40s; }
+.in-view[data-delay="9"] { transition-delay: 0.45s; }

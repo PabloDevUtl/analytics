@@ -89,83 +89,64 @@ export default function ServiciosAdmin() {
     setForm((f) => ({ ...f, idCategoria: Number(e.target.value) }));
   };
 
-  const handleInput = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  // --- Handlers ---
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    if (name === "texto") {
+      // Limita a 550 caracteres
+      setForm((f) => ({ ...f, texto: value.slice(0, 550) }));
+    } else {
+      setForm((f) => ({ ...f, [name]: value }));
+    }
+  };
 
   const handleImage = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setLoadingImg(true);
+    if (!file) return;
 
-      // Valida tipo
-      if (!file.type.startsWith("image/")) {
-        setAlertAuto({
-          show: true,
-          message: "El archivo seleccionado no es una imagen.",
-          type: "error",
-        });
-        setLoadingImg(false);
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        return;
-      }
+    setLoadingImg(true);
 
-      // Valida tamaño máximo
-      const MAX_MB = 1; // 1MB
-      if (file.size > MAX_MB * 1024 * 1024) {
-        setAlertAuto({
-          show: true,
-          message: "La imagen no debe pesar más de 1MB.",
-          type: "error",
-        });
-        setLoadingImg(false);
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        return;
-      }
-
-      // Forza repintado antes de procesar
-      setTimeout(() => {
-        const img = new window.Image();
-        const reader = new window.FileReader();
-        reader.onload = function (ev) {
-          img.onload = function () {
-            // Redimensiona
-            const canvas = document.createElement("canvas");
-            const maxW = 600; // Ajusta si lo deseas
-            const scale = Math.min(1, maxW / img.width);
-            canvas.width = img.width * scale;
-            canvas.height = img.height * scale;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-            // Calidad 0.7
-            const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
-            setForm((f) => ({ ...f, imagenPreview: dataUrl }));
-            setLoadingImg(false);
-            if (fileInputRef.current) fileInputRef.current.value = "";
-          };
-          img.onerror = () => {
-            setAlertAuto({
-              show: true,
-              message: "Error al cargar la imagen.",
-              type: "error",
-            });
-            setLoadingImg(false);
-            if (fileInputRef.current) fileInputRef.current.value = "";
-          };
-          img.src = ev.target.result;
-        };
-        reader.onerror = () => {
-          setAlertAuto({
-            show: true,
-            message: "No se pudo leer la imagen.",
-            type: "error",
-          });
-          setLoadingImg(false);
-          if (fileInputRef.current) fileInputRef.current.value = "";
-        };
-        reader.readAsDataURL(file);
-      }, 0);
+    // 1) Validaciones
+    if (!file.type.startsWith("image/")) {
+      setAlertAuto({
+        show: true,
+        message: "El archivo no es una imagen.",
+        type: "error",
+      });
+      setLoadingImg(false);
+      fileInputRef.current.value = "";
+      return;
     }
+    const MAX_MB = 1;
+    if (file.size > MAX_MB * 1024 * 1024) {
+      setAlertAuto({ show: true, message: "Máx. 1MB.", type: "error" });
+      setLoadingImg(false);
+      fileInputRef.current.value = "";
+      return;
+    }
+
+    // 2) Preview instantánea sin tocar la imagen real
+    const previewUrl = URL.createObjectURL(file);
+    setForm((f) => ({ ...f, imagenPreview: previewUrl }));
+
+    // 3) Leer el fichero ORIGINAL como Base64, sin canvas
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      // ev.target.result es un dataURL con la imagen EXACTA en alta calidad
+      setForm((f) => ({ ...f, imagenPreview: ev.target.result }));
+      setLoadingImg(false);
+      fileInputRef.current.value = "";
+    };
+    reader.onerror = () => {
+      setAlertAuto({
+        show: true,
+        message: "Error leyendo imagen.",
+        type: "error",
+      });
+      setLoadingImg(false);
+      fileInputRef.current.value = "";
+    };
+    reader.readAsDataURL(file);
   };
 
   const camposObligatoriosLlenos =
@@ -498,17 +479,17 @@ export default function ServiciosAdmin() {
                 className="catadmin-input"
                 style={{ minHeight: 180, resize: "vertical" }}
                 value={form.texto}
-                onChange={handleInput} // tu handler modificado
+                onChange={handleInput}
                 placeholder="Descripción del servicio"
                 required
-                maxLength={550} // evita más de 550 caracteres
+                maxLength={550} // evita escribir más allá de 550 caracteres
               />
-
+              {/* Contador de caracteres */}
               <div
                 style={{
                   textAlign: "right",
                   fontSize: "0.85rem",
-                  color: "#666",
+                  color: form.texto.length === 550 ? "#d8000c" : "#666",
                   marginBottom: "0.8rem",
                 }}
               >
@@ -551,7 +532,23 @@ export default function ServiciosAdmin() {
                     ref={fileInputRef}
                   />
                 </div>
+
+                {/* RECOMENDACIÓN ABAJO DEL INPUT */}
+                <p
+                  style={{
+                    fontSize: "0.85rem",
+                    color: "#666",
+                    marginTop: "0.5rem",
+                    lineHeight: 1.4,
+                  }}
+                >
+                  📐 Tamaño recomendado: mínimo <strong>600×400 px</strong>,
+                  máximo <strong>1200×800 px</strong>.<br />
+                  <br />
+                  🗂 Formato: PNG o JPG de alta calidad.
+                </p>
               </div>
+
               {/* Estatus y botones */}
               {form.idServicio && (
                 <div style={{ marginBottom: "0.8rem", fontSize: 14 }}>

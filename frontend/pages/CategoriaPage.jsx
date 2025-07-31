@@ -1,23 +1,23 @@
 // src/pages/CategoriaPage.jsx
-import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useCategorias } from '../context/CategoriaContext';
-import { useServicios } from '../context/ServiciosContext';
-import IsLoading from '../components/IsLoading';
-import '../styles/CategoriaPage.css';
-import '../styles/ServiciosPage.css';
+import React, { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useCategorias } from "../context/CategoriaContext";
+import { useServicios } from "../context/ServiciosContext";
+import IsLoading from "../components/IsLoading";
+import "../styles/CategoriaPage.css";
+import "../styles/ServiciosPage.css";
 
 // Utilidad para generar slug de categoría
 function slugify(text) {
-  return (text || '')
+  return (text || "")
     .toString()
     .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
-    .replace(/--+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 export default function CategoriaPage() {
@@ -34,10 +34,39 @@ export default function CategoriaPage() {
   // Redirige si categoría no existe (después de cargar categorías)
   useEffect(() => {
     if (!loadingCategorias && !categoria) {
-      const timer = setTimeout(() => navigate('/servicios-page'), 1800);
+      const timer = setTimeout(() => navigate("/servicios-page"), 1800);
       return () => clearTimeout(timer);
     }
   }, [loadingCategorias, categoria, navigate]);
+
+  // Scroll al top y (re)inicializa el IntersectionObserver
+  useEffect(() => {
+    // Siempre arrancar desde arriba
+    window.scrollTo({ top: 0 });
+
+    // Seleccionamos todo lo que queramos animar
+    const els = document.querySelectorAll(
+      ".servicio-alterno-container, " +
+      ".servicio-alterno-img, " +
+      ".servicio-alterno-title, " +
+      ".servicio-alterno-sub, " +
+      ".servicio-alterno-text"
+    );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+          } else {
+            entry.target.classList.remove("in-view");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [slugCategoria, servicios]);
 
   // Muestra loader global mientras context carga Categorías o Servicios
   if (loadingCategorias || loadingServicios) {
@@ -73,9 +102,7 @@ export default function CategoriaPage() {
         )}
         <div className="categoria-hero-overlay" />
         <div className="categoria-hero-content">
-          <h1 className="categoria-hero-title">
-            {categoria.nombreCategoria}
-          </h1>
+          <h1 className="categoria-hero-title">{categoria.nombreCategoria}</h1>
         </div>
       </div>
 
@@ -89,14 +116,23 @@ export default function CategoriaPage() {
           serviciosCat.map((serv, idx) => (
             <div
               key={serv.idServicio}
-              className={`servicio-alterno-container ${
-                idx % 2 === 0 ? 'white-bg img-left' : 'gray-bg img-right'
+              className={`servicio-alterno-container animate-fade-up ${
+                idx % 2 === 0 ? "white-bg img-left" : "gray-bg img-right"
               }`}
-              style={{ '--idx': idx }}
+              style={{ "--idx": idx }}
+              data-delay={idx + 1}
             >
-              <div className="servicio-alterno-img">
+              <div className="servicio-alterno-img animate-fade-left">
                 {serv.imagen ? (
-                  <img src={serv.imagen} alt={serv.titulo} />
+                  <img
+                    src={serv.imagen}
+                    alt={serv.titulo}
+                    loading="lazy"
+                    decoding="async"
+                    width="500"
+                    height="400"
+                    style={{ objectFit: "cover" }}
+                  />
                 ) : (
                   <div className="servicio-alterno-img-placeholder">
                     Sin imagen
@@ -104,11 +140,17 @@ export default function CategoriaPage() {
                 )}
               </div>
               <div className="servicio-alterno-content">
-                <h2 className="servicio-alterno-title">{serv.titulo}</h2>
+                <h2 className="servicio-alterno-title animate-fade-down">
+                  {serv.titulo}
+                </h2>
                 {serv.subtitulo && (
-                  <h3 className="servicio-alterno-sub">{serv.subtitulo}</h3>
+                  <h3 className="servicio-alterno-sub animate-fade-right">
+                    {serv.subtitulo}
+                  </h3>
                 )}
-                <p className="servicio-alterno-text">{serv.texto}</p>
+                <p className="servicio-alterno-text animate-zoom-in">
+                  {serv.texto}
+                </p>
               </div>
             </div>
           ))

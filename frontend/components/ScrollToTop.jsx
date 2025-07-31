@@ -11,18 +11,18 @@ export default function ScrollToTop() {
       const id = decodeURIComponent(hash.replace("#", ""));
       const el = document.getElementById(id);
       if (el) {
-        // Pequeño timeout para asegurar que el DOM ya está renderizado
         setTimeout(() => {
           el.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 0);
       }
-      return; // ¡Importante! Salimos aquí para no caer en el scrollTop
+      return;
     }
 
-    // Si no hay hash, tu lógica de siempre subir al top en ciertas rutas:
+    // Rutas donde siempre queremos subir al top
     const alwaysScrollTopRoutes = [
       "/",
       "/quienes-somos",
+      "/servicios-page",
       "/contacto",
       "/avisocorto",
       "/avisolargo",
@@ -32,10 +32,12 @@ export default function ScrollToTop() {
       "/categorias-admin",
     ];
 
-    if (alwaysScrollTopRoutes.includes(pathname)) {
+    // Si la ruta es una categoría individual (e.g. /servicios/dental)
+    const isCategoriaRoute = pathname.startsWith("/servicios/");
+
+    if (alwaysScrollTopRoutes.includes(pathname) || isCategoriaRoute) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    // si hay otros casos especiales (por ejemplo /servicios?cat=), los dejas aquí
   }, [pathname, hash]);
 
   return null;
