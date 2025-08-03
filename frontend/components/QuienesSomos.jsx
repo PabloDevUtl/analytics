@@ -13,11 +13,12 @@ export default function QuienesSomos() {
       <div className="quienes-content" data-aos="fade-left">
         <h2 className="quienes-title">¿Quiénes somos?</h2>
         <p className="quienes-text">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
+En Analitycs creemos en el poder de la tecnología como motor de transformación. 
+Somos un equipo comprometido con brindar soluciones innovadoras, funcionales y 
+seguras para empresas, instituciones y hogares.        </p>
         <p className="quienes-text">
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+         Nos apasiona contribuir al desarrollo tecnológico de México mediante servicios de calidad en seguridad, 
+         software, energías e innovación, y capacitación profesional.
         </p>
 
         {/* ===== BOTÓN “Conoce más” ===== */}

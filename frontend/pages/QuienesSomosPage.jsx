@@ -39,12 +39,16 @@ export default function QuienesSomosPage() {
         <div className="quienes-full-content animate-fade-left">
           <h2 className="quienes-full-title animate-fade-down">¿Quiénes somos?</h2>
           <p className="quienes-full-text animate-blur-in">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+           En Analitycs ofrecemos soluciones tecnológicas diseñadas para fortalecer 
+           la seguridad, eficiencia y desarrollo digital de empresas y hogares. 
+           Nuestro equipo combina experiencia e innovación para atender las necesidades 
+           reales de cada cliente.
           </p>
           <p className="quienes-full-text animate-blur-in">
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat.
+           Brindamos servicios en sistemas de seguridad, desarrollo de software,
+            energías renovables, TI y capacitación. Nuestro compromiso es impulsar
+             el crecimiento tecnológico en México con soluciones funcionales, confiables
+              y a la medida.
           </p>
         </div>
       </section>
@@ -55,14 +59,13 @@ export default function QuienesSomosPage() {
           <h3 className="mision-title animate-zoom-in">Misión</h3>
           <div className="mision-underline animate-fade-left" />
           <p className="mision-quote animate-fade-up">
-            “Lorem ipsum dolor sit amet, consectetur adipiscing elit.”
+           “Impulsar el crecimiento de personas y organizaciones a través de la tecnología”
           </p>
           <p className="mision-text animate-blur-in">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia 
-            odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada. 
-            Mauris ultricies, urna at pulvinar rutrum, sapien ipsum ultrices purus, 
-            et malesuada lectus nisi nec erat. Phasellus dignissim pulvinar urna, vel 
-            tristique lacus efficitur et.
+          Creemos que cada reto tecnológico es una oportunidad para avanzar. Nuestra misión
+           es brindar soluciones funcionales, seguras e innovadoras que ayuden a empresas, 
+           instituciones y comunidades a evolucionar, optimizar sus procesos y enfrentar 
+           el futuro con confianza.
           </p>
         </div>
       </section>
@@ -73,14 +76,14 @@ export default function QuienesSomosPage() {
           <h3 className="vision-title animate-zoom-in">Visión</h3>
           <div className="vision-underline animate-fade-right" />
           <p className="vision-quote animate-fade-up">
-            “Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”
+"Ser líderes en innovación tecnológica al servicio del crecimiento empresarial y social"
           </p>
           <p className="vision-text animate-blur-in">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod 
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
-            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-            velit esse cillum dolore eu fugiat nulla pariatur.
+            Visualizamos un futuro donde la tecnología sea un aliado accesible y 
+            estratégico para transformar la vida de las personas, las organizaciones y 
+            las comunidades. En Analitycs trabajamos para desarrollar soluciones que 
+            inspiren confianza, mejoren procesos y generen un impacto positivo en el
+             entorno, siempre con un enfoque humano, ético y profesional.
           </p>
         </div>
       </section>
@@ -94,67 +97,66 @@ export default function QuienesSomosPage() {
           <div className="valores-list">
             <div className="valor-item animate-fade-up" data-delay="1">
               <span className="valor-number animate-fade-left">1</span>
-              <h4 className="valor-name animate-blur-in">Integridad</h4>
+              <h4 className="valor-name animate-blur-in">Innovación</h4>
               <hr />
               <p className="valor-desc animate-fade-up">
-                Cumplimiento a toda costa de nuestros compromisos que asumimos,
-                esperando lo mismo de los demás.
+                Creamos soluciones tecnológicas que responden a los desafíos actuales y futuros de nuestros clientes.
               </p>
             </div>
             <div className="valor-item animate-fade-up" data-delay="2">
               <span className="valor-number animate-fade-left">2</span>
-              <h4 className="valor-name animate-blur-in">Honestidad</h4>
+              <h4 className="valor-name animate-blur-in">Confianza</h4>
               <hr />
               <p className="valor-desc animate-fade-up">
-                Transparencia, ante todo.
+               Actuamos con transparencia y responsabilidad para generar relaciones sólidas y duraderas.
               </p>
             </div>
             <div className="valor-item animate-fade-up" data-delay="3">
               <span className="valor-number animate-fade-left">3</span>
-              <h4 className="valor-name animate-blur-in">Congruencia</h4>
+              <h4 className="valor-name animate-blur-in">Compromiso</h4>
               <hr />
               <p className="valor-desc animate-fade-up">
-                Siempre hacemos lo que decimos.
+                Cumplimos cada proyecto con pasión, enfoque y profesionalismo, superando expectativas.
               </p>
             </div>
             <div className="valor-item animate-fade-up" data-delay="4">
               <span className="valor-number animate-fade-left">4</span>
-              <h4 className="valor-name animate-blur-in">Creatividad</h4>
+              <h4 className="valor-name animate-blur-in">Calidad</h4>
               <hr />
               <p className="valor-desc animate-fade-up">
-                Diseño de espacios únicos, hogares diferentes y exclusivos.
+Ofrecemos servicios y desarrollos con altos estándares técnicos, funcionales y operativos.
               </p>
             </div>
             <div className="valor-item animate-fade-up" data-delay="5">
               <span className="valor-number animate-fade-left">5</span>
-              <h4 className="valor-name animate-blur-in">Rentabilidad</h4>
+              <h4 className="valor-name animate-blur-in">Orientación al cliente</h4>
               <hr />
               <p className="valor-desc animate-fade-up">
-                Incrementar el valor de la inversión de nuestros clientes.
+                Escuchamos, entendemos y actuamos con base en las necesidades reales de cada cliente.
               </p>
             </div>
             <div className="valor-item animate-fade-up" data-delay="6">
               <span className="valor-number animate-fade-left">6</span>
-              <h4 className="valor-name animate-blur-in">Espíritu de servicio</h4>
+              <h4 className="valor-name animate-blur-in">Colaboración</h4>
               <hr />
               <p className="valor-desc animate-fade-up">
-                Nos debemos a nuestros clientes.
+                Fomentamos el trabajo en equipo, tanto dentro de nuestra organización como con nuestros aliados.
               </p>
             </div>
             <div className="valor-item animate-fade-up" data-delay="7">
               <span className="valor-number animate-fade-left">7</span>
-              <h4 className="valor-name animate-blur-in">Equidad</h4>
+              <h4 className="valor-name animate-blur-in">Adaptabilidad</h4>
               <hr />
               <p className="valor-desc animate-fade-up">
-                Trabajamos de manera permanente en una relación ganar-ganar.
+Nos reinventamos continuamente para responder con agilidad a un entorno tecnológico cambiante.
               </p>
             </div>
             <div className="valor-item animate-fade-up" data-delay="8">
               <span className="valor-number animate-fade-left">8</span>
-              <h4 className="valor-name animate-blur-in">Compromiso</h4>
+              <h4 className="valor-name animate-blur-in">Ética profesional</h4>
               <hr />
               <p className="valor-desc animate-fade-up">
-                Nuestros colaboradores nos impulsan a desarrollar y lograr todos nuestros objetivos.
+Tomamos decisiones responsables, justas y respetuosas en todos nuestros procesos.
               </p>
             </div>
           </div>
@@ -162,11 +164,11 @@ export default function QuienesSomosPage() {
           <div className="valor-nine animate-bounce-in" data-delay="9">
             <div className="valor-nine-text">
               <span className="valor-number animate-fade-left">9</span>
-              <h4 className="valor-name animate-zoom-in">Responsabilidad social</h4>
+              <h4 className="valor-name animate-zoom-in">Impacto social</h4>
               <hr />
               <p className="valor-desc animate-fade-up">
-                Trabajamos constantemente por ser un buen ciudadano empresarial,
-                ayudando a impulsar el desarrollo de nuestra comunidad y de México.
+                Desarrollamos tecnología que mejora vidas, 
+                contribuye al entorno y transforma comunidades.
               </p>
             </div>
             <div className="valor-nine-image animate-zoom-in">

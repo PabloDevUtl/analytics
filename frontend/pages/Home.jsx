@@ -38,7 +38,8 @@ export default function Home() {
       >
         <div className="hero-content" data-aos="fade-right" data-aos-delay="200">
           <h1 className="hero-title">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Soluciones tecnológicas que impulsan tu seguridad, innovación y crecimiento digital.
+
           </h1>
           <a href="#servicios" className="btn btn-hero" data-aos="fade-left" data-aos-delay="300">
             Ver Servicios
@@ -68,7 +69,8 @@ export default function Home() {
           <span className="dot"></span>
         </div>
         <h2 className="innovacion-title" data-aos="fade-left" data-aos-delay="300">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.
+Impulsamos el desarrollo tecnológico en México con soluciones confiables, funcionales y a la medida.
+
         </h2>
       </section>
 
@@ -85,11 +87,10 @@ export default function Home() {
 >
   <div className="contactanos-card-content">
     <h2 className="contactanos-title">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br />
-    Praesent commodo cursus magna.
+En Analitycs te ayudamos con soluciones innovadoras, seguras y a la medida.
     </h2>
     <p className="contactanos-subtext">
-    Etiam porta sem malesuada magna mollis euismod.
+Contáctanos y déjanos ayudarte a crecer con tecnología.
     </p>
     <Link to="/contacto" className="contactanos-btn">
       Contáctanos
