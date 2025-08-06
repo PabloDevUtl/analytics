@@ -1,11 +1,12 @@
 /* Contenedor full-screen con fondo e overlay */
 .login-page {
-  height: 100vh;
+  min-height: 100vh;
   background-size: cover;
   background-position: center;
   position: relative;
 }
 .login-page::before {
+   z-index: 0;
   content: "";
   position: absolute;
   inset: 0;
@@ -14,10 +15,11 @@
 
 /* Tarjeta de login centrada */
 .login-card {
+   z-index: 1;
   position: relative;
   background: rgba(255, 255, 255, 0.85);
-    -webkit-backdrop-filter: blur(8px); /* Soporte Safari */
-  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* Soporte Safari */
+ /* backdrop-filter: blur(8px);*/
   border-radius: 0.75rem;
   max-width: 380px;
   width: 100%;
