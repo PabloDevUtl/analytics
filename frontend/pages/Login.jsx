@@ -1,16 +1,16 @@
 // src/components/Login.jsx
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import fondoLogin from '../assets/fondoLogin.png';
-import '../styles/Login.css';
-import { doLogin } from '../JavaScript/login';
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import fondoLogin from "../assets/fondoLogin.png";
+import "../styles/Login.css";
+import { doLogin } from "../JavaScript/login";
 
 // Nuevos tiempos de bloqueo en segundos:
 // 1m, 3m, 15m, 30m, 1h, 2h
 const LOCK_DURATIONS = [60, 180, 900, 1800, 3600, 7200];
 const RESET_IDLE = 20 * 60; // 20m
 
-const STORAGE_KEY = 'loginLockData';
+const STORAGE_KEY = "loginLockData";
 
 function readLockData() {
   try {
@@ -26,9 +26,9 @@ function writeLockData(data) {
 
 export default function Login() {
   const navigate = useNavigate();
-  const [usuario, setUsuario] = useState('');
-  const [contrasena, setContrasena] = useState('');
-  const [error, setError] = useState('');
+  const [usuario, setUsuario] = useState("");
+  const [contrasena, setContrasena] = useState("");
+  const [error, setError] = useState("");
   const [lockedUntil, setLockedUntil] = useState(null);
   const [remaining, setRemaining] = useState(0);
   const timerRef = useRef();
@@ -69,7 +69,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     const now = Date.now();
     let data = readLockData();
 
@@ -79,8 +79,8 @@ export default function Login() {
     try {
       const u = await doLogin(usuario, contrasena);
       localStorage.removeItem(STORAGE_KEY);
-      localStorage.setItem('token', u.token);
-      navigate('/home-admin');
+      localStorage.setItem("token", u.token);
+      navigate("/home-admin");
     } catch (err) {
       // Registro de fallo
       data.lastAttempt = now;
@@ -89,9 +89,8 @@ export default function Login() {
       // Si alcanza 3 fallos, aplicamos bloqueo
       if (data.failedCount >= 3) {
         const level = data.lockLevel || 0;
-        const duration = LOCK_DURATIONS[
-          Math.min(level, LOCK_DURATIONS.length - 1)
-        ];
+        const duration =
+          LOCK_DURATIONS[Math.min(level, LOCK_DURATIONS.length - 1)];
         data.lockUntil = now + duration * 1000;
         data.lockLevel = level + 1;
         data.failedCount = 0;
@@ -100,14 +99,16 @@ export default function Login() {
       }
 
       writeLockData(data);
-      setError(err.message || 'Error al iniciar sesión');
+      setError(err.message || "Error al iniciar sesión");
     }
   };
 
   // Formatea mm:ss
   const format = (secs) => {
-    const m = Math.floor(secs / 60).toString().padStart(2, '0');
-    const s = (secs % 60).toString().padStart(2, '0');
+    const m = Math.floor(secs / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (secs % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
 
@@ -136,7 +137,10 @@ export default function Login() {
             <label htmlFor="usuario">Usuario</label>
           </div>
 
-          <div className="form-floating mb-4">
+          <div className="mb-4">
+            <label htmlFor="contrasena" className="form-label">
+              Contraseña
+            </label>
             <input
               type="password"
               className="form-control"
@@ -147,7 +151,6 @@ export default function Login() {
               disabled={!!lockedUntil}
               required
             />
-            <label htmlFor="contrasena">Contraseña</label>
           </div>
 
           <button

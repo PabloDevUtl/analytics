@@ -13,6 +13,11 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
+input[type="password"] {
+  -webkit-text-security: disc;
+  color: #000;
+}
+
 /* Tarjeta de login centrada */
 .login-card {
    z-index: 1;
