@@ -1,4 +1,20 @@
-/* Contenedor full-screen con fondo e overlay */
+/* Asegura altura consistente entre todos los inputs */
+.input-custom {
+  height: 58px; /* Ajusta según necesidad para que coincidan */
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.75rem 1rem;
+  background-color: #fff;
+  color: #000;
+}
+
+/* Asegura visibilidad de caracteres en iOS */
+input[type="password"] {
+  -webkit-text-security: disc;
+  color: #000;
+}
+
+/* Fondo y overlay */
 .login-page {
   min-height: 100vh;
   background-size: cover;
@@ -6,45 +22,38 @@
   position: relative;
 }
 .login-page::before {
-   z-index: 0;
+  z-index: 0;
   content: "";
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
 }
 
-input[type="password"] {
-  -webkit-text-security: disc;
-  color: #000;
-}
-
-/* Tarjeta de login centrada */
+/* Tarjeta centrada */
 .login-card {
-   z-index: 1;
+  z-index: 1;
   position: relative;
   background: rgba(255, 255, 255, 0.85);
- /* -webkit-backdrop-filter: blur(8px);  Soporte Safari */
- /* backdrop-filter: blur(8px);*/
   border-radius: 0.75rem;
   max-width: 380px;
   width: 100%;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
-/* Título “Bienvenido administrador” */
+/* Título */
 .login-title {
   font-weight: 600;
   color: #333;
   font-size: 1.75rem;
 }
 
-/* Inputs: sombra y borde de marca al foco */
+/* Input foco */
 .login-card .form-control:focus {
   box-shadow: 0 0 0 0.2rem rgba(239, 136, 2, 0.3);
   border-color: #ef8802;
 }
 
-/* Botón de marca */
+/* Botón */
 .login-card .btn-primary {
   background-color: #ef8802;
   border-color: #ef8802;
@@ -55,7 +64,7 @@ input[type="password"] {
   border-color: #d67902;
 }
 
-/* Ajustes móviles */
+/* Responsive */
 @media (max-width: 576px) {
   .login-card {
     margin: 0 1rem;
@@ -63,5 +72,38 @@ input[type="password"] {
   }
   .login-page::before {
     background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* -------- Media Queries para tabletas -------- */
+
+/* iPad Mini (vertical) y tablets pequeñas */
+@media (min-width: 577px) and (max-width: 767px) {
+  .login-card {
+    max-width: 420px;
+    padding: 2rem 2rem;
+  }
+}
+
+/* iPad Air / Pro 11" (vertical y horizontal) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .login-card {
+    max-width: 470px;
+    padding: 2rem 2rem;
+  }
+}
+
+/* iPad Pro 12.9" o tabletas grandes */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .login-card {
+     max-width: 470px;
+    padding: 2rem 2rem;
+  }
+}
+
+/* Escritorio pequeño (como laptops chicas) */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .login-card {
+    max-width: 580px;
   }
 }

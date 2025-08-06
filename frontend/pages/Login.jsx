@@ -5,13 +5,13 @@ import fondoLogin from "../assets/fondoLogin.png";
 import "../styles/Login.css";
 import { doLogin } from "../JavaScript/login";
 
-// Nuevos tiempos de bloqueo en segundos:
-// 1m, 3m, 15m, 30m, 1h, 2h
+// Tiempos de bloqueo progresivos (en segundos)
 const LOCK_DURATIONS = [60, 180, 900, 1800, 3600, 7200];
-const RESET_IDLE = 20 * 60; // 20m
+const RESET_IDLE = 20 * 60; // 20 minutos
 
 const STORAGE_KEY = "loginLockData";
 
+// Lee el estado de bloqueo guardado
 function readLockData() {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
@@ -20,6 +20,7 @@ function readLockData() {
   }
 }
 
+// Guarda el estado de bloqueo
 function writeLockData(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
@@ -33,12 +34,11 @@ export default function Login() {
   const [remaining, setRemaining] = useState(0);
   const timerRef = useRef();
 
-  // Al montar, chequea estado de bloqueo
+  // Al montar, valida si hay bloqueo
   useEffect(() => {
     const data = readLockData();
     const now = Date.now();
 
-    // Si han pasado >20m desde el último intento, reset completo
     if (data.lastAttempt && now - data.lastAttempt > RESET_IDLE * 1000) {
       localStorage.removeItem(STORAGE_KEY);
       return;
@@ -50,7 +50,7 @@ export default function Login() {
     }
   }, []);
 
-  // Cuenta regresiva
+  // Temporizador de cuenta regresiva
   useEffect(() => {
     if (!lockedUntil) return;
     timerRef.current = setInterval(() => {
@@ -67,13 +67,13 @@ export default function Login() {
     return () => clearInterval(timerRef.current);
   }, [lockedUntil]);
 
+  // Maneja el login y el sistema de bloqueos
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     const now = Date.now();
     let data = readLockData();
 
-    // Si está bloqueado, no hace nada
     if (data.lockUntil && data.lockUntil > now) return;
 
     try {
@@ -82,15 +82,12 @@ export default function Login() {
       localStorage.setItem("token", u.token);
       navigate("/home-admin");
     } catch (err) {
-      // Registro de fallo
       data.lastAttempt = now;
       data.failedCount = (data.failedCount || 0) + 1;
 
-      // Si alcanza 3 fallos, aplicamos bloqueo
       if (data.failedCount >= 3) {
         const level = data.lockLevel || 0;
-        const duration =
-          LOCK_DURATIONS[Math.min(level, LOCK_DURATIONS.length - 1)];
+        const duration = LOCK_DURATIONS[Math.min(level, LOCK_DURATIONS.length - 1)];
         data.lockUntil = now + duration * 1000;
         data.lockLevel = level + 1;
         data.failedCount = 0;
@@ -103,11 +100,9 @@ export default function Login() {
     }
   };
 
-  // Formatea mm:ss
+  // Formato de mm:ss para temporizador
   const format = (secs) => {
-    const m = Math.floor(secs / 60)
-      .toString()
-      .padStart(2, "0");
+    const m = Math.floor(secs / 60).toString().padStart(2, "0");
     const s = (secs % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
@@ -118,15 +113,14 @@ export default function Login() {
       style={{ backgroundImage: `url(${fondoLogin})` }}
     >
       <div className="login-card p-4 p-md-5">
-        <h2 className="text-center mb-4 login-title">
-          Bienvenido administrador
-        </h2>
+        <h2 className="text-center mb-4 login-title">Bienvenido administrador</h2>
 
         <form onSubmit={handleSubmit} noValidate>
+          {/* Usuario con estilo form-floating */}
           <div className="form-floating mb-3">
             <input
               type="text"
-              className="form-control"
+              className="form-control input-custom"
               id="usuario"
               placeholder="Usuario"
               value={usuario}
@@ -137,13 +131,12 @@ export default function Login() {
             <label htmlFor="usuario">Usuario</label>
           </div>
 
+          {/* Contraseña con altura igualada manualmente */}
           <div className="mb-4">
-            <label htmlFor="contrasena" className="form-label">
-              Contraseña
-            </label>
+            <label htmlFor="contrasena" className="form-label">Contraseña</label>
             <input
               type="password"
-              className="form-control"
+              className="form-control input-custom"
               id="contrasena"
               placeholder="Contraseña"
               value={contrasena}
