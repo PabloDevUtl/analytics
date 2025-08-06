@@ -101,9 +101,3 @@ input[type="password"] {
   }
 }
 
-/* Escritorio pequeño (como laptops chicas) */
-@media (min-width: 1200px) and (max-width: 1399px) {
-  .login-card {
-    max-width: 580px;
-  }
-}
