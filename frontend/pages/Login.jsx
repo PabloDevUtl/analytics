@@ -120,6 +120,23 @@ export default function Login() {
           Bienvenido administrador
         </h2>
 
+ {/* Contraseña */}
+          <div className="mb-4">
+            <label htmlFor="contrasena" className="form-label">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              className="form-control input-custom"
+              id="contrasena"
+              placeholder="Contraseña"
+              value={contrasena}
+              onChange={(e) => setContrasena(e.target.value)}
+              disabled={!!lockedUntil}
+              required
+            />
+          </div>
+          
         <form onSubmit={handleSubmit} noValidate>
           {/* Usuario */}
           <div className="mb-3">
@@ -138,22 +155,7 @@ export default function Login() {
             />
           </div>
 
-          {/* Contraseña */}
-          <div className="mb-4">
-            <label htmlFor="contrasena" className="form-label">
-              Contraseña
-            </label>
-            <input
-              type="password"
-              className="form-control input-custom"
-              id="contrasena"
-              placeholder="Contraseña"
-              value={contrasena}
-              onChange={(e) => setContrasena(e.target.value)}
-              disabled={!!lockedUntil}
-              required
-            />
-          </div>
+         
 
           <button
             type="submit"
