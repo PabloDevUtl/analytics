@@ -10,19 +10,10 @@
   border-radius: 4px;
 }
 
-input[type="password"].input-custom {
-  -webkit-text-security: disc; /* Forzar visibilidad del texto tipo password */
-  -webkit-appearance: none;    /* Eliminar apariencia nativa iOS */
-  appearance: none;
-  background-color: #fff !important; /* Fondo sólido */
-  color: #000 !important; /* Texto visible */
-  position: relative;
-  z-index: 1; /* Evita ser tapado por capas padres */
-}
-
+/* Asegura visibilidad y compatibilidad */
 input[type="password"]::placeholder {
-  color: #999 !important;
-  opacity: 1 !important;
+  color: #999;
+  opacity: 1;
 }
 
 
@@ -45,16 +36,13 @@ input[type="password"]::placeholder {
 .login-card {
   z-index: 1;
   position: relative;
-  background: rgba(255, 255, 255, 0.85);
+ /* background: rgba(255, 255, 255, 0.85); */
+  background: #fff; /* Fondo sólido temporal para test */
   border-radius: 0.75rem;
   max-width: 380px;
   width: 100%;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
-.login-card input {
-  background-color: #fff !important;
-}
-
 
 /* Título */
 .login-title {
