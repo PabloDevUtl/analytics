@@ -87,7 +87,8 @@ export default function Login() {
 
       if (data.failedCount >= 3) {
         const level = data.lockLevel || 0;
-        const duration = LOCK_DURATIONS[Math.min(level, LOCK_DURATIONS.length - 1)];
+        const duration =
+          LOCK_DURATIONS[Math.min(level, LOCK_DURATIONS.length - 1)];
         data.lockUntil = now + duration * 1000;
         data.lockLevel = level + 1;
         data.failedCount = 0;
@@ -102,7 +103,9 @@ export default function Login() {
 
   // Formato de mm:ss para temporizador
   const format = (secs) => {
-    const m = Math.floor(secs / 60).toString().padStart(2, "0");
+    const m = Math.floor(secs / 60)
+      .toString()
+      .padStart(2, "0");
     const s = (secs % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
@@ -113,11 +116,16 @@ export default function Login() {
       style={{ backgroundImage: `url(${fondoLogin})` }}
     >
       <div className="login-card p-4 p-md-5">
-        <h2 className="text-center mb-4 login-title">Bienvenido administrador</h2>
+        <h2 className="text-center mb-4 login-title">
+          Bienvenido administrador
+        </h2>
 
         <form onSubmit={handleSubmit} noValidate>
-          {/* Usuario con estilo form-floating */}
-          <div className="form-floating mb-3">
+          {/* Usuario */}
+          <div className="mb-3">
+            <label htmlFor="usuario" className="form-label">
+              Usuario
+            </label>
             <input
               type="text"
               className="form-control input-custom"
@@ -128,12 +136,13 @@ export default function Login() {
               disabled={!!lockedUntil}
               required
             />
-            <label htmlFor="usuario">Usuario</label>
           </div>
 
-          {/* Contraseña con altura igualada manualmente */}
+          {/* Contraseña */}
           <div className="mb-4">
-            <label htmlFor="contrasena" className="form-label">Contraseña</label>
+            <label htmlFor="contrasena" className="form-label">
+              Contraseña
+            </label>
             <input
               type="password"
               className="form-control input-custom"
