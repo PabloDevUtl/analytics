@@ -1,18 +1,21 @@
 /* Asegura altura consistente entre todos los inputs */
 .input-custom {
-  height: 58px; /* Ajusta según necesidad para que coincidan */
+  height: 58px;
   font-size: 1rem;
   line-height: 1.5;
   padding: 0.75rem 1rem;
-  background-color: #fff;
+  background-color: #fff !important;
   color: #000;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-/* Asegura visibilidad de caracteres en iOS */
-input[type="password"] {
-  -webkit-text-security: disc;
-  color: #000;
+/* Asegura visibilidad y compatibilidad */
+input[type="password"]::placeholder {
+  color: #999;
+  opacity: 1;
 }
+
 
 /* Fondo y overlay */
 .login-page {

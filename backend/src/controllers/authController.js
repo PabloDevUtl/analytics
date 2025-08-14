@@ -1,8 +1,6 @@
 // backend/src/controllers/authController.js
-
 import jwt from 'jsonwebtoken';
 import Usuario from '../models/userModel.js';
-
 // Helper para firmar el token JWT
 const signToken = (userId, username, rol) => {
   return jwt.sign(
@@ -11,7 +9,6 @@ const signToken = (userId, username, rol) => {
     { expiresIn: process.env.JWT_EXPIRES_IN }
   );
 };
-
 // POST /api/auth/login
 export const loginUser = async (req, res) => {
   const { nombreUsuario, contrasena } = req.body;
@@ -32,7 +29,6 @@ export const loginUser = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
-
 // POST /api/auth/logout
 export const logoutUser = async (req, res) => {
   try {
