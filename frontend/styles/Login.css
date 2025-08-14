@@ -1,46 +1,18 @@
-/* === Inputs: usa base de Bootstrap y unifica estilos === */
-.form-control.input-custom {
-  display: block;
-  width: 100%;
+/* Asegura altura consistente entre todos los inputs */
+.input-custom {
+  height: 58px; /* Ajusta según necesidad para que coincidan */
   font-size: 1rem;
-  line-height: 1.5;               /* unitless como Bootstrap */
-  font-weight: 400;
-  color: #212529;
+  line-height: 1.5;
+  padding: 0.75rem 1rem;
   background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: .375rem;
-  padding: .375rem .75rem;         /* iguales a Bootstrap */
-  min-height: calc(1.5em + .75rem + 2px); /* asegura alto consistente */
-  box-sizing: border-box;
+  color: #000;
 }
 
-/* Placeholder visible en todos */
-.form-control.input-custom::placeholder {
-  color: #6c757d;
-  opacity: 1;
+/* Asegura visibilidad de caracteres en iOS */
+input[type="password"] {
+  -webkit-text-security: disc;
+  color: #000;
 }
-
-/* iOS: que el texto nunca quede “transparente” */
-.form-control.input-custom,
-input[type="password"].form-control.input-custom {
-  -webkit-text-fill-color: #000;  /* tiene prioridad sobre color en iOS */
-  caret-color: #000;
-}
-
-/* iOS Autofill: evita fondo amarillento que tapa texto */
-.form-control.input-custom:-webkit-autofill {
-  -webkit-text-fill-color: #000 !important;
-  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
-          box-shadow: 0 0 0px 1000px #fff inset;
-}
-
-/* Foco consistente */ 
-.login-card .form-control.input-custom:focus {
-  border-color: #ef8802;
-  box-shadow: 0 0 0 .2rem rgba(239,136,2,.25);
-}
-
 
 /* Fondo y overlay */
 .login-page {
@@ -66,33 +38,7 @@ input[type="password"].form-control.input-custom {
   max-width: 380px;
   width: 100%;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  padding: 1.5rem;
 }
-.login-card {
-  z-index: 1;
-  position: relative;
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 0.75rem;
-  max-width: 380px;
-  width: 100%;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  padding: 1.5rem;
-}
-
-
-.login-card h2 {
-  font-weight: bold;
-  font-size: 1.25rem;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.login-card button {
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-}
-
 
 /* Título */
 .login-title {

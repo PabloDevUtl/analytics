@@ -87,8 +87,7 @@ export default function Login() {
 
       if (data.failedCount >= 3) {
         const level = data.lockLevel || 0;
-        const duration =
-          LOCK_DURATIONS[Math.min(level, LOCK_DURATIONS.length - 1)];
+        const duration = LOCK_DURATIONS[Math.min(level, LOCK_DURATIONS.length - 1)];
         data.lockUntil = now + duration * 1000;
         data.lockLevel = level + 1;
         data.failedCount = 0;
@@ -103,9 +102,7 @@ export default function Login() {
 
   // Formato de mm:ss para temporizador
   const format = (secs) => {
-    const m = Math.floor(secs / 60)
-      .toString()
-      .padStart(2, "0");
+    const m = Math.floor(secs / 60).toString().padStart(2, "0");
     const s = (secs % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
@@ -116,41 +113,31 @@ export default function Login() {
       style={{ backgroundImage: `url(${fondoLogin})` }}
     >
       <div className="login-card p-4 p-md-5">
-        <h2 className="text-center mb-4 login-title">
-          Bienvenido administrador
-        </h2>
+        <h2 className="text-center mb-4 login-title">Bienvenido administrador</h2>
 
         <form onSubmit={handleSubmit} noValidate>
-          {/* Usuario */}
-          <div className="mb-3">
-            <label htmlFor="usuario" className="form-label">
-              Usuario
-            </label>
+          {/* Usuario con estilo form-floating */}
+          <div className="form-floating mb-3">
             <input
               type="text"
               className="form-control input-custom"
               id="usuario"
-              name="username"
-              autoComplete="username"
               placeholder="Usuario"
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
               disabled={!!lockedUntil}
               required
             />
+            <label htmlFor="usuario">Usuario</label>
           </div>
 
-          {/* Contraseña */}
+          {/* Contraseña con altura igualada manualmente */}
           <div className="mb-4">
-            <label htmlFor="contrasena" className="form-label">
-              Contraseña
-            </label>
+            <label htmlFor="contrasena" className="form-label">Contraseña</label>
             <input
               type="password"
               className="form-control input-custom"
               id="contrasena"
-              name="password"
-              autoComplete="current-password"
               placeholder="Contraseña"
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}
