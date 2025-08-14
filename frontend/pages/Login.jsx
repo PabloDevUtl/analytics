@@ -130,6 +130,8 @@ export default function Login() {
               type="text"
               className="form-control input-custom"
               id="usuario"
+              name="username"
+              autoComplete="username"
               placeholder="Usuario"
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
@@ -147,6 +149,8 @@ export default function Login() {
               type="password"
               className="form-control input-custom"
               id="contrasena"
+              name="password"
+              autoComplete="current-password"
               placeholder="Contraseña"
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}

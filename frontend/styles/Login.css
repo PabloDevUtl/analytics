@@ -1,35 +1,44 @@
-/* Inputs personalizados */
-.input-custom {
+/* === Inputs: usa base de Bootstrap y unifica estilos === */
+.form-control.input-custom {
+  display: block;
+  width: 100%;
   font-size: 1rem;
-  line-height: 1.5rem;
-  padding: 0.75rem 1rem;
-  background-color: #fff !important; /* Fondo sólido para evitar bug iOS */
-  color: #000 !important;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  -webkit-appearance: none; /* Quita estilo nativo en iOS */
-  appearance: none;
+  line-height: 1.5;               /* unitless como Bootstrap */
+  font-weight: 400;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .375rem;
+  padding: .375rem .75rem;         /* iguales a Bootstrap */
+  min-height: calc(1.5em + .75rem + 2px); /* asegura alto consistente */
   box-sizing: border-box;
 }
 
-/* Solo para el input de contraseña */
-input[type="password"].input-custom {
-  -webkit-text-security: disc;
+/* Placeholder visible en todos */
+.form-control.input-custom::placeholder {
+  color: #6c757d;
+  opacity: 1;
 }
 
-/* Placeholder visible */
-input[type="password"]::placeholder {
-  color: #999 !important;
-  opacity: 1 !important;
+/* iOS: que el texto nunca quede “transparente” */
+.form-control.input-custom,
+input[type="password"].form-control.input-custom {
+  -webkit-text-fill-color: #000;  /* tiene prioridad sobre color en iOS */
+  caret-color: #000;
 }
 
-/* Ajustes para iOS */
-@supports (-webkit-touch-callout: none) {
-  .input-custom {
-    line-height: normal;
-    padding-top: 0.6rem;
-    padding-bottom: 0.6rem;
-  }
+/* iOS Autofill: evita fondo amarillento que tapa texto */
+.form-control.input-custom:-webkit-autofill {
+  -webkit-text-fill-color: #000 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+          box-shadow: 0 0 0px 1000px #fff inset;
+}
+
+/* Foco consistente */ 
+.login-card .form-control.input-custom:focus {
+  border-color: #ef8802;
+  box-shadow: 0 0 0 .2rem rgba(239,136,2,.25);
 }
 
 
@@ -70,38 +79,6 @@ input[type="password"]::placeholder {
   padding: 1.5rem;
 }
 
-.input-custom {
-  font-size: 1rem;
-  line-height: 1.5rem;
-  padding: 0.75rem 1rem;
-  background-color: #fff !important; /* Fondo sólido para evitar bug iOS */
-  color: #000 !important;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  -webkit-appearance: none; /* Quita estilo nativo en iOS */
-  appearance: none;
-  box-sizing: border-box;
-}
-
-/* Solo para el input de contraseña */
-input[type="password"].input-custom {
-  -webkit-text-security: disc;
-}
-
-/* Placeholder visible */
-input[type="password"]::placeholder {
-  color: #999 !important;
-  opacity: 1 !important;
-}
-
-/* Ajustes para iOS */
-@supports (-webkit-touch-callout: none) {
-  .input-custom {
-    line-height: normal;
-    padding-top: 0.6rem;
-    padding-bottom: 0.6rem;
-  }
-}
 
 .login-card h2 {
   font-weight: bold;
