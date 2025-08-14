@@ -1,15 +1,26 @@
-/* Asegura altura consistente entre todos los inputs */
+/* Inputs personalizados */
 .input-custom {
   font-size: 1rem;
-  line-height: 1.5rem; /* Coincide con altura del texto */
+  line-height: 1.5rem; /* Altura del texto */
   padding: 0.75rem 1rem;
-  background-color: #fff !important;
+  background-color: #fff !important; /* Fondo sólido para evitar bug iOS */
   color: #000 !important;
   border: 1px solid #ccc;
   border-radius: 4px;
-  -webkit-appearance: none;
+  -webkit-appearance: none; /* Quita estilo nativo en iOS */
   appearance: none;
   box-sizing: border-box;
+}
+
+/* Solo para el input de contraseña */
+input[type="password"].input-custom {
+  -webkit-text-security: disc;
+}
+
+/* Asegurar visibilidad del placeholder */
+input[type="password"]::placeholder {
+  color: #999 !important;
+  opacity: 1 !important;
 }
 
 /* Ajustes específicos para iOS */
@@ -21,14 +32,6 @@
   }
 }
 
-input[type="password"].input-custom {
-  -webkit-text-security: disc;
-}
-
-input[type="password"]::placeholder {
-  color: #999 !important;
-  opacity: 1 !important;
-}
 
 
 /* Fondo y overlay */
