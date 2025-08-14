@@ -1,7 +1,7 @@
 /* Inputs personalizados */
 .input-custom {
   font-size: 1rem;
-  line-height: 1.5rem; /* Altura del texto */
+  line-height: 1.5rem;
   padding: 0.75rem 1rem;
   background-color: #fff !important; /* Fondo sólido para evitar bug iOS */
   color: #000 !important;
@@ -17,13 +17,13 @@ input[type="password"].input-custom {
   -webkit-text-security: disc;
 }
 
-/* Asegurar visibilidad del placeholder */
+/* Placeholder visible */
 input[type="password"]::placeholder {
   color: #999 !important;
   opacity: 1 !important;
 }
 
-/* Ajustes específicos para iOS */
+/* Ajustes para iOS */
 @supports (-webkit-touch-callout: none) {
   .input-custom {
     line-height: normal;
@@ -31,7 +31,6 @@ input[type="password"]::placeholder {
     padding-bottom: 0.6rem;
   }
 }
-
 
 
 /* Fondo y overlay */
@@ -58,7 +57,65 @@ input[type="password"]::placeholder {
   max-width: 380px;
   width: 100%;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
 }
+.login-card {
+  z-index: 1;
+  position: relative;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 0.75rem;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+}
+
+.input-custom {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #fff !important; /* Fondo sólido para evitar bug iOS */
+  color: #000 !important;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-appearance: none; /* Quita estilo nativo en iOS */
+  appearance: none;
+  box-sizing: border-box;
+}
+
+/* Solo para el input de contraseña */
+input[type="password"].input-custom {
+  -webkit-text-security: disc;
+}
+
+/* Placeholder visible */
+input[type="password"]::placeholder {
+  color: #999 !important;
+  opacity: 1 !important;
+}
+
+/* Ajustes para iOS */
+@supports (-webkit-touch-callout: none) {
+  .input-custom {
+    line-height: normal;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+  }
+}
+
+.login-card h2 {
+  font-weight: bold;
+  font-size: 1.25rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
 
 /* Título */
 .login-title {
