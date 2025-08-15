@@ -121,34 +121,34 @@ export default function Login() {
         </h2>
 
         <form onSubmit={handleSubmit} noValidate>
-          <div className="form-floating mb-3">
+          <div className="mb-3">
+            <label htmlFor="usuario" className="form-label">
+              Usuario
+            </label>
             <input
               type="text"
               className="form-control input-custom"
               id="usuario"
-              placeholder=" " // <- IMPORTANTE: dejar un espacio
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
               disabled={!!lockedUntil}
               required
             />
-            <label htmlFor="usuario">Usuario</label>
           </div>
-
-          <div className="form-floating mb-4">
+          <div className="mb-4">
+            <label htmlFor="contrasena" className="form-label">
+              Contraseña
+            </label>
             <input
               type="password"
               className="form-control input-custom"
               id="contrasena"
-              placeholder=" " // <- importante: espacio para que funcione form-floating
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}
               disabled={!!lockedUntil}
               required
             />
-            <label htmlFor="contrasena">Contraseña</label>
           </div>
-
           <button
             type="submit"
             className="btn btn-primary w-100 py-2"
@@ -156,13 +156,11 @@ export default function Login() {
           >
             Iniciar sesión
           </button>
-
           {lockedUntil && (
             <div className="alert alert-warning mt-3" role="alert">
               Demasiados intentos. Vuelve a intentarlo en {format(remaining)}.
             </div>
           )}
-
           {error && !lockedUntil && (
             <div className="alert alert-danger mt-3" role="alert">
               {error}
