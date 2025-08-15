@@ -10,7 +10,6 @@
 
 /* Asegura visibilidad de caracteres en iOS */
 input[type="password"] {
-  -webkit-text-security: disc;
   color: #000;
 }
 
