@@ -10,8 +10,11 @@
 
 /* Asegura visibilidad de caracteres en iOS */
 input[type="password"] {
+  -webkit-appearance: none;
+  -webkit-text-fill-color: #000;
   color: #000;
 }
+
 
 /* Fondo y overlay */
 .login-page {
@@ -32,7 +35,7 @@ input[type="password"] {
 .login-card {
   z-index: 1;
   position: relative;
- /* background: rgba(255, 255, 255, 0.85);*/
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 0.75rem;
   max-width: 380px;
   width: 100%;
@@ -70,7 +73,8 @@ input[type="password"] {
     padding: 2rem 1.5rem;
   }
   .login-page::before {
-    background: rgba(0, 0, 0, 0.6);
+   /* background: rgba(0, 0, 0, 0.6); */
+    background: #fff;
   }
 }
 
