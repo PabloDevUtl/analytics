@@ -1,20 +1,25 @@
-/* Asegura altura consistente entre todos los inputs */
+/* -------------------------------------------------- */
+/* Inputs y compatibilidad iOS Safari / iPhone */
+/* -------------------------------------------------- */
 .input-custom {
-  height: 58px; /* Ajusta según necesidad para que coincidan */
+  height: 56px; /* consistente en todos los navegadores */
   font-size: 1rem;
   line-height: 1.5;
-  padding: 0.50rem 1rem;
+  padding: 0.75rem 1rem;
   background-color: #fff;
   color: #000;
-}
-
-/* Asegura visibilidad de caracteres en iOS */
-input[type="password"] {
   -webkit-appearance: none;
-  -webkit-text-fill-color: #000;
-  color: #000;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.5rem;
+  border: 1px solid #ced4da;
 }
 
+/* Forzar visibilidad de password en iOS */
+input[type="password"] {
+  color: #000;
+  -webkit-text-security: disc;
+}
 
 /* Fondo y overlay */
 .login-page {
@@ -22,24 +27,30 @@ input[type="password"] {
   background-size: cover;
   background-position: center;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }
+
 .login-page::before {
-  z-index: -1;
   content: "";
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
 }
 
-/* Tarjeta centrada */
+/* Tarjeta */
 .login-card {
   z-index: 1;
   position: relative;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 0.75rem;
   max-width: 380px;
   width: 100%;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
 }
 
 /* Título */
@@ -49,13 +60,12 @@ input[type="password"] {
   font-size: 1.75rem;
 }
 
-/* Input foco */
+/* Focus y hover */
 .login-card .form-control:focus {
   box-shadow: 0 0 0 0.2rem rgba(239, 136, 2, 0.3);
   border-color: #ef8802;
 }
 
-/* Botón */
 .login-card .btn-primary {
   background-color: #ef8802;
   border-color: #ef8802;
@@ -66,41 +76,31 @@ input[type="password"] {
   border-color: #d67902;
 }
 
+/* Alerts */
+.alert {
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
 /* Responsive */
 @media (max-width: 576px) {
   .login-card {
     margin: 0 1rem;
-    padding: 2rem 1.5rem;
+    padding: 2rem 1rem;
   }
   .login-page::before {
-   /* background: rgba(0, 0, 0, 0.6); */
-    background: #fff;
+    background: rgba(0, 0, 0, 0.6);
   }
 }
 
-/* -------- Media Queries para tabletas -------- */
-
-/* iPad Mini (vertical) y tablets pequeñas */
+/* Tablets */
 @media (min-width: 577px) and (max-width: 767px) {
-  .login-card {
-    max-width: 420px;
-    padding: 2rem 2rem;
-  }
+  .login-card { max-width: 420px; padding: 2rem; }
 }
-
-/* iPad Air / Pro 11" (vertical y horizontal) */
 @media (min-width: 768px) and (max-width: 1023px) {
-  .login-card {
-    max-width: 470px;
-    padding: 2rem 2rem;
-  }
+  .login-card { max-width: 470px; padding: 2rem; }
 }
-
-/* iPad Pro 12.9" o tabletas grandes */
 @media (min-width: 1024px) and (max-width: 1199px) {
-  .login-card {
-     max-width: 470px;
-    padding: 2rem 2rem;
-  }
+  .login-card { max-width: 470px; padding: 2rem; }
 }
-

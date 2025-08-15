@@ -1,17 +1,13 @@
-// src/components/Login.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import fondoLogin from "../assets/fondoLogin.png";
 import "../styles/Login.css";
 import { doLogin } from "../JavaScript/login";
 
-// Tiempos de bloqueo progresivos (en segundos)
 const LOCK_DURATIONS = [60, 180, 900, 1800, 3600, 7200];
-const RESET_IDLE = 20 * 60; // 20 minutos
-
+const RESET_IDLE = 20 * 60;
 const STORAGE_KEY = "loginLockData";
 
-// Lee el estado de bloqueo guardado
 function readLockData() {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
@@ -20,7 +16,6 @@ function readLockData() {
   }
 }
 
-// Guarda el estado de bloqueo
 function writeLockData(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
@@ -34,7 +29,6 @@ export default function Login() {
   const [remaining, setRemaining] = useState(0);
   const timerRef = useRef();
 
-  // Al montar, valida si hay bloqueo
   useEffect(() => {
     const data = readLockData();
     const now = Date.now();
@@ -50,7 +44,6 @@ export default function Login() {
     }
   }, []);
 
-  // Temporizador de cuenta regresiva
   useEffect(() => {
     if (!lockedUntil) return;
     timerRef.current = setInterval(() => {
@@ -67,7 +60,6 @@ export default function Login() {
     return () => clearInterval(timerRef.current);
   }, [lockedUntil]);
 
-  // Maneja el login y el sistema de bloqueos
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -101,7 +93,6 @@ export default function Login() {
     }
   };
 
-  // Formato de mm:ss para temporizador
   const format = (secs) => {
     const m = Math.floor(secs / 60)
       .toString()
@@ -132,6 +123,7 @@ export default function Login() {
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
               disabled={!!lockedUntil}
+              autoComplete="username"
               required
             />
           </div>
@@ -140,12 +132,13 @@ export default function Login() {
               Contraseña
             </label>
             <input
-              type="password"
+              type="text"
               className="form-control input-custom"
               id="contrasena"
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}
               disabled={!!lockedUntil}
+              autoComplete="current-password"
               required
             />
           </div>
