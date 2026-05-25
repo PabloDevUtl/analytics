@@ -1,9 +1,5 @@
 # 📊 Analytics - Plataforma Full-Stack de Gestión y Servicios Tecnológicos
 
-<p align="center">
-  <img src="frontend/src/assets/iconWhatsApp.png" alt="Analytics Logo" width="100px" style="border-radius: 50%;" />
-</p>
-
 <h3 align="center">Analytics México</h3>
 <p align="center">
   Soluciones tecnológicas integrales diseñadas para fortalecer la seguridad, eficiencia y desarrollo digital de empresas y hogares.
@@ -87,20 +83,20 @@ El sistema opera bajo un flujo cliente-servidor completamente desacoplado (Decou
 
 ```mermaid
 graph TD
-    subgraph Frontend (Cliente - React 19)
+    subgraph Frontend ["Frontend (Cliente - React 19)"]
         User[Usuario / Admin] -->|Navegación| UI[Interfaz de React]
         UI -->|Petición de Datos| ClientAPI[Fetch/Axios Requests]
         UI -->|Envío de Formularios| EmailJS[EmailJS SDK]
     end
 
-    subgraph Backend (Servidor - Node / Express)
+    subgraph Backend ["Backend (Servidor - Node / Express)"]
         ClientAPI -->|REST HTTPS| Security{Middleware de Seguridad}
         Security -->|JWT / Rate Limit / Sanitización| Routes[Rutas de Express]
         Routes -->|Lógica Controlador| Controllers[Controladores REST]
         Controllers -->|Esquema de Datos| Models[Modelos Mongoose]
     end
 
-    subgraph Base de Datos (NoSQL)
+    subgraph Database ["Base de Datos (NoSQL)"]
         Models <-->|Persistencia Dinámica| MongoDB[(MongoDB Atlas)]
     end
 ```
